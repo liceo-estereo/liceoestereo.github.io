@@ -1,0 +1,11 @@
+{
+  "lema": "La voz de nuestros estudiantes",
+  "stream": "",
+  "contacto": "emisora@ejemplo.edu.co",
+  "parrilla": [
+    { "programa": "Buenos días Liceo", "a_cargo": "Grado 11", "dias": ["lunes", "martes", "miércoles", "jueves", "viernes"], "inicio": "06:45", "fin": "07:00" },
+    { "programa": "Recreo musical", "a_cargo": "Grado 10", "dias": ["lunes", "martes", "miércoles", "jueves", "viernes"], "inicio": "09:30", "fin": "10:00" },
+    { "programa": "Saludos y complacencias", "a_cargo": "Grado 9", "dias": ["lunes", "miércoles", "viernes"], "inicio": "12:00", "fin": "12:30" },
+    { "programa": "Noticiero escolar", "a_cargo": "Club de periodismo", "dias": ["martes", "jueves"], "inicio": "12:00", "fin": "12:30" }
+  ]
+}
