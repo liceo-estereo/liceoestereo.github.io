@@ -12,39 +12,66 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <header class="cabecera envoltura">
-    <a class="marca" href="./">
-      <img src="logo.svg" alt="" width="60" height="60">
-      <span class="nombre">Liceo Tame <span>stereo</span></span>
-    </a>
-    <nav aria-label="Secciones">
-      <a href="#seccion-noticias">Noticias</a>
-      <a href="#programacion">Programación</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="envoltura">
+      <a class="marca" href="./" aria-label="Liceo Tame Stereo, inicio">
+        <img src="logo.svg" alt="" width="52" height="52">
+        <h1 class="nombre">Liceo Tame <span>stereo</span></h1>
+      </a>
+      <nav aria-label="Principal">
+        <ul>
+          <li><a href="#seccion-noticias">Noticias</a></li>
+          <li><a href="#programacion">Programación</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <div class="franja">
-    <p id="estado" class="envoltura" aria-live="polite"><i aria-hidden="true"></i><span></span></p>
+    <p id="estado" class="envoltura" role="status"><i aria-hidden="true"></i><span></span></p>
   </div>
 
-  <main class="envoltura">
-    <section id="seccion-noticias">
-      <h2>Noticias</h2>
+  <main id="contenido" class="envoltura">
+    <section id="seccion-noticias" aria-labelledby="titulo-noticias">
+      <h2 id="titulo-noticias">Noticias</h2>
       <div id="noticias"></div>
     </section>
 
-    <aside id="programacion">
-      <h2>Programación</h2>
+    <aside id="programacion" aria-labelledby="titulo-programacion">
+      <h2 id="titulo-programacion">Programación</h2>
       <ul id="parrilla"></ul>
     </aside>
   </main>
 
-  <footer id="contacto">
+  <footer class="pie" id="contacto">
     <div class="envoltura">
-      <p id="lema"></p>
-      <p>Para pedir una canción, enviar un saludo o unirte al equipo, escríbenos a <a id="correo"></a>.</p>
-      <p class="equipo"><a href="https://app.pagescms.org" rel="noopener">Equipo de la emisora: publicar noticias</a></p>
+      <section aria-label="La emisora">
+        <p class="nombre">Liceo Tame <span>stereo</span></p>
+        <p id="lema"></p>
+      </section>
+
+      <nav aria-labelledby="titulo-pie-secciones">
+        <h2 id="titulo-pie-secciones">Secciones</h2>
+        <ul>
+          <li><a href="#seccion-noticias">Noticias</a></li>
+          <li><a href="#programacion">Programación</a></li>
+          <li><a href="#contenido">Volver arriba</a></li>
+        </ul>
+      </nav>
+
+      <section aria-labelledby="titulo-pie-contacto">
+        <h2 id="titulo-pie-contacto">Contacto</h2>
+        <p>Para pedir una canción, enviar un saludo o unirte al equipo:</p>
+        <address><a id="correo"></a></address>
+      </section>
+
+      <p class="creditos">
+        Emisora institucional del Liceo Tame.
+        <a href="https://app.pagescms.org" rel="noopener">Equipo de la emisora: publicar noticias</a>
+      </p>
     </div>
   </footer>
 

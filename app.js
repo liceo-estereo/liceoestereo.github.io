@@ -49,7 +49,7 @@ function pintarParrilla(parrilla) {
       proximo = p;
     }
     li.append(
-      el("span", `${hhmm(p.inicio)} – ${hhmm(p.fin)}`, "hora"),
+      el("time", `${hhmm(p.inicio)} – ${hhmm(p.fin)}`, "hora"),
       el("strong", p.programa),
       el("span", [textoDias(p.dias), p.a_cargo].filter(Boolean).join(" · "), "detalle"),
     );
@@ -86,12 +86,16 @@ function pintarNoticias(noticias) {
       art.append(figura);
     }
     // T12:00 evita que la zona horaria corra la fecha un día atrás.
-    const fecha = new Date(n.fecha.slice(0, 10) + "T12:00").toLocaleDateString("es-CO", { dateStyle: "long" });
+    const dia = n.fecha.slice(0, 10);
+    const fecha = el("time", new Date(dia + "T12:00").toLocaleDateString("es-CO", { dateStyle: "long" }));
+    fecha.dateTime = dia;
+    const meta = el("p", n.origen ? n.origen + " · " : "", "meta");
+    meta.append(fecha);
     const titulo = el("h3");
     const enlace = el("a", n.titulo);
     enlace.href = "#" + art.id;
     titulo.append(enlace);
-    art.append(el("p", [n.origen, fecha].filter(Boolean).join(" · "), "meta"), titulo);
+    art.append(meta, titulo);
     if (n.subtitulo) art.append(el("p", n.subtitulo, "subtitulo"));
     if (n.entradilla) art.append(el("p", n.entradilla, "entradilla"));
     if (n.cuerpo) {
@@ -102,7 +106,7 @@ function pintarNoticias(noticias) {
       }
       art.append(mas);
     }
-    if (n.emisor) art.append(el("p", "Por " + n.emisor, "firma"));
+    if (n.emisor) art.append(el("footer", "Por " + n.emisor, "firma"));
     cont.append(art);
   }
 }
