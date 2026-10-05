@@ -15,7 +15,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+html { scroll-padding-top: 1rem; }
 body {
   margin: 0;
   background: var(--crema);
@@ -77,7 +77,6 @@ nav ul { list-style: none; margin: 0; padding: 0; }
   transition: background-color .15s;
 }
 .cabecera nav a:hover { background: var(--crema-borde); }
-.cabecera nav a:active { background: var(--verde); color: var(--crema); }
 @media (min-width: 40rem) {
   html { scroll-padding-top: 6rem; }
   .cabecera { position: sticky; top: 0; z-index: 1; }
@@ -111,7 +110,6 @@ nav ul { list-style: none; margin: 0; padding: 0; }
 @keyframes pulso { 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) {
   #estado.encendido i { animation: none; }
-  html { scroll-behavior: auto; }
 }
 
 /* Cuerpo */
@@ -234,4 +232,19 @@ summary:hover, details[open] summary { background: var(--verde); color: var(--cr
   padding-top: 1.25rem;
   border-top: 1px solid color-mix(in srgb, var(--crema) 30%, transparent);
   font-size: .875rem;
+}
+
+/* Al llegar desde el menú, la sección de destino parpadea para que se note
+   aunque ya estuviera a la vista y la página no se haya movido. */
+@keyframes destello {
+  from { outline-color: var(--senal); }
+  to { outline-color: transparent; }
+}
+#programacion:target #parrilla,
+#seccion-noticias:target article:first-child,
+#contacto:target address {
+  outline: 4px solid transparent;
+  outline-offset: 6px;
+  border-radius: 5px;
+  animation: destello 1.8s ease-out;
 }
