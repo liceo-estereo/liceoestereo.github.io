@@ -1,0 +1,24 @@
+[
+  {
+    "titulo": "Liceo Tame Stereo sale al aire",
+    "subtitulo": "La emisora institucional acompañará los descansos con música, saludos y noticias",
+    "entradilla": "Noticia de ejemplo: desde esta semana los altavoces del colegio transmiten la programación hecha por los propios estudiantes.",
+    "foto": "",
+    "pie_foto": "",
+    "cuerpo": "Este texto es un ejemplo para mostrar cómo se ve una noticia completa. Reemplázalo desde el formulario de publicación.\n\nCada párrafo del cuerpo se escribe en una línea aparte. Al final aparece quién emite la noticia y de dónde viene.",
+    "emisor": "Equipo de la emisora",
+    "origen": "Tame, Arauca",
+    "fecha": "2026-10-05"
+  },
+  {
+    "titulo": "Abierta la convocatoria de locutores",
+    "subtitulo": "Pueden participar estudiantes de todos los grados",
+    "entradilla": "Noticia de ejemplo: la emisora busca voces nuevas para sus programas de la mañana y del mediodía.",
+    "foto": "",
+    "pie_foto": "",
+    "cuerpo": "Las inscripciones se reciben en coordinación durante los descansos.",
+    "emisor": "Equipo de la emisora",
+    "origen": "Tame, Arauca",
+    "fecha": "2026-10-01"
+  }
+]
