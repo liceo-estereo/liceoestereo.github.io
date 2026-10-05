@@ -219,7 +219,11 @@ summary:hover, details[open] summary { background: var(--verde); color: var(--cr
   opacity: .75;
 }
 .pie li + li { margin-top: .35rem; }
-#lema { margin-top: .7rem; }
+.insignias { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem; }
+.insignias img { flex: none; }
+/* El logo es verde sobre verde: el borde crema lo separa del fondo. */
+.insignias .logo { border: 2px solid var(--crema); border-radius: 8px; }
+#lema { margin-top: .9rem; }
 .pie .creditos {
   grid-column: 1 / -1;
   display: flex;
