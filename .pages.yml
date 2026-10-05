@@ -1,0 +1,98 @@
+# Configuración de Pages CMS (https://app.pagescms.org): define los formularios
+# con los que se publican noticias y se edita la programación sin programar.
+
+media:
+  input: fotos
+  output: /fotos
+  rename: safe
+  categories: [image]
+
+content:
+  - name: noticias
+    label: Noticias
+    type: file
+    path: noticias.json
+    format: json
+    list: true
+    fields:
+      - name: titulo
+        label: Título
+        type: string
+        required: true
+      - name: subtitulo
+        label: Subtítulo
+        type: string
+      - name: entradilla
+        label: Entradilla
+        description: Uno o dos renglones que resumen la noticia.
+        type: text
+      - name: foto
+        label: Fotografía
+        type: image
+      - name: pie_foto
+        label: Pie de foto
+        type: string
+      - name: cuerpo
+        label: Cuerpo de la noticia
+        description: Deja una línea en blanco entre párrafos.
+        type: text
+      - name: emisor
+        label: Emisor
+        description: Quién escribe o reporta la noticia.
+        type: string
+      - name: origen
+        label: Origen
+        description: Lugar o fuente de la noticia.
+        type: string
+      - name: fecha
+        label: Fecha
+        type: date
+        required: true
+
+  - name: emisora
+    label: Emisora y programación
+    type: file
+    path: emisora.json
+    format: json
+    fields:
+      - name: lema
+        label: Lema
+        type: string
+      - name: contacto
+        label: Correo de contacto
+        type: string
+      - name: stream
+        label: Dirección de la transmisión en línea
+        description: Déjalo vacío si la emisora solo suena por los altavoces.
+        type: string
+      - name: parrilla
+        label: Programación
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{programa} ({inicio})"
+        fields:
+          - name: programa
+            label: Programa
+            type: string
+            required: true
+          - name: a_cargo
+            label: A cargo de
+            type: string
+          - name: dias
+            label: Días
+            type: select
+            options:
+              multiple: true
+              values: [lunes, martes, miércoles, jueves, viernes, sábado, domingo]
+          - name: inicio
+            label: Hora de inicio
+            description: En formato de 24 horas, por ejemplo 09:30.
+            type: string
+            required: true
+          - name: fin
+            label: Hora de fin
+            description: En formato de 24 horas, por ejemplo 10:00.
+            type: string
+            required: true
