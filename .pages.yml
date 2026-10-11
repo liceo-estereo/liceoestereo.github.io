@@ -33,6 +33,42 @@ content:
         label: Dirección de la transmisión en línea
         description: Déjalo vacío si la emisora solo suena por los altavoces.
         type: string
+      - name: especiales
+        label: Programación especial (cambios de un solo día)
+        description: Invitados, entrevistas o cambios para una fecha. No modifica la programación habitual; ese día aparece en el inicio y en la franja de "al aire".
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fecha} {inicio} · {titulo}"
+        fields:
+          - name: fecha
+            label: Fecha
+            type: date
+            required: true
+          - name: inicio
+            label: Hora de inicio
+            description: En formato de 24 horas, por ejemplo 14:00.
+            type: string
+            required: true
+          - name: fin
+            label: Hora de fin
+            description: En formato de 24 horas, por ejemplo 15:00.
+            type: string
+            required: true
+          - name: tipo
+            label: Tipo
+            type: select
+            options:
+              values: [Programa invitado, Entrevista, Cambio de programación, Evento especial]
+          - name: titulo
+            label: Título
+            description: Nombre del invitado, del programa o del evento.
+            type: string
+            required: true
+          - name: detalle
+            label: Detalle
+            type: text
       - name: junta
         label: Junta directiva
         type: object

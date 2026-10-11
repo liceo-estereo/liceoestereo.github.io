@@ -7,6 +7,15 @@ function alAire(p, dia, hora) {
   return p.dia === dia && hhmm(p.inicio) <= hora && hora < hhmm(p.fin);
 }
 
+const jornada = (hora) => (hhmm(hora) < "12:00" ? "Mañana" : "Tarde");
+const hoyISO = () => new Date().toLocaleDateString("en-CA"); // AAAA-MM-DD en hora local
+const nombreEspecial = (e) => [e.tipo, e.titulo].filter(Boolean).join(": ");
+
+// Cambio de un solo día (invitado, entrevista...) que está sonando en este momento, si lo hay.
+function especialAhora(especiales, fecha, hora) {
+  return especiales.find((e) => e.fecha.slice(0, 10) === fecha && hhmm(e.inicio) <= hora && hora < hhmm(e.fin));
+}
+
 // Código que identifica cada mensaje del formulario de contacto: LT-AAMMDD-XXXX.
 function nuevoTicket() {
   const fecha = new Date().toISOString().slice(2, 10).replaceAll("-", "");
@@ -25,6 +34,10 @@ console.assert(alAire(prueba, "lunes", "09:45"));
 console.assert(!alAire(prueba, "lunes", "10:00"));
 console.assert(!alAire(prueba, "martes", "09:45"));
 console.assert(slug({ fecha: "2026-10-05", titulo: "¡Nace la emisión!" }) === "2026-10-05-nace-la-emision");
+const invitado = { fecha: "2026-10-12", inicio: "14:00", fin: "15:00" };
+console.assert(especialAhora([invitado], "2026-10-12", "14:30") === invitado);
+console.assert(!especialAhora([invitado], "2026-10-13", "14:30"));
+console.assert(jornada("9:30") === "Mañana" && jornada("12:00") === "Tarde");
 console.assert(/^LT-\d{6}-[A-Z0-9]{4}$/.test(nuevoTicket()));
 
 function el(tag, texto, clase) {
@@ -49,7 +62,10 @@ function pintarParrilla(parrilla) {
     const titulo = el("summary", dia, "dia");
     if (dia === hoy) titulo.append(el("span", "Hoy", "etiqueta"));
     const lista = el("ul");
+    let parte = "";
     for (const p of delDia) {
+      // Separador cada vez que se pasa de la mañana a la tarde.
+      if (jornada(p.inicio) !== parte) lista.append(el("li", (parte = jornada(p.inicio)), "jornada"));
       const li = el("li");
       const texto = el("div");
       texto.append(el("strong", p.programa));
@@ -66,17 +82,20 @@ function pintarParrilla(parrilla) {
 }
 
 // Se repite cada minuto: actualiza la franja de estado y resalta el programa que suena.
-function marcarAlAire(parrilla) {
+function marcarAlAire(parrilla, especiales) {
   const ahora = new Date();
   const dia = DIAS[ahora.getDay()];
   const hora = ahora.toTimeString().slice(0, 5);
+  // Un especial de hoy reemplaza al programa habitual de esa hora.
+  const especial = especialAhora(especiales, hoyISO(), hora);
   let sonando, proximo;
   for (const p of parrilla) {
-    const suena = alAire(p, dia, hora);
+    const suena = !especial && alAire(p, dia, hora);
     filas.get(p)?.classList.toggle("al-aire", suena);
     if (suena) sonando = p;
     else if (!proximo && p.dia === dia && hhmm(p.inicio) > hora) proximo = p;
   }
+  if (especial) sonando = { programa: nombreEspecial(especial), fin: especial.fin };
   const estado = document.querySelector("#estado");
   estado.classList.toggle("encendido", Boolean(sonando));
   estado.querySelector("span").textContent = sonando
@@ -169,6 +188,27 @@ function abrirDesdeHash() {
   const mas = art.querySelector("details");
   if (mas) mas.open = true;
   art.scrollIntoView();
+}
+
+// Recuadro del inicio: los cambios de programación de hoy, o el aviso de que no hay.
+function pintarHoy(especiales) {
+  const caja = document.querySelector("#hoy");
+  const deHoy = especiales
+    .filter((e) => e.fecha.slice(0, 10) === hoyISO())
+    .sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio)));
+  if (!deHoy.length) {
+    caja.append(el("p", "Hoy programación habitual."));
+    return;
+  }
+  for (const e of deHoy) {
+    const item = el("p");
+    item.append(
+      el("strong", nombreEspecial(e)),
+      el("time", `${hhmm(e.inicio)} a ${hhmm(e.fin)} · ${jornada(e.inicio).toLowerCase()}`, "hora"),
+    );
+    if (e.detalle) item.append(el("span", e.detalle, "detalle"));
+    caja.append(item);
+  }
 }
 
 // La junta lleva foto (o la inicial si no hay); los miembros, solo nombre y cargo.
@@ -268,8 +308,10 @@ Promise.all([pide("datos/emisora.json"), hay("#noticias") ? pideNoticias() : []]
     }
     const parrilla = [...emisora.parrilla].sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio)));
     if (hay("#parrilla")) pintarParrilla(parrilla);
-    marcarAlAire(parrilla);
-    setInterval(() => marcarAlAire(parrilla), 60000);
+    const especiales = emisora.especiales || [];
+    marcarAlAire(parrilla, especiales);
+    setInterval(() => marcarAlAire(parrilla, especiales), 60000);
+    if (hay("#hoy")) pintarHoy(especiales);
     if (hay("#junta")) {
       pintarEquipo(emisora.junta || [], hay("#junta"), true);
       pintarEquipo(emisora.miembros || [], hay("#miembros"), false);

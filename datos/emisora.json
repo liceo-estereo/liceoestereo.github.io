@@ -4,6 +4,7 @@
   "telefono": "",
   "direccion": "",
   "stream": "",
+  "especiales": [],
   "junta": [
     {
       "nombre": "Tomas Torres",

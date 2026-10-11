@@ -36,9 +36,17 @@
     <p id="estado" class="envoltura" role="status"><i aria-hidden="true"></i><span></span></p>
   </div>
 
-  <main id="contenido" class="envoltura">
-    <h1>Noticias</h1>
-    <div id="noticias"></div>
+  <main id="contenido" class="envoltura portada">
+    <section aria-labelledby="titulo-noticias">
+      <h1 id="titulo-noticias">Noticias</h1>
+      <div id="noticias"></div>
+    </section>
+
+    <aside aria-labelledby="titulo-hoy">
+      <h2 id="titulo-hoy" class="rotulo">Hoy en la emisora</h2>
+      <div id="hoy"></div>
+      <a href="programacion.html">Ver la programación completa</a>
+    </aside>
   </main>
 
   <footer class="pie">
