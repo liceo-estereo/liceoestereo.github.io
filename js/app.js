@@ -186,14 +186,14 @@ function pintarContacto(emisora) {
 const pide = (u) => fetch(u).then((r) => r.json());
 const hay = (id) => document.querySelector(id);
 
-// Con Supabase conectado (config.js) las noticias salen de su base de datos; si no, del archivo local.
+// Con Supabase conectado (js/config.js) las noticias salen de su base de datos; si no, del archivo local.
 const pideNoticias = () =>
   SUPABASE_URL
     ? fetch(`${SUPABASE_URL}/rest/v1/noticias?select=*&order=fecha.desc`, { headers: { apikey: SUPABASE_KEY } })
         .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    : pide("noticias.json");
+    : pide("datos/noticias.json");
 
-Promise.all([pide("emisora.json"), hay("#noticias") ? pideNoticias() : []])
+Promise.all([pide("datos/emisora.json"), hay("#noticias") ? pideNoticias() : []])
   .then(([emisora, noticias]) => {
     document.querySelector("#lema").textContent = emisora.lema;
     const correo = document.querySelector("#correo");

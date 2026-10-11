@@ -11,7 +11,7 @@ content:
   - name: noticias
     label: Noticias
     type: file
-    path: noticias.json
+    path: datos/noticias.json
     format: json
     list: true
     fields:
@@ -52,7 +52,7 @@ content:
   - name: emisora
     label: Emisora, programación y equipo
     type: file
-    path: emisora.json
+    path: datos/emisora.json
     format: json
     fields:
       - name: lema

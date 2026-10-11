@@ -131,4 +131,4 @@ $("#form-noticia").onsubmit = async (e) => {
 };
 
 if (sb) mostrar();
-else aviso("Falta conectar Supabase: completa config.js con la dirección y la clave pública del proyecto.", true);
+else aviso("Falta conectar Supabase: completa js/config.js con la dirección y la clave pública del proyecto.", true);
