@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Liceo Tame Stereo</title>
-  <meta name="description" content="Emisora institucional del Liceo Tame: programación y noticias del colegio.">
+  <meta name="description" content="Emisora institucional del Liceo Tame: noticias, programación, equipo y contacto.">
   <link rel="icon" href="logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,19 +12,21 @@
   <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+  <!-- La cabecera y el pie se repiten en las cuatro páginas: un cambio en el menú hay que hacerlo en todas. -->
   <a class="saltar" href="#contenido">Saltar al contenido</a>
 
   <header class="cabecera">
     <div class="envoltura">
-      <a class="marca" href="./" aria-label="Liceo Tame Stereo, inicio">
+      <a class="marca" href="index.html" aria-label="Liceo Tame Stereo, inicio">
         <img src="logo.svg" alt="" width="52" height="52">
-        <h1 class="nombre">Liceo Tame <span>stereo</span></h1>
+        <p class="nombre">Liceo Tame <span>stereo</span></p>
       </a>
       <nav aria-label="Principal">
         <ul>
-          <li><a href="#seccion-noticias">Noticias</a></li>
-          <li><a href="#programacion">Programación</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="index.html" aria-current="page">Noticias</a></li>
+          <li><a href="programacion.html">Programación</a></li>
+          <li><a href="equipo.html">Equipo</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </nav>
     </div>
@@ -35,18 +37,11 @@
   </div>
 
   <main id="contenido" class="envoltura">
-    <section id="seccion-noticias" aria-labelledby="titulo-noticias">
-      <h2 id="titulo-noticias">Noticias</h2>
-      <div id="noticias"></div>
-    </section>
-
-    <aside id="programacion" aria-labelledby="titulo-programacion">
-      <h2 id="titulo-programacion">Programación</h2>
-      <ul id="parrilla"></ul>
-    </aside>
+    <h1>Noticias</h1>
+    <div id="noticias"></div>
   </main>
 
-  <footer class="pie" id="contacto">
+  <footer class="pie">
     <div class="envoltura">
       <section aria-label="La emisora">
         <div class="insignias">
@@ -60,9 +55,10 @@
       <nav aria-labelledby="titulo-pie-secciones">
         <h2 id="titulo-pie-secciones">Secciones</h2>
         <ul>
-          <li><a href="#seccion-noticias">Noticias</a></li>
-          <li><a href="#programacion">Programación</a></li>
-          <li><a href="#contenido">Volver arriba</a></li>
+          <li><a href="index.html" aria-current="page">Noticias</a></li>
+          <li><a href="programacion.html">Programación</a></li>
+          <li><a href="equipo.html">Equipo</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </nav>
 

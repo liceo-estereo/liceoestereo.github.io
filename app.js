@@ -36,8 +36,9 @@ function pintarParrilla(parrilla) {
   const ahora = new Date();
   const dia = DIAS[ahora.getDay()];
   const hora = ahora.toTimeString().slice(0, 5);
+  // La lista solo existe en la página de programación; la franja de estado, en todas.
   const lista = document.querySelector("#parrilla");
-  lista.replaceChildren();
+  lista?.replaceChildren();
   let sonando, proximo;
   const orden = [...parrilla].sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio)));
   for (const p of orden) {
@@ -53,7 +54,7 @@ function pintarParrilla(parrilla) {
       el("strong", p.programa),
       el("span", [textoDias(p.dias), p.a_cargo].filter(Boolean).join(" · "), "detalle"),
     );
-    lista.append(li);
+    lista?.append(li);
   }
   const estado = document.querySelector("#estado");
   estado.classList.toggle("encendido", Boolean(sonando));
@@ -91,7 +92,7 @@ function pintarNoticias(noticias) {
     fecha.dateTime = dia;
     const meta = el("p", n.origen ? n.origen + " · " : "", "meta");
     meta.append(fecha);
-    const titulo = el("h3");
+    const titulo = el("h2");
     const enlace = el("a", n.titulo);
     enlace.href = "#" + art.id;
     titulo.append(enlace);
@@ -119,7 +120,44 @@ function abrirDesdeHash() {
   art.scrollIntoView();
 }
 
-Promise.all(["emisora.json", "noticias.json"].map((u) => fetch(u).then((r) => r.json())))
+function pintarEquipo(equipo) {
+  const lista = document.querySelector("#equipo");
+  for (const m of equipo) {
+    const li = el("li");
+    if (m.foto) {
+      const img = el("img");
+      img.src = m.foto.replace(/^\//, "");
+      img.alt = "";
+      img.loading = "lazy";
+      li.append(img);
+    } else {
+      const inicial = el("span", m.nombre.trim()[0], "inicial");
+      inicial.ariaHidden = "true";
+      li.append(inicial);
+    }
+    li.append(el("strong", m.nombre));
+    if (m.cargo) li.append(el("span", m.cargo, "detalle"));
+    lista.append(li);
+  }
+}
+
+function pintarContacto(emisora) {
+  const datos = document.querySelector("#datos-contacto");
+  const correo = el("a", emisora.contacto);
+  correo.href = "mailto:" + emisora.contacto;
+  const filas = [["Correo", correo], ["Teléfono", emisora.telefono], ["Dirección", emisora.direccion]];
+  for (const [nombre, valor] of filas) {
+    if (!valor) continue;
+    const dd = el("dd");
+    dd.append(valor);
+    datos.append(el("dt", nombre), dd);
+  }
+}
+
+const pide = (u) => fetch(u).then((r) => r.json());
+const hay = (id) => document.querySelector(id);
+
+Promise.all([pide("emisora.json"), hay("#noticias") ? pide("noticias.json") : []])
   .then(([emisora, noticias]) => {
     document.querySelector("#lema").textContent = emisora.lema;
     const correo = document.querySelector("#correo");
@@ -133,11 +171,16 @@ Promise.all(["emisora.json", "noticias.json"].map((u) => fetch(u).then((r) => r.
     }
     pintarParrilla(emisora.parrilla);
     setInterval(() => pintarParrilla(emisora.parrilla), 60000);
-    pintarNoticias(noticias);
-    abrirDesdeHash();
-    addEventListener("hashchange", abrirDesdeHash);
+    if (hay("#equipo")) pintarEquipo(emisora.equipo || []);
+    if (hay("#datos-contacto")) pintarContacto(emisora);
+    if (hay("#noticias")) {
+      pintarNoticias(noticias);
+      abrirDesdeHash();
+      addEventListener("hashchange", abrirDesdeHash);
+    }
   })
   .catch(() => {
-    document.querySelector("#noticias").textContent =
-      "No se pudo cargar el contenido. Si abriste el archivo con doble clic, ábrelo desde la dirección publicada del sitio.";
+    document.querySelector("main").append(
+      el("p", "No se pudo cargar el contenido. Si abriste el archivo con doble clic, ábrelo desde la dirección publicada del sitio."),
+    );
   });

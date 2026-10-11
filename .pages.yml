@@ -50,7 +50,7 @@ content:
         required: true
 
   - name: emisora
-    label: Emisora y programación
+    label: Emisora, programación y equipo
     type: file
     path: emisora.json
     format: json
@@ -60,6 +60,14 @@ content:
         type: string
       - name: contacto
         label: Correo de contacto
+        type: string
+      - name: telefono
+        label: Teléfono o WhatsApp
+        description: Opcional. Aparece en la página de contacto.
+        type: string
+      - name: direccion
+        label: Dirección
+        description: Opcional. Aparece en la página de contacto.
         type: string
       - name: stream
         label: Dirección de la transmisión en línea
@@ -96,3 +104,22 @@ content:
             description: En formato de 24 horas, por ejemplo 10:00.
             type: string
             required: true
+      - name: equipo
+        label: Equipo de trabajo
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nombre} ({cargo})"
+        fields:
+          - name: nombre
+            label: Nombre
+            type: string
+            required: true
+          - name: cargo
+            label: Cargo o función
+            type: string
+          - name: foto
+            label: Fotografía
+            description: Opcional. Si se deja vacía se muestra la inicial del nombre.
+            type: image
