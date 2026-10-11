@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Administración · Liceo Tame Stereo</title>
+  <link rel="icon" href="../logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Jost:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="envoltura">
+      <a class="marca" href="../index.html" aria-label="Liceo Tame Stereo, volver al sitio">
+        <img src="../logo.svg" alt="" width="52" height="52">
+        <p class="nombre">Liceo Tame <span>stereo</span></p>
+      </a>
+      <button id="salir" class="boton" type="button" hidden>Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="envoltura admin">
+    <p id="aviso" role="status"></p>
+
+    <section id="entrada" hidden>
+      <h1>Administración</h1>
+      <form id="form-entrada" class="formulario">
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" autocomplete="username" required>
+        <label for="clave">Contraseña</label>
+        <input id="clave" name="clave" type="password" autocomplete="current-password" required>
+        <button class="boton lleno" type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section id="panel" hidden>
+      <h1 id="titulo-form">Nueva noticia</h1>
+      <p class="bajada">Sesión de <span id="quien"></span>. Los campos con * son obligatorios.</p>
+
+      <form id="form-noticia" class="formulario">
+        <label for="titulo">Título *</label>
+        <input id="titulo" name="titulo" required>
+        <label for="subtitulo">Subtítulo</label>
+        <input id="subtitulo" name="subtitulo">
+        <label for="entradilla">Entradilla</label>
+        <textarea id="entradilla" name="entradilla" rows="2" aria-describedby="ayuda-entradilla"></textarea>
+        <small id="ayuda-entradilla">Uno o dos renglones que resumen la noticia.</small>
+        <label for="foto">Fotografía</label>
+        <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
+        <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la foto actual.</small>
+        <label for="pie_foto">Pie de foto</label>
+        <input id="pie_foto" name="pie_foto">
+        <label for="cuerpo">Cuerpo de la noticia</label>
+        <textarea id="cuerpo" name="cuerpo" rows="10" aria-describedby="ayuda-cuerpo"></textarea>
+        <small id="ayuda-cuerpo">Cada párrafo en una línea aparte.</small>
+        <label for="emisor">Emisor</label>
+        <input id="emisor" name="emisor" aria-describedby="ayuda-emisor">
+        <small id="ayuda-emisor">Quién escribe o reporta la noticia.</small>
+        <label for="origen">Origen</label>
+        <input id="origen" name="origen" aria-describedby="ayuda-origen">
+        <small id="ayuda-origen">Lugar o fuente de la noticia.</small>
+        <label for="fecha">Fecha *</label>
+        <input id="fecha" name="fecha" type="date" required>
+        <div class="acciones">
+          <button id="guardar" class="boton lleno" type="submit">Publicar</button>
+          <button id="cancelar" class="boton" type="button" hidden>Cancelar edición</button>
+        </div>
+      </form>
+
+      <h2 class="mes">Noticias publicadas</h2>
+      <ul id="publicadas"></ul>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

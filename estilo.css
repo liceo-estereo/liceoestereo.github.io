@@ -163,7 +163,7 @@ article h3 a:hover { text-decoration: underline; }
 .entradilla { font-weight: 700; }
 details { display: grid; gap: .9rem; }
 details p { margin-top: .9rem; }
-summary, #mas-noticias {
+summary, #mas-noticias, .boton {
   width: fit-content;
   cursor: pointer;
   font: 500 1rem var(--f-titulos);
@@ -174,7 +174,9 @@ summary, #mas-noticias {
   list-style: none;
 }
 #mas-noticias { margin-top: 2.5rem; padding: .65rem 1.4rem; background: none; }
-#mas-noticias:hover { background: var(--verde); color: var(--crema); }
+#mas-noticias:hover, .boton:hover, .boton.lleno { background: var(--verde); color: var(--crema); }
+.boton { background: none; }
+.boton:disabled { opacity: .5; cursor: wait; }
 summary::-webkit-details-marker { display: none; }
 summary:hover, details[open] summary { background: var(--verde); color: var(--crema); }
 .firma { font-size: .9rem; font-style: italic; color: var(--verde-medio); }
@@ -249,6 +251,46 @@ summary:hover, details[open] summary { background: var(--verde); color: var(--cr
   color: var(--verde-medio);
 }
 #datos-contacto dd { margin: 0 0 .6rem; font-size: 1.15rem; overflow-wrap: anywhere; }
+
+/* Administración (login/) */
+.admin > section { max-width: 40rem; }
+#aviso:empty { display: none; }
+#aviso {
+  max-width: 40rem;
+  margin: 0 0 1.5rem;
+  padding: .7rem 1rem;
+  background: var(--crema-clara);
+  border: 1px solid var(--crema-borde);
+  border-left: 4px solid var(--verde);
+  border-radius: 5px;
+}
+#aviso.error { border-left-color: #a12a1b; }
+.formulario { display: grid; gap: .35rem; margin-bottom: 3rem; }
+.formulario label { margin-top: .9rem; font: 500 1rem var(--f-titulos); color: var(--verde); }
+.formulario input, .formulario textarea {
+  width: 100%;
+  padding: .6rem .75rem;
+  font: inherit;
+  color: var(--tinta);
+  background: var(--crema-clara);
+  border: 1.5px solid var(--crema-borde);
+  border-radius: 5px;
+}
+.formulario input:focus, .formulario textarea:focus { border-color: var(--verde); outline-offset: 1px; }
+.formulario textarea { resize: vertical; }
+.formulario small { color: var(--verde-medio); }
+.formulario .boton { margin-top: 1.25rem; padding: .65rem 1.4rem; }
+.acciones { display: flex; flex-wrap: wrap; gap: .75rem; }
+#publicadas { list-style: none; margin: 1rem 0 0; padding: 0; }
+#publicadas li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid var(--crema-borde);
+}
+#publicadas span { flex: 1 1 14rem; min-width: 0; }
 
 /* Pie */
 .pie { background: var(--verde); color: var(--crema); }
