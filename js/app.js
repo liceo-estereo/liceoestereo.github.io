@@ -126,7 +126,7 @@ function pintarNoticias(noticias) {
     cont.append(el("p", "Todavía no hay noticias publicadas."));
     return;
   }
-  pendientes = noticias.sort((a, b) => b.fecha.localeCompare(a.fecha));
+  pendientes = noticias; // ya llegan ordenadas de la más reciente a la más antigua
   const boton = el("button", "Ver más noticias");
   boton.id = "mas-noticias";
   boton.className = "boton";
@@ -187,12 +187,10 @@ function pintarContacto(emisora) {
 const pide = (u) => fetch(u).then((r) => r.json());
 const hay = (id) => document.querySelector(id);
 
-// Con Supabase conectado (js/config.js) las noticias salen de su base de datos; si no, del archivo local.
+// Las noticias viven en Supabase (js/config.js); la lectura es pública.
 const pideNoticias = () =>
-  SUPABASE_URL
-    ? fetch(`${SUPABASE_URL}/rest/v1/noticias?select=*&order=fecha.desc`, { headers: { apikey: SUPABASE_KEY } })
-        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    : pide("datos/noticias.json");
+  fetch(`${SUPABASE_URL}/rest/v1/noticias?select=*&order=fecha.desc,id.desc`, { headers: { apikey: SUPABASE_KEY } })
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
 
 Promise.all([pide("datos/emisora.json"), hay("#noticias") ? pideNoticias() : []])
   .then(([emisora, noticias]) => {

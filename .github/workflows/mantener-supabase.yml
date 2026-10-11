@@ -1,0 +1,18 @@
+# Supabase pausa los proyectos gratuitos tras una semana sin uso. Esta tarea hace
+# una consulta dos veces por semana para que el sitio no se quede sin noticias en vacaciones.
+# ponytail: GitHub desactiva las tareas programadas si el repositorio pasa 60 días sin
+# cambios; si eso ocurre, se reactiva desde la pestaña Actions.
+name: Mantener Supabase activo
+on:
+  schedule:
+    - cron: "17 13 * * 1,4"
+  workflow_dispatch:
+jobs:
+  consulta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          URL=$(sed -n 's/^const SUPABASE_URL = "\(.*\)";/\1/p' js/config.js)
+          KEY=$(sed -n 's/^const SUPABASE_KEY = "\(.*\)";/\1/p' js/config.js)
+          curl -fsS "$URL/rest/v1/noticias?select=id&limit=1" -H "apikey: $KEY"

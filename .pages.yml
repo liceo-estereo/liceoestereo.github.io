@@ -1,5 +1,6 @@
 # Configuración de Pages CMS (https://app.pagescms.org): define los formularios
-# con los que se publican noticias y se edita la programación sin programar.
+# con los que se editan la programación, el equipo y el contacto sin programar.
+# Las noticias se publican desde /login/ (Supabase).
 
 media:
   input: fotos
@@ -8,47 +9,6 @@ media:
   categories: [image]
 
 content:
-  - name: noticias
-    label: Noticias
-    type: file
-    path: datos/noticias.json
-    format: json
-    list: true
-    fields:
-      - name: titulo
-        label: Título
-        type: string
-        required: true
-      - name: subtitulo
-        label: Subtítulo
-        type: string
-      - name: entradilla
-        label: Entradilla
-        description: Uno o dos renglones que resumen la noticia.
-        type: text
-      - name: foto
-        label: Fotografía
-        type: image
-      - name: pie_foto
-        label: Pie de foto
-        type: string
-      - name: cuerpo
-        label: Cuerpo de la noticia
-        description: Deja una línea en blanco entre párrafos.
-        type: text
-      - name: emisor
-        label: Emisor
-        description: Quién escribe o reporta la noticia.
-        type: string
-      - name: origen
-        label: Origen
-        description: Lugar o fuente de la noticia.
-        type: string
-      - name: fecha
-        label: Fecha
-        type: date
-        required: true
-
   - name: emisora
     label: Emisora, programación y equipo
     type: file

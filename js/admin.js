@@ -1,6 +1,6 @@
 const $ = (s) => document.querySelector(s);
 const CAMPOS = ["titulo", "subtitulo", "entradilla", "pie_foto", "cuerpo", "emisor", "origen", "fecha"];
-const sb = SUPABASE_URL ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let editando = null; // id de la noticia que se está editando, o null si es nueva
 
 function aviso(texto, esError) {
@@ -130,5 +130,4 @@ $("#form-noticia").onsubmit = async (e) => {
   $("#guardar").disabled = false;
 };
 
-if (sb) mostrar();
-else aviso("Falta conectar Supabase: completa js/config.js con la dirección y la clave pública del proyecto.", true);
+mostrar();
