@@ -65,55 +65,84 @@ function pintarParrilla(parrilla) {
       : "Fuera del aire por hoy";
 }
 
-// ponytail: todas las noticias en una sola página; paginar o archivar por año cuando pasen de ~50.
+const POR_TANDA = 10;
+let pendientes = [];
+let ultimoMes = "";
+
+// T12:00 evita que la zona horaria corra la fecha un día atrás.
+const fechaDe = (n) => new Date(n.fecha.slice(0, 10) + "T12:00");
+
+function armarNoticia(n) {
+  const art = el("article");
+  art.id = slug(n);
+  if (n.foto) {
+    const figura = el("figure");
+    const img = el("img");
+    img.src = n.foto.replace(/^\//, "");
+    img.alt = n.pie_foto || "";
+    img.loading = "lazy";
+    figura.append(img);
+    if (n.pie_foto) figura.append(el("figcaption", n.pie_foto));
+    art.append(figura);
+  }
+  const fecha = el("time", fechaDe(n).toLocaleDateString("es-CO", { dateStyle: "long" }));
+  fecha.dateTime = n.fecha.slice(0, 10);
+  const meta = el("p", n.origen ? n.origen + " · " : "", "meta");
+  meta.append(fecha);
+  const titulo = el("h3");
+  const enlace = el("a", n.titulo);
+  enlace.href = "#" + art.id;
+  titulo.append(enlace);
+  art.append(meta, titulo);
+  if (n.subtitulo) art.append(el("p", n.subtitulo, "subtitulo"));
+  if (n.entradilla) art.append(el("p", n.entradilla, "entradilla"));
+  if (n.cuerpo) {
+    const mas = el("details");
+    mas.append(el("summary", "Leer la noticia completa"));
+    for (const parrafo of n.cuerpo.split(/\n+/)) {
+      if (parrafo.trim()) mas.append(el("p", parrafo));
+    }
+    art.append(mas);
+  }
+  if (n.emisor) art.append(el("footer", "Por " + n.emisor, "firma"));
+  return art;
+}
+
+// Agrega la siguiente tanda de noticias, con un título cada vez que cambia el mes.
+function pintarMas() {
+  const cont = document.querySelector("#noticias");
+  for (const n of pendientes.splice(0, POR_TANDA)) {
+    const mes = fechaDe(n).toLocaleDateString("es-CO", { month: "long", year: "numeric" });
+    if (mes !== ultimoMes) cont.append(el("h2", mes, "mes"));
+    ultimoMes = mes;
+    cont.append(armarNoticia(n));
+  }
+  document.querySelector("#mas-noticias").hidden = !pendientes.length;
+}
+
 function pintarNoticias(noticias) {
   const cont = document.querySelector("#noticias");
   if (!noticias.length) {
     cont.append(el("p", "Todavía no hay noticias publicadas."));
     return;
   }
-  noticias.sort((a, b) => b.fecha.localeCompare(a.fecha));
-  for (const n of noticias) {
-    const art = el("article");
-    art.id = slug(n);
-    if (n.foto) {
-      const figura = el("figure");
-      const img = el("img");
-      img.src = n.foto.replace(/^\//, "");
-      img.alt = n.pie_foto || "";
-      img.loading = "lazy";
-      figura.append(img);
-      if (n.pie_foto) figura.append(el("figcaption", n.pie_foto));
-      art.append(figura);
-    }
-    // T12:00 evita que la zona horaria corra la fecha un día atrás.
-    const dia = n.fecha.slice(0, 10);
-    const fecha = el("time", new Date(dia + "T12:00").toLocaleDateString("es-CO", { dateStyle: "long" }));
-    fecha.dateTime = dia;
-    const meta = el("p", n.origen ? n.origen + " · " : "", "meta");
-    meta.append(fecha);
-    const titulo = el("h2");
-    const enlace = el("a", n.titulo);
-    enlace.href = "#" + art.id;
-    titulo.append(enlace);
-    art.append(meta, titulo);
-    if (n.subtitulo) art.append(el("p", n.subtitulo, "subtitulo"));
-    if (n.entradilla) art.append(el("p", n.entradilla, "entradilla"));
-    if (n.cuerpo) {
-      const mas = el("details");
-      mas.append(el("summary", "Leer la noticia completa"));
-      for (const parrafo of n.cuerpo.split(/\n+/)) {
-        if (parrafo.trim()) mas.append(el("p", parrafo));
-      }
-      art.append(mas);
-    }
-    if (n.emisor) art.append(el("footer", "Por " + n.emisor, "firma"));
-    cont.append(art);
-  }
+  pendientes = noticias.sort((a, b) => b.fecha.localeCompare(a.fecha));
+  const boton = el("button", "Ver más noticias");
+  boton.id = "mas-noticias";
+  boton.type = "button";
+  boton.onclick = pintarMas;
+  cont.after(boton);
+  pintarMas();
 }
 
 function abrirDesdeHash() {
-  const art = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  // El enlace puede apuntar a una noticia antigua que aún no se ha cargado.
+  if (pendientes.some((n) => slug(n) === id)) {
+    while (!document.getElementById(id)) pintarMas();
+  }
+  const art = document.getElementById(id);
   if (!art || !art.matches("article")) return;
   const mas = art.querySelector("details");
   if (mas) mas.open = true;
