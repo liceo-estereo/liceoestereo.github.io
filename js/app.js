@@ -9,7 +9,7 @@ function alAire(p, dia, hora) {
 
 // Identificador de la noticia para poder compartir su enlace (#2026-10-05-titulo).
 function slug(n) {
-  const titulo = n.titulo.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const titulo = n.titulo.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
   return n.fecha.slice(0, 10) + "-" + titulo.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
@@ -129,6 +129,7 @@ function pintarNoticias(noticias) {
   pendientes = noticias.sort((a, b) => b.fecha.localeCompare(a.fecha));
   const boton = el("button", "Ver más noticias");
   boton.id = "mas-noticias";
+  boton.className = "boton";
   boton.type = "button";
   boton.onclick = pintarMas;
   cont.after(boton);

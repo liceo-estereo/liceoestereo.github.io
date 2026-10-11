@@ -1,6 +1,6 @@
-/* Disposición: marca a la izquierda, franja verde que dice qué está al aire,
-   noticias en la columna ancha y programación fija al lado. En celular todo
-   se apila en una sola columna. */
+/* Disposición: cabecera con la marca y el menú, franja verde que dice qué está
+   al aire, una columna de contenido por página y pie verde. Una sola hoja de
+   estilos para el sitio público y el panel de login/. */
 :root {
   --crema: #F4F1E6;
   --crema-clara: #FBFAF5;
@@ -161,9 +161,8 @@ article h3 a { text-decoration: none; }
 article h3 a:hover { text-decoration: underline; }
 .subtitulo { font-size: 1.15rem; line-height: 1.4; color: var(--verde-medio); }
 .entradilla { font-weight: 700; }
-details { display: grid; gap: .9rem; }
 details p { margin-top: .9rem; }
-summary, #mas-noticias, .boton {
+summary, .boton {
   width: fit-content;
   cursor: pointer;
   font: 500 1rem var(--f-titulos);
@@ -173,12 +172,11 @@ summary, #mas-noticias, .boton {
   border-radius: 5px;
   list-style: none;
 }
-#mas-noticias { margin-top: 2.5rem; padding: .65rem 1.4rem; background: none; }
-#mas-noticias:hover, .boton:hover, .boton.lleno { background: var(--verde); color: var(--crema); }
 .boton { background: none; }
 .boton:disabled { opacity: .5; cursor: wait; }
 summary::-webkit-details-marker { display: none; }
-summary:hover, details[open] summary { background: var(--verde); color: var(--crema); }
+summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: var(--verde); color: var(--crema); }
+#mas-noticias { margin-top: 2.5rem; padding: .65rem 1.4rem; }
 .firma { font-size: .9rem; font-style: italic; color: var(--verde-medio); }
 
 /* Programación */
@@ -321,10 +319,6 @@ summary:hover, details[open] summary { background: var(--verde); color: var(--cr
 #lema { margin-top: .9rem; }
 .pie .creditos {
   grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: .4rem 2rem;
   max-width: none;
   padding-top: 1.25rem;
   border-top: 1px solid color-mix(in srgb, var(--crema) 30%, transparent);

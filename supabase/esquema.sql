@@ -39,5 +39,8 @@ values ('fotos', 'fotos', true, 5242880, array['image/jpeg', 'image/png', 'image
 
 create policy "editores suben fotos" on storage.objects for insert to authenticated
   with check (bucket_id = 'fotos' and es_editor());
+-- Para borrar una foto la base de datos primero tiene que poder encontrarla.
+create policy "editores ven fotos" on storage.objects for select to authenticated
+  using (bucket_id = 'fotos' and es_editor());
 create policy "editores borran fotos" on storage.objects for delete to authenticated
   using (bucket_id = 'fotos' and es_editor());
