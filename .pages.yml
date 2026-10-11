@@ -33,39 +33,8 @@ content:
         label: Dirección de la transmisión en línea
         description: Déjalo vacío si la emisora solo suena por los altavoces.
         type: string
-      - name: parrilla
-        label: Programación
-        type: object
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{programa} ({inicio})"
-        fields:
-          - name: programa
-            label: Programa
-            type: string
-            required: true
-          - name: a_cargo
-            label: A cargo de
-            type: string
-          - name: dias
-            label: Días
-            type: select
-            options:
-              multiple: true
-              values: [lunes, martes, miércoles, jueves, viernes, sábado, domingo]
-          - name: inicio
-            label: Hora de inicio
-            description: En formato de 24 horas, por ejemplo 09:30.
-            type: string
-            required: true
-          - name: fin
-            label: Hora de fin
-            description: En formato de 24 horas, por ejemplo 10:00.
-            type: string
-            required: true
-      - name: equipo
-        label: Equipo de trabajo
+      - name: junta
+        label: Junta directiva
         type: object
         list:
           collapsible:
@@ -77,9 +46,64 @@ content:
             type: string
             required: true
           - name: cargo
-            label: Cargo o función
+            label: Cargo
             type: string
           - name: foto
             label: Fotografía
             description: Opcional. Si se deja vacía se muestra la inicial del nombre.
             type: image
+      - name: miembros
+        label: Miembros
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nombre}"
+        fields:
+          - name: nombre
+            label: Nombre
+            type: string
+            required: true
+          - name: cargo
+            label: Cargo
+            type: string
+            default: Miembro
+      - name: parrilla
+        label: Programación
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{dia} {inicio} · {programa}"
+        fields:
+          - name: dia
+            label: Día
+            type: select
+            required: true
+            options:
+              values: [lunes, martes, miércoles, jueves, viernes, sábado, domingo]
+          - name: inicio
+            label: Hora de inicio
+            description: En formato de 24 horas, por ejemplo 09:30.
+            type: string
+            required: true
+          - name: fin
+            label: Hora de fin
+            description: En formato de 24 horas, por ejemplo 10:00.
+            type: string
+            required: true
+          - name: programa
+            label: Programa o bloque
+            type: string
+            required: true
+          - name: a_cargo
+            label: A cargo de
+            type: string
+          - name: enfoque
+            label: Enfoque o temática del día
+            type: text
+          - name: estado
+            label: Estado
+            type: select
+            options:
+              values: [En Vivo, Descanso, Automatizado, Podcast]

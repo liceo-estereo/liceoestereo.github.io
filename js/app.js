@@ -4,7 +4,14 @@ const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "
 const hhmm = (s) => s.trim().padStart(5, "0");
 
 function alAire(p, dia, hora) {
-  return p.dias.includes(dia) && hhmm(p.inicio) <= hora && hora < hhmm(p.fin);
+  return p.dia === dia && hhmm(p.inicio) <= hora && hora < hhmm(p.fin);
+}
+
+// Código que identifica cada mensaje del formulario de contacto: LT-AAMMDD-XXXX.
+function nuevoTicket() {
+  const fecha = new Date().toISOString().slice(2, 10).replaceAll("-", "");
+  const azar = Math.random().toString(36).slice(2, 6).toUpperCase().padEnd(4, "0");
+  return `LT-${fecha}-${azar}`;
 }
 
 // Identificador de la noticia para poder compartir su enlace (#2026-10-05-titulo).
@@ -13,11 +20,12 @@ function slug(n) {
   return n.fecha.slice(0, 10) + "-" + titulo.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-const prueba = { dias: ["lunes"], inicio: "9:30", fin: "10:00" };
+const prueba = { dia: "lunes", inicio: "9:30", fin: "10:00" };
 console.assert(alAire(prueba, "lunes", "09:45"));
 console.assert(!alAire(prueba, "lunes", "10:00"));
 console.assert(!alAire(prueba, "martes", "09:45"));
 console.assert(slug({ fecha: "2026-10-05", titulo: "¡Nace la emisión!" }) === "2026-10-05-nace-la-emision");
+console.assert(/^LT-\d{6}-[A-Z0-9]{4}$/.test(nuevoTicket()));
 
 function el(tag, texto, clase) {
   const e = document.createElement(tag);
@@ -26,35 +34,48 @@ function el(tag, texto, clase) {
   return e;
 }
 
-function textoDias(dias) {
-  const semana = DIAS.slice(1, 6);
-  if (dias.length === 5 && semana.every((d) => dias.includes(d))) return "Lunes a viernes";
-  return dias.map((d) => d.slice(0, 3)).join(" · ");
+const filas = new Map(); // programa -> su fila en la página de programación
+
+// Arma la programación una sola vez: un bloque plegable por día, con el de hoy abierto.
+function pintarParrilla(parrilla) {
+  const cont = document.querySelector("#parrilla");
+  const hoy = DIAS[new Date().getDay()];
+  for (const dia of [...DIAS.slice(1), DIAS[0]]) {
+    const delDia = parrilla.filter((p) => p.dia === dia);
+    if (!delDia.length) continue;
+    const bloque = el("details");
+    bloque.name = "dia"; // con el mismo nombre, al abrir un día se cierra el anterior
+    bloque.open = dia === hoy;
+    const titulo = el("summary", dia, "dia");
+    if (dia === hoy) titulo.append(el("span", "Hoy", "etiqueta"));
+    const lista = el("ul");
+    for (const p of delDia) {
+      const li = el("li");
+      const texto = el("div");
+      texto.append(el("strong", p.programa));
+      if (p.enfoque) texto.append(el("span", p.enfoque, "detalle"));
+      if (p.a_cargo) texto.append(el("span", "A cargo de " + p.a_cargo, "detalle"));
+      li.append(el("time", `${hhmm(p.inicio)} – ${hhmm(p.fin)}`, "hora"), texto);
+      if (p.estado) li.append(el("span", p.estado, p.estado === "En Vivo" ? "etiqueta vivo" : "etiqueta"));
+      filas.set(p, li);
+      lista.append(li);
+    }
+    bloque.append(titulo, lista);
+    cont.append(bloque);
+  }
 }
 
-function pintarParrilla(parrilla) {
+// Se repite cada minuto: actualiza la franja de estado y resalta el programa que suena.
+function marcarAlAire(parrilla) {
   const ahora = new Date();
   const dia = DIAS[ahora.getDay()];
   const hora = ahora.toTimeString().slice(0, 5);
-  // La lista solo existe en la página de programación; la franja de estado, en todas.
-  const lista = document.querySelector("#parrilla");
-  lista?.replaceChildren();
   let sonando, proximo;
-  const orden = [...parrilla].sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio)));
-  for (const p of orden) {
-    const li = el("li");
-    if (alAire(p, dia, hora)) {
-      li.className = "al-aire";
-      sonando = p;
-    } else if (!proximo && p.dias.includes(dia) && hhmm(p.inicio) > hora) {
-      proximo = p;
-    }
-    li.append(
-      el("time", `${hhmm(p.inicio)} – ${hhmm(p.fin)}`, "hora"),
-      el("strong", p.programa),
-      el("span", [textoDias(p.dias), p.a_cargo].filter(Boolean).join(" · "), "detalle"),
-    );
-    lista?.append(li);
+  for (const p of parrilla) {
+    const suena = alAire(p, dia, hora);
+    filas.get(p)?.classList.toggle("al-aire", suena);
+    if (suena) sonando = p;
+    else if (!proximo && p.dia === dia && hhmm(p.inicio) > hora) proximo = p;
   }
   const estado = document.querySelector("#estado");
   estado.classList.toggle("encendido", Boolean(sonando));
@@ -113,7 +134,7 @@ function pintarMas() {
   const cont = document.querySelector("#noticias");
   for (const n of pendientes.splice(0, POR_TANDA)) {
     const mes = fechaDe(n).toLocaleDateString("es-CO", { month: "long", year: "numeric" });
-    if (mes !== ultimoMes) cont.append(el("h2", mes, "mes"));
+    if (mes !== ultimoMes) cont.append(el("h2", mes, "rotulo"));
     ultimoMes = mes;
     cont.append(armarNoticia(n));
   }
@@ -150,17 +171,17 @@ function abrirDesdeHash() {
   art.scrollIntoView();
 }
 
-function pintarEquipo(equipo) {
-  const lista = document.querySelector("#equipo");
-  for (const m of equipo) {
+// La junta lleva foto (o la inicial si no hay); los miembros, solo nombre y cargo.
+function pintarEquipo(personas, lista, conFoto) {
+  for (const m of personas) {
     const li = el("li");
-    if (m.foto) {
+    if (conFoto && m.foto) {
       const img = el("img");
       img.src = m.foto.replace(/^\//, "");
       img.alt = "";
       img.loading = "lazy";
       li.append(img);
-    } else {
+    } else if (conFoto) {
       const inicial = el("span", m.nombre.trim()[0], "inicial");
       inicial.ariaHidden = "true";
       li.append(inicial);
@@ -184,6 +205,47 @@ function pintarContacto(emisora) {
   }
 }
 
+// El formulario envía el mensaje al correo de la emisora a través de FormSubmit
+// (formsubmit.co). El número de ticket va en el asunto para poder seguir cada caso.
+function prepararFormulario(destino) {
+  const form = document.querySelector("#form-contacto");
+  const aviso = document.querySelector("#aviso");
+  const boton = form.querySelector("button");
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const ticket = nuevoTicket();
+    const mensaje = {
+      _subject: `[${ticket}] ${d.get("tipo")} · ${d.get("nombre")}`,
+      _template: "table",
+      _honey: d.get("_honey"), // campo trampa: las personas no lo ven, los robots lo llenan
+      Ticket: ticket,
+      Tipo: d.get("tipo"),
+      Nombre: d.get("nombre"),
+      Mensaje: d.get("mensaje"),
+    };
+    if (d.get("correo")) mensaje.email = d.get("correo");
+    boton.disabled = true;
+    aviso.className = "";
+    aviso.textContent = "Enviando…";
+    try {
+      const r = await fetch("https://formsubmit.co/ajax/" + destino, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(mensaje),
+      });
+      const respuesta = await r.json();
+      if (!r.ok || String(respuesta.success) !== "true") throw new Error(respuesta.message);
+      form.reset();
+      aviso.textContent = `Mensaje enviado. Tu número de ticket es ${ticket}.`;
+    } catch {
+      aviso.className = "error";
+      aviso.textContent = `No se pudo enviar el mensaje. Inténtalo de nuevo o escríbenos a ${destino}.`;
+    }
+    boton.disabled = false;
+  };
+}
+
 const pide = (u) => fetch(u).then((r) => r.json());
 const hay = (id) => document.querySelector(id);
 
@@ -204,10 +266,18 @@ Promise.all([pide("datos/emisora.json"), hay("#noticias") ? pideNoticias() : []]
       audio.src = emisora.stream;
       document.querySelector("#estado").append(audio);
     }
-    pintarParrilla(emisora.parrilla);
-    setInterval(() => pintarParrilla(emisora.parrilla), 60000);
-    if (hay("#equipo")) pintarEquipo(emisora.equipo || []);
-    if (hay("#datos-contacto")) pintarContacto(emisora);
+    const parrilla = [...emisora.parrilla].sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio)));
+    if (hay("#parrilla")) pintarParrilla(parrilla);
+    marcarAlAire(parrilla);
+    setInterval(() => marcarAlAire(parrilla), 60000);
+    if (hay("#junta")) {
+      pintarEquipo(emisora.junta || [], hay("#junta"), true);
+      pintarEquipo(emisora.miembros || [], hay("#miembros"), false);
+    }
+    if (hay("#datos-contacto")) {
+      pintarContacto(emisora);
+      prepararFormulario(emisora.contacto);
+    }
     if (hay("#noticias")) {
       pintarNoticias(noticias);
       abrirDesdeHash();

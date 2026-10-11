@@ -1,73 +1,735 @@
 {
   "lema": "La voz de nuestros estudiantes",
-  "contacto": "emisora@ejemplo.edu.co",
+  "contacto": "emisoraliceoestereo@gmail.com",
   "telefono": "",
   "direccion": "",
   "stream": "",
-  "parrilla": [
+  "junta": [
     {
-      "programa": "Buenos días Liceo",
-      "a_cargo": "Grado 11",
-      "dias": [
-        "lunes",
-        "martes",
-        "miércoles",
-        "jueves",
-        "viernes"
-      ],
-      "inicio": "06:45",
-      "fin": "07:00"
+      "nombre": "Tomas Torres",
+      "cargo": "Presidente",
+      "foto": ""
     },
     {
-      "programa": "Recreo musical",
-      "a_cargo": "Grado 10",
-      "dias": [
-        "lunes",
-        "martes",
-        "miércoles",
-        "jueves",
-        "viernes"
-      ],
-      "inicio": "09:30",
-      "fin": "10:00"
+      "nombre": "Sneider Leva",
+      "cargo": "Vicepresidente",
+      "foto": ""
     },
     {
-      "programa": "Saludos y complacencias",
-      "a_cargo": "Grado 9",
-      "dias": [
-        "lunes",
-        "miércoles",
-        "viernes"
-      ],
-      "inicio": "12:00",
-      "fin": "12:30"
+      "nombre": "Jonatan Novoa",
+      "cargo": "Secretario",
+      "foto": ""
     },
     {
-      "programa": "Noticiero escolar",
-      "a_cargo": "Club de periodismo",
-      "dias": [
-        "martes",
-        "jueves"
-      ],
-      "inicio": "12:00",
-      "fin": "12:30"
+      "nombre": "Juan Lizcano",
+      "cargo": "Tesorero",
+      "foto": ""
     }
   ],
-  "equipo": [
+  "miembros": [
     {
-      "nombre": "Nombre de ejemplo",
-      "cargo": "Dirección de la emisora",
-      "foto": ""
+      "nombre": "Brayan Barrera",
+      "cargo": "Miembro"
     },
     {
-      "nombre": "Nombre de ejemplo",
-      "cargo": "Locución",
-      "foto": ""
+      "nombre": "Andrés Romero",
+      "cargo": "Miembro"
     },
     {
-      "nombre": "Nombre de ejemplo",
-      "cargo": "Producción y sonido",
-      "foto": ""
+      "nombre": "Angely Montaña",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Samuel Montealegre",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Isabela Gutiérrez",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Gabriel Nuñez",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Camilo Leal",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Sofia Bello",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Antonella Laya",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Lilian Mujica",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Prada",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Kevin Piedrahita",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Yeiner Lara",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Laura Herrera",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Santiago Romero",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Marbelis Cira",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Karen Mujica",
+      "cargo": "Miembro"
+    },
+    {
+      "nombre": "Giovanni Perez",
+      "cargo": "Miembro"
+    }
+  ],
+  "parrilla": [
+    {
+      "dia": "lunes",
+      "inicio": "06:20",
+      "fin": "06:30",
+      "programa": "Despertar Escolar",
+      "a_cargo": "Eider Ruiz",
+      "enfoque": "Bienvenida a la semana, oración para la semana enérgica, clima y motivación.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "07:00",
+      "fin": "08:00",
+      "programa": "El Timbre Cultural",
+      "a_cargo": "",
+      "enfoque": "Noticias del colegio, valores institucionales y efemérides semanales.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "08:00",
+      "fin": "09:15",
+      "programa": "Musica (llanera)",
+      "a_cargo": "",
+      "enfoque": "Reproducción de música genero llanera",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "09:15",
+      "fin": "09:45",
+      "programa": "¡Descanso Mañana!",
+      "a_cargo": "",
+      "enfoque": "Éxitos del momento y avisos de la comunidad escolar.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "09:45",
+      "fin": "11:00",
+      "programa": "Musica salsa",
+      "a_cargo": "",
+      "enfoque": "Reproducción de música genero salsa",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "programa": "El Gran Melómano",
+      "a_cargo": "",
+      "enfoque": "Especial Pop & Música Urbana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "12:30",
+      "fin": "14:00",
+      "programa": "Continuo Musical",
+      "a_cargo": "",
+      "enfoque": "Lista de reproducción instrumental / Pop variado sin locución.",
+      "estado": "Automatizado"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "14:00",
+      "fin": "15:00",
+      "programa": "Conexión Tarde",
+      "a_cargo": "",
+      "enfoque": "Canciones solicitadas y saludos de inicio de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "15:00",
+      "fin": "16:00",
+      "programa": "Deportes y Arte",
+      "a_cargo": "",
+      "enfoque": "Resumen deportivo del fin de semana escolar.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "16:00",
+      "fin": "16:20",
+      "programa": "¡Descanso Tarde!",
+      "a_cargo": "",
+      "enfoque": "Música alegre y peticiones exprés.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "16:20",
+      "fin": "17:30",
+      "programa": "El Megáfono",
+      "a_cargo": "",
+      "enfoque": "Debate escolar: Consejo estudiantil y personería.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "lunes",
+      "inicio": "17:30",
+      "fin": "18:00",
+      "programa": "Cierre de Jornada",
+      "a_cargo": "",
+      "enfoque": "Reflexión del día, música suave y despedida.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "06:00",
+      "fin": "07:00",
+      "programa": "Despertar Escolar",
+      "a_cargo": "",
+      "enfoque": "Clásicos mañaneros, noticias positivas y frase del día.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "07:00",
+      "fin": "08:00",
+      "programa": "El Timbre Cultural",
+      "a_cargo": "",
+      "enfoque": "Historia, geografía e hitos culturales.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "08:00",
+      "fin": "09:15",
+      "programa": "Zona Estudiantil",
+      "a_cargo": "",
+      "enfoque": "Cuidado del medio ambiente, reciclaje y proyectos ecológicos.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "09:15",
+      "fin": "09:45",
+      "programa": "¡Descanso Mañana!",
+      "a_cargo": "",
+      "enfoque": "Música bailable y avisos de talleres extracurriculares.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "martes",
+      "inicio": "09:45",
+      "fin": "11:00",
+      "programa": "Ruta del Saber",
+      "a_cargo": "",
+      "enfoque": "Idiomas y cultura internacional (cápsulas en inglés/francés).",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "programa": "El Gran Melómano",
+      "a_cargo": "",
+      "enfoque": "Especial Rock en Español & Clásicos.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "12:30",
+      "fin": "14:00",
+      "programa": "Continuo Musical",
+      "a_cargo": "",
+      "enfoque": "Lista de reproducción de Rock Suave y Acústico sin locución.",
+      "estado": "Automatizado"
+    },
+    {
+      "dia": "martes",
+      "inicio": "14:00",
+      "fin": "15:00",
+      "programa": "Conexión Tarde",
+      "a_cargo": "",
+      "enfoque": "Tendencias en redes sociales y cultura digital.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "15:00",
+      "fin": "16:00",
+      "programa": "Deportes y Arte",
+      "a_cargo": "",
+      "enfoque": "Artes plásticas, pintura, teatro y expresiones locales.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "16:00",
+      "fin": "16:20",
+      "programa": "¡Descanso Tarde!",
+      "a_cargo": "",
+      "enfoque": "Peticiones musicales del alumnado.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "martes",
+      "inicio": "16:20",
+      "fin": "17:30",
+      "programa": "El Megáfono",
+      "a_cargo": "",
+      "enfoque": "Convivencia escolar, prevención del bullying y empatía.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "martes",
+      "inicio": "17:30",
+      "fin": "18:00",
+      "programa": "Cierre de Jornada",
+      "a_cargo": "",
+      "enfoque": "Música relajante y agenda del miércoles.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "06:20",
+      "fin": "06:30",
+      "programa": "Despertar Escolar",
+      "a_cargo": "Elizabeth",
+      "enfoque": "Mitad de semana con energía, vallenato/tropical y datos curiosos.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "06:30",
+      "fin": "08:00",
+      "programa": "El Timbre Cultural",
+      "a_cargo": "",
+      "enfoque": "Entrevistas a docentes destacados y perfiles del personal escolar.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "08:00",
+      "fin": "09:15",
+      "programa": "Zona Estudiantil",
+      "a_cargo": "",
+      "enfoque": "Salud mental, bienestar emocional y hábitos saludables.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "09:15",
+      "fin": "09:45",
+      "programa": "¡Descanso Mañana!",
+      "a_cargo": "",
+      "enfoque": "Música Latina y anuncios de eventos estudiantiles.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "09:45",
+      "fin": "11:00",
+      "programa": "Ruta del Saber",
+      "a_cargo": "",
+      "enfoque": "Matemáticas divertidas, lógica y acertijos juveniles.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "programa": "El Gran Melómano",
+      "a_cargo": "",
+      "enfoque": "Especial Ritmos Latinos & Salsa/Ska.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "12:30",
+      "fin": "14:00",
+      "programa": "Continuo Musical",
+      "a_cargo": "",
+      "enfoque": "Lista de reproducción Tropipop y Música Latina.",
+      "estado": "Automatizado"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "14:00",
+      "fin": "15:00",
+      "programa": "Conexión Tarde",
+      "a_cargo": "",
+      "enfoque": "Club de lectura y recomendaciones de películas.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "15:00",
+      "fin": "16:00",
+      "programa": "Deportes y Arte",
+      "a_cargo": "",
+      "enfoque": "Entrevistas a equipos deportivos del colegio.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "16:00",
+      "fin": "16:20",
+      "programa": "¡Descanso Tarde!",
+      "a_cargo": "",
+      "enfoque": "Ritmos animados y saludos al aire.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "16:20",
+      "fin": "17:30",
+      "programa": "El Megáfono",
+      "a_cargo": "",
+      "enfoque": "Foro abierto: Ideas y proyectos presentados por estudiantes.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "miércoles",
+      "inicio": "17:30",
+      "fin": "18:00",
+      "programa": "Cierre de Jornada",
+      "a_cargo": "",
+      "enfoque": "Música chill y despedida del ombligo de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "06:00",
+      "fin": "07:00",
+      "programa": "Despertar Escolar",
+      "a_cargo": "",
+      "enfoque": "Música retro (80s y 90s) para despertar con nostalgia y ritmo.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "07:00",
+      "fin": "08:00",
+      "programa": "El Timbre Cultural",
+      "a_cargo": "",
+      "enfoque": "Tradiciones locales, folklore y costumbres regionales.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "08:00",
+      "fin": "09:15",
+      "programa": "Zona Estudiantil",
+      "a_cargo": "",
+      "enfoque": "Orientación vocacional, carreras universitarias y emprendimiento.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "09:15",
+      "fin": "09:45",
+      "programa": "¡Descanso Mañana!",
+      "a_cargo": "",
+      "enfoque": "Éxitos anglo/pop y anuncios institucionales.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "09:45",
+      "fin": "11:00",
+      "programa": "Ruta del Saber",
+      "a_cargo": "",
+      "enfoque": "Experimentos científicos interactivos y curiosidades del universo.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "programa": "El Gran Melómano",
+      "a_cargo": "",
+      "enfoque": "Especial Indie, Alternativo & Electro-pop.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "12:30",
+      "fin": "14:00",
+      "programa": "Continuo Musical",
+      "a_cargo": "",
+      "enfoque": "Lista de reproducción Chillout / Lo-Fi Beats.",
+      "estado": "Automatizado"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "14:00",
+      "fin": "15:00",
+      "programa": "Conexión Tarde",
+      "a_cargo": "",
+      "enfoque": "Especial de música retro y curiosidades de bandas históricas.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "15:00",
+      "fin": "16:00",
+      "programa": "Deportes y Arte",
+      "a_cargo": "",
+      "enfoque": "Música y danza: géneros del mundo.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "16:00",
+      "fin": "16:20",
+      "programa": "¡Descanso Tarde!",
+      "a_cargo": "",
+      "enfoque": "Peticiones musicales e interacciones.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "16:20",
+      "fin": "17:30",
+      "programa": "El Megáfono",
+      "a_cargo": "",
+      "enfoque": "Talleres de liderazgo, oratoria y habilidades blandas.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "jueves",
+      "inicio": "17:30",
+      "fin": "18:00",
+      "programa": "Cierre de Jornada",
+      "a_cargo": "",
+      "enfoque": "Resumen del día y música acústica.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "06:20",
+      "fin": "06:30",
+      "programa": "Despertar Escolar",
+      "a_cargo": "",
+      "enfoque": "Edición viernes: Actitud de fin de semana y súper éxitos.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "06:30",
+      "fin": "08:00",
+      "programa": "El Timbre Cultural",
+      "a_cargo": "",
+      "enfoque": "Resumen de la semana escolar y agenda de fin de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "08:00",
+      "fin": "09:15",
+      "programa": "Zona Estudiantil",
+      "a_cargo": "",
+      "enfoque": "Talentos del colegio: música, canto, poesía en vivo.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "09:15",
+      "fin": "09:45",
+      "programa": "¡Descanso Mañana!",
+      "a_cargo": "",
+      "enfoque": "Fiesta de recreo: los temas más votados de la semana.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "09:45",
+      "fin": "11:00",
+      "programa": "Ruta del Saber",
+      "a_cargo": "",
+      "enfoque": "Cine, series y análisis de cultura pop.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "programa": "El Gran Melómano",
+      "a_cargo": "",
+      "enfoque": "Top 10: Las canciones más pedidas de la semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "12:30",
+      "fin": "14:00",
+      "programa": "Continuo Musical",
+      "a_cargo": "",
+      "enfoque": "Lista de reproducción bailable / urbana para cerrar semana.",
+      "estado": "Automatizado"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "14:00",
+      "fin": "15:00",
+      "programa": "Conexión Tarde",
+      "a_cargo": "",
+      "enfoque": "Micrófono abierto para dedicatorias de fin de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "15:00",
+      "fin": "16:00",
+      "programa": "Deportes y Arte",
+      "a_cargo": "",
+      "enfoque": "Previa de partidos y torneos del fin de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "16:00",
+      "fin": "16:20",
+      "programa": "¡Descanso Tarde!",
+      "a_cargo": "",
+      "enfoque": "Celebración de fin de semana escolar y música bailable.",
+      "estado": "Descanso"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "16:20",
+      "fin": "17:30",
+      "programa": "El Megáfono",
+      "a_cargo": "",
+      "enfoque": "Especial de cierre: logros estudiantiles de la semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "viernes",
+      "inicio": "17:30",
+      "fin": "18:00",
+      "programa": "Cierre de Jornada",
+      "a_cargo": "",
+      "enfoque": "Despedida del viernes y recomendación de podcasts del fin de semana.",
+      "estado": "En Vivo"
+    },
+    {
+      "dia": "sábado",
+      "inicio": "06:00",
+      "fin": "09:00",
+      "programa": "Podcast: Mentes Curiosas",
+      "a_cargo": "",
+      "enfoque": "Episodios sobre ciencia, tecnología, mitos urbanos y descubrimientos.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "sábado",
+      "inicio": "09:00",
+      "fin": "12:00",
+      "programa": "Podcast: Historias del Colegio",
+      "a_cargo": "",
+      "enfoque": "Entrevistas a exalumnos, profesores retirados y anécdotas históricas.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "sábado",
+      "inicio": "12:00",
+      "fin": "14:00",
+      "programa": "Podcast: Playlist del Finde",
+      "a_cargo": "",
+      "enfoque": "Análisis de álbumes icónicos, discografías e historia de géneros musicales.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "sábado",
+      "inicio": "14:00",
+      "fin": "16:00",
+      "programa": "Podcast: Expresión & Arte",
+      "a_cargo": "",
+      "enfoque": "Reseñas de películas, recomendaciones de libros juveniles y cómics.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "sábado",
+      "inicio": "16:00",
+      "fin": "18:00",
+      "programa": "Podcast: Voces Juventud",
+      "a_cargo": "",
+      "enfoque": "Debates sobre proyecto de vida, orientación vocacional y liderazgo.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "domingo",
+      "inicio": "06:00",
+      "fin": "09:00",
+      "programa": "Podcast: Mundo Ecológico",
+      "a_cargo": "",
+      "enfoque": "Sostenibilidad, cuidado de mascotas, medio ambiente y naturaleza.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "domingo",
+      "inicio": "09:00",
+      "fin": "12:00",
+      "programa": "Podcast: Aula Abierta",
+      "a_cargo": "",
+      "enfoque": "Técnicas de estudio, métodos de aprendizaje e innovación educativa.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "domingo",
+      "inicio": "12:00",
+      "fin": "14:00",
+      "programa": "Podcast: Sesiones Acústicas",
+      "a_cargo": "",
+      "enfoque": "Música grabada en vivo por estudiantes del colegio e invitados.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "domingo",
+      "inicio": "14:00",
+      "fin": "16:00",
+      "programa": "Podcast: Mente y Cuerpo",
+      "a_cargo": "",
+      "enfoque": "Deportes, hábitos saludables, nutrición y salud mental juvenil.",
+      "estado": "Podcast"
+    },
+    {
+      "dia": "domingo",
+      "inicio": "16:00",
+      "fin": "18:00",
+      "programa": "Podcast: Comunidad Escolar",
+      "a_cargo": "",
+      "enfoque": "Iniciativas sociales, voluntariado y proyectos de impacto en el entorno.",
+      "estado": "Podcast"
     }
   ]
 }

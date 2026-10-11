@@ -127,8 +127,8 @@ h1:has(+ .bajada) { margin-bottom: .5rem; }
 
 /* Noticias */
 #noticias { display: grid; gap: 2.5rem; }
-.mes {
-  margin: 0 0 -1rem;
+.rotulo {
+  margin: 0 0 1.5rem;
   padding-bottom: .5rem;
   border-bottom: 2px solid var(--verde);
   font: 500 .85rem var(--f-titulos);
@@ -136,7 +136,8 @@ h1:has(+ .bajada) { margin-bottom: .5rem; }
   text-transform: uppercase;
   color: var(--verde-medio);
 }
-article + .mes { margin-top: 1rem; }
+#noticias .rotulo { margin-bottom: -1rem; }
+article + .rotulo { margin-top: 1rem; }
 article { display: grid; gap: .6rem; }
 article + article { padding-top: 2.5rem; border-top: 1px solid var(--crema-borde); }
 article p { margin: 0; max-width: 65ch; }
@@ -179,40 +180,70 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
 #mas-noticias { margin-top: 2.5rem; padding: .65rem 1.4rem; }
 .firma { font-size: .9rem; font-style: italic; color: var(--verde-medio); }
 
-/* Programación */
-#parrilla {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Programación: un bloque plegable por día */
+#parrilla { display: grid; gap: .5rem; }
+#parrilla details {
   background: var(--crema-clara);
   border: 1px solid var(--crema-borde);
   border-radius: 5px;
+  overflow: hidden;
 }
+#parrilla summary {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  width: auto;
+  padding: .8rem 1rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--verde);
+  font: 700 1.25rem var(--f-titulos);
+  text-transform: capitalize;
+}
+#parrilla summary:hover { background: var(--crema-borde); }
+#parrilla summary::after { content: "+"; margin-left: auto; font-weight: 500; }
+#parrilla details[open] summary::after { content: "–"; }
+#parrilla ul { list-style: none; margin: 0; padding: 0; }
 #parrilla li {
   display: grid;
-  gap: .1rem;
+  gap: .3rem 1.25rem;
   padding: .8rem 1rem;
+  border-top: 1px solid var(--crema-borde);
 }
-#parrilla li + li { border-top: 1px solid var(--crema-borde); }
+@media (min-width: 38rem) {
+  #parrilla li { grid-template-columns: 7.5rem minmax(0, 1fr) auto; align-items: start; }
+}
+#parrilla li div { display: grid; gap: .15rem; }
 #parrilla strong { font: 700 1.1rem/1.25 var(--f-titulos); }
 .hora { font-size: .875rem; font-variant-numeric: tabular-nums; color: var(--verde-medio); }
 .detalle { font-size: .875rem; color: var(--verde-medio); }
 .detalle::first-letter { text-transform: uppercase; }
+.etiqueta {
+  justify-self: start;
+  padding: .1rem .6rem;
+  border: 1.5px solid currentColor;
+  border-radius: 99px;
+  font: 500 .8rem/1.5 var(--f-titulos);
+  text-transform: none;
+  white-space: nowrap;
+  color: var(--verde-medio);
+}
+.etiqueta.vivo { background: var(--verde); border-color: var(--verde); color: var(--crema); }
 #parrilla li.al-aire { background: var(--verde); color: var(--crema); }
-#parrilla li.al-aire span { color: inherit; }
+#parrilla li.al-aire :is(.hora, .detalle, .etiqueta) { color: inherit; }
+#parrilla li.al-aire .etiqueta.vivo { background: var(--senal); border-color: var(--senal); color: var(--tinta); }
 
-/* Equipo */
-#equipo {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-width: none;
+/* Equipo: la junta en tarjetas, los miembros en lista */
+:is(section, dl) + section > .rotulo { margin-top: 3rem; }
+#junta, #miembros { list-style: none; margin: 0; padding: 0; }
+#junta {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
   gap: 2rem 1.5rem;
 }
-#equipo li { display: grid; gap: .15rem; align-content: start; }
-#equipo img, .inicial {
+#junta li { display: grid; gap: .15rem; align-content: start; }
+#junta img, .inicial {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
@@ -227,7 +258,18 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
   font: 700 3.5rem var(--f-titulos);
   text-transform: uppercase;
 }
-#equipo strong { font: 700 1.15rem/1.25 var(--f-titulos); }
+#junta strong { font: 700 1.15rem/1.25 var(--f-titulos); }
+#miembros { columns: 15rem; column-gap: 2.5rem; }
+#miembros li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--crema-borde);
+  break-inside: avoid;
+}
+#miembros strong { font: 500 1.05rem var(--f-titulos); }
 
 /* Contacto */
 #datos-contacto {
@@ -265,7 +307,7 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
 #aviso.error { border-left-color: #a12a1b; }
 .formulario { display: grid; gap: .35rem; margin-bottom: 3rem; }
 .formulario label { margin-top: .9rem; font: 500 1rem var(--f-titulos); color: var(--verde); }
-.formulario input, .formulario textarea {
+.formulario input, .formulario textarea, .formulario select {
   width: 100%;
   padding: .6rem .75rem;
   font: inherit;
@@ -276,6 +318,9 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
 }
 .formulario input:focus, .formulario textarea:focus { border-color: var(--verde); outline-offset: 1px; }
 .formulario textarea { resize: vertical; }
+.formulario #aviso { margin: 1rem 0 0; }
+/* Campo trampa contra robots: fuera de la vista, no se llena a mano. */
+.trampa { position: absolute; left: -9999px; }
 .formulario small { color: var(--verde-medio); }
 .formulario .boton { margin-top: 1.25rem; padding: .65rem 1.4rem; }
 .acciones { display: flex; flex-wrap: wrap; gap: .75rem; }

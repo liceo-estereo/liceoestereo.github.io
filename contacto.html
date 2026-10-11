@@ -40,6 +40,31 @@
     <h1>Contacto</h1>
     <p class="bajada">Escríbenos para pedir una canción, enviar un saludo o unirte al equipo.</p>
     <dl id="datos-contacto"></dl>
+
+    <section aria-labelledby="titulo-mensaje">
+      <h2 id="titulo-mensaje" class="rotulo">Envíanos un mensaje</h2>
+      <form id="form-contacto" class="formulario">
+        <label for="nombre">Nombre *</label>
+        <input id="nombre" name="nombre" autocomplete="name" required maxlength="80">
+        <label for="correo-remitente">Correo</label>
+        <input id="correo-remitente" name="correo" type="email" autocomplete="email" aria-describedby="ayuda-correo">
+        <small id="ayuda-correo">Opcional. Déjalo si quieres que te respondamos.</small>
+        <label for="tipo">Motivo *</label>
+        <select id="tipo" name="tipo" required>
+          <option>Pedir una canción</option>
+          <option>Saludo o dedicatoria</option>
+          <option>Sugerencia</option>
+          <option>Quiero unirme al equipo</option>
+          <option>Otro</option>
+        </select>
+        <label for="mensaje">Mensaje *</label>
+        <textarea id="mensaje" name="mensaje" rows="6" required maxlength="2000"></textarea>
+        <input class="trampa" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="boton lleno" type="submit">Enviar mensaje</button>
+        <p id="aviso" role="status"></p>
+        <small>El mensaje llega al correo de la emisora por medio del servicio FormSubmit.</small>
+      </form>
+    </section>
   </main>
 
   <footer class="pie">
