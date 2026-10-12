@@ -102,12 +102,13 @@ main > p, main > .bajada { max-width: 65ch; }
 .menu a[aria-current] { background: var(--verde); color: var(--superficie); }
 .barra-secciones { border-top: 1px solid var(--borde); }
 .barra-secciones .envoltura { display: flex; align-items: center; gap: 1rem; }
+/* El nav es el hijo flexible: sin min-width 0 crece con la lista y ensancha la página. */
+.barra-secciones nav { min-width: 0; }
 .barra-fecha {
   flex: none;
   margin: 0;
   font-size: 0.8125rem;
   color: var(--tinta-suave);
-  text-transform: capitalize;
 }
 /* En celular las secciones van en una fila con desplazamiento propio, sin ensanchar la página. */
 .menu-secciones {
