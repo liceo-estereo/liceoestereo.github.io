@@ -399,3 +399,48 @@ main > .boton { display: block; margin-top: 2.5rem; }
 @media (prefers-reduced-motion: no-preference) {
   .punto-vivo { animation: pulso 1.6s ease-in-out infinite; }
 }
+
+/* Programación: un bloque plegable por día */
+.cambios { margin-bottom: 2rem; max-width: 46rem; }
+.parrilla { display: grid; gap: 0.5rem; max-width: 52rem; }
+.parrilla details {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+.parrilla summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font: 700 1.25rem var(--f-titulares);
+  text-transform: capitalize;
+}
+.parrilla summary::-webkit-details-marker { display: none; }
+.parrilla summary::after { content: "+"; margin-left: auto; font-family: var(--f-texto); }
+.parrilla details[open] summary::after { content: "–"; }
+.parrilla summary:hover { background: var(--verde-claro); }
+.parrilla summary .etiqueta { text-transform: none; font-family: var(--f-texto); }
+.parrilla ul { list-style: none; margin: 0; padding: 0; }
+.parrilla li { display: grid; gap: 0.3rem 1.25rem; padding: 0.8rem 1rem; border-top: 1px solid var(--borde); }
+@media (min-width: 38rem) {
+  .parrilla li { grid-template-columns: 7.5rem minmax(0, 1fr) auto; align-items: start; }
+}
+.parrilla li div { display: grid; gap: 0.15rem; }
+.parrilla li.jornada {
+  display: block;
+  padding-block: 0.35rem;
+  background: var(--fondo);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.hora { font-size: 0.875rem; font-variant-numeric: tabular-nums; color: var(--tinta-suave); }
+.parrilla li.al-aire { background: var(--verde); color: var(--superficie); }
+.parrilla li.al-aire :is(.hora, .meta) { color: inherit; }
+.parrilla li.al-aire .etiqueta { background: var(--senal); color: var(--tinta); }

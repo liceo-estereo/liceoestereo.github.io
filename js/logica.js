@@ -167,6 +167,22 @@ export const redesDeTransmision = (redes) => redes.filter((r) => r.transmite ===
 
 export const mediosVisibles = (lista) => lista.filter((m) => m.titulo && esEnlaceSeguro(m.enlace));
 
+// La parrilla agrupada de lunes a domingo, solo con los días que tienen bloques, ordenados por hora.
+export function parrillaPorDia(parrilla) {
+  return [...DIAS.slice(1), DIAS[0]]
+    .map((dia) => ({
+      dia,
+      bloques: parrilla.filter((b) => b.dia === dia).sort((a, b) => hhmm(a.inicio).localeCompare(hhmm(b.inicio))),
+    }))
+    .filter((d) => d.bloques.length);
+}
+
+export function separarJornadas(bloques) {
+  return ["Mañana", "Tarde"]
+    .map((nombre) => ({ jornada: nombre, bloques: bloques.filter((b) => jornada(b.inicio) === nombre) }))
+    .filter((grupo) => grupo.bloques.length);
+}
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];
