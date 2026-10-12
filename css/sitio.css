@@ -449,3 +449,28 @@ main > .boton { display: block; margin-top: 2.5rem; }
 .resena { max-width: 65ch; margin-bottom: 3rem; font-size: 1.125rem; }
 .bloque-nosotros + .bloque-nosotros { margin-top: 3rem; }
 .personas strong { font: 700 1.125rem/1.25 var(--f-titulares); }
+
+/* Contacto */
+.datos-contacto {
+  display: grid;
+  gap: 0.25rem 2rem;
+  max-width: 46rem;
+  margin: 0 0 3rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+.datos-contacto:empty { display: none; }
+@media (min-width: 30rem) {
+  .datos-contacto { grid-template-columns: max-content 1fr; row-gap: 0.9rem; }
+}
+.datos-contacto dt {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.datos-contacto dd { margin: 0 0 0.6rem; overflow-wrap: anywhere; }

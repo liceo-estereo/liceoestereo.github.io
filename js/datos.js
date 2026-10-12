@@ -1,5 +1,5 @@
 // Único módulo del sitio público que hace fetch. Nada se ejecuta al importarlo.
-import { SECCIONES, SUPABASE_KEY, SUPABASE_URL } from "./ajustes.js";
+import { FORMSUBMIT_URL, SECCIONES, SUPABASE_KEY, SUPABASE_URL } from "./ajustes.js";
 
 export const CABECERAS = { apikey: SUPABASE_KEY };
 
@@ -70,5 +70,68 @@ export async function leerTransmision() {
     return respuesta.ok ? (await respuesta.json())[0] || null : null;
   } catch {
     return null;
+  }
+}
+
+const recortado = (valor) => (valor || "").trim();
+
+// La fila no lleva id ni estado: los pone la base de datos, que solo acepta el estado "abierto".
+export function filaTicket(datos, codigo) {
+  return {
+    codigo,
+    motivo: datos.motivo,
+    nombre: recortado(datos.nombre),
+    correo: recortado(datos.correo) || null,
+    mensaje: recortado(datos.mensaje),
+  };
+}
+
+export function filaPedido(datos) {
+  return {
+    tipo: datos.tipo,
+    nombre: recortado(datos.nombre) || null,
+    para: recortado(datos.para) || null,
+    mensaje: recortado(datos.mensaje),
+  };
+}
+
+// El visitante puede insertar pero no leer lo que inserta: por eso return=minimal.
+async function insertar(tabla, fila) {
+  try {
+    const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/${tabla}`, {
+      method: "POST",
+      headers: { ...CABECERAS, "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify(fila),
+    });
+    return respuesta.ok;
+  } catch {
+    return false;
+  }
+}
+
+export const guardarTicket = (fila) => insertar("tickets", fila);
+export const guardarPedido = (fila) => insertar("pedidos", fila);
+
+// Copia del ticket al correo de la emisora por FormSubmit; el código va en el asunto.
+export async function enviarCorreoTicket(destino, fila) {
+  if (!destino) return false;
+  const mensaje = {
+    _subject: `[${fila.codigo}] ${fila.motivo} · ${fila.nombre}`,
+    _template: "table",
+    Ticket: fila.codigo,
+    Motivo: fila.motivo,
+    Nombre: fila.nombre,
+    Mensaje: fila.mensaje,
+  };
+  if (fila.correo) mensaje.email = fila.correo;
+  try {
+    const respuesta = await fetch(FORMSUBMIT_URL + destino, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(mensaje),
+    });
+    return respuesta.ok && String((await respuesta.json()).success) === "true";
+  } catch {
+    return false;
   }
 }

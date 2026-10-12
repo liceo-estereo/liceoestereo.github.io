@@ -183,6 +183,45 @@ export function separarJornadas(bloques) {
     .filter((grupo) => grupo.bloques.length);
 }
 
+// Las tres constantes siguientes se repiten en supabase/002-rediseno.sql (check y char_length) y en
+// los maxlength de contacto.html; pruebas/contacto.test.js comprueba que coincidan.
+export const MOTIVOS = ["Petición", "Queja", "Reclamo", "Sugerencia", "Denuncia", "Solicitud para unirme al equipo"];
+export const TIPOS_PEDIDO = ["Pedir una canción", "Mensaje al aire", "Dedicatoria"];
+export const LIMITES = { nombre: 80, correo: 120, mensajeTicket: 2000, mensajePedido: 600 };
+
+const largo = (valor) => (valor || "").trim().length;
+
+export function validarTicket({ nombre, correo, motivo, mensaje }) {
+  const errores = [];
+  if (largo(nombre) < 1 || largo(nombre) > LIMITES.nombre) errores.push("Escribe tu nombre (máximo 80 caracteres).");
+  if (!MOTIVOS.includes(motivo)) errores.push("Elige un motivo de la lista.");
+  if (largo(mensaje) < 1 || largo(mensaje) > LIMITES.mensajeTicket) {
+    errores.push("Escribe el mensaje (máximo 2000 caracteres).");
+  }
+  if (largo(correo) && (!correo.includes("@") || largo(correo) > LIMITES.correo)) errores.push("Revisa el correo.");
+  return { ok: errores.length === 0, errores };
+}
+
+export function validarPedido({ tipo, nombre, para, mensaje }) {
+  const errores = [];
+  if (!TIPOS_PEDIDO.includes(tipo)) errores.push("Elige qué quieres enviar.");
+  if (largo(mensaje) < 1 || largo(mensaje) > LIMITES.mensajePedido) {
+    errores.push("Escribe la canción o el mensaje (máximo 600 caracteres).");
+  }
+  if (largo(nombre) > LIMITES.nombre || largo(para) > LIMITES.nombre) {
+    errores.push("Los nombres admiten máximo 80 caracteres.");
+  }
+  return { ok: errores.length === 0, errores };
+}
+
+export function textoWhatsapp({ tipo, nombre, para, mensaje }) {
+  const lineas = [`*${tipo}*`, largo(nombre) && `De: ${nombre.trim()}`, largo(para) && `Para: ${para.trim()}`, mensaje];
+  return lineas.filter(Boolean).join(String.fromCharCode(10));
+}
+
+// Basta con que el ticket quede guardado o que el correo haya salido.
+export const resultadoEnvio = (guardado, correoEnviado) => (guardado || correoEnviado ? "ok" : "error");
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];
