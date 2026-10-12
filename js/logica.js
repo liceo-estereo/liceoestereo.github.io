@@ -260,6 +260,23 @@ export function filaNoticia(campos, hoy) {
   return fila;
 }
 
+// Desactivar siempre se permite; para activar hace falta una red conocida y un enlace https.
+export function validarTransmision({ activa, red, enlace }) {
+  const errores = [];
+  if (activa === true) {
+    if (!REDES_VIVO.includes(red)) errores.push("Elige por dónde están transmitiendo.");
+    if (typeof enlace !== "string" || !enlace.startsWith("https://")) {
+      errores.push("Pega el enlace de la transmisión, empezando por https://");
+    }
+  }
+  return { ok: errores.length === 0, errores };
+}
+
+export function filaTransmision({ activa, red, enlace, titulo }, ahoraISO) {
+  const texto = (valor) => (valor || "").trim() || null;
+  return { activa: activa === true, red: texto(red), enlace: texto(enlace), titulo: texto(titulo), actualizada: ahoraISO };
+}
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];

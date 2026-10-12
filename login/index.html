@@ -102,6 +102,26 @@
 
       <section id="pestana-vivo" role="tabpanel" hidden>
         <h2>En vivo</h2>
+        <p>Marca la casilla cuando empiecen a transmitir y desmárcala al terminar. El aviso aparece en la portada.</p>
+        <form id="form-vivo" class="formulario">
+          <p class="casilla">
+            <input id="vivo-activa" name="activa" type="checkbox">
+            <label for="vivo-activa">Estamos en vivo</label>
+          </p>
+          <label for="vivo-red">¿Por dónde?</label>
+          <select id="vivo-red" name="red">
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+            <option value="facebook">Facebook</option>
+            <option value="audio">Audio en línea</option>
+          </select>
+          <label for="vivo-enlace">Enlace de la transmisión</label>
+          <input id="vivo-enlace" name="enlace" type="url" placeholder="https://" aria-describedby="ayuda-vivo">
+          <small id="ayuda-vivo">Dirección completa, empezando por https://</small>
+          <label for="vivo-titulo">Título (opcional)</label>
+          <input id="vivo-titulo" name="titulo" maxlength="80">
+          <button class="boton lleno" type="submit">Guardar</button>
+        </form>
       </section>
 
       <section id="pestana-tickets" role="tabpanel" hidden>
@@ -115,5 +135,6 @@
   </main>
 
   <script type="module" src="../js/panel-noticias.js"></script>
+  <script type="module" src="../js/panel-vivo.js"></script>
 </body>
 </html>
