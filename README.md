@@ -47,6 +47,18 @@ además **Cerrar sesión**.
 Las horas van en formato de 24 horas, como `09:30`. Los enlaces van completos, empezando por
 `https://`. Una fila a la que le falte un dato obligatorio simplemente no aparece en el sitio.
 
+## Avisos de pedidos en Discord
+
+Cada pedido de canción, mensaje o dedicatoria queda en la pestaña **Mensajes** del panel y, además,
+la base de datos avisa en el canal de Discord de la emisora. Quien envía el pedido no necesita
+Discord. Los tickets de PQRSD no se envían a Discord.
+
+- Para cambiar el canal: crea un webhook nuevo en Discord (Editar canal → Integraciones → Webhooks)
+  y guarda su dirección con la instrucción que aparece al inicio de `supabase/003-discord.sql`,
+  ejecutándola en Supabase → SQL Editor.
+- La dirección del webhook es secreta: nunca se escribe en un archivo de este repositorio.
+- Si el canal deja de recibir avisos, los pedidos siguen llegando al panel.
+
 ## Cómo dar o quitar acceso a un editor
 
 Esto se hace en el panel de Supabase, no en el sitio.

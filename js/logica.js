@@ -36,13 +36,6 @@ export function proximoHoy(parrilla, especiales, dia, fecha, hora) {
   return candidatos.filter((c) => c.inicio > hora).sort((a, b) => a.inicio.localeCompare(b.inicio))[0] || null;
 }
 
-// "322 000 0000" o "+57 322 000 0000" -> "573220000000", como lo pide wa.me.
-// Con 10 dígitos se asume que es un celular de Colombia.
-export function numeroWhatsapp(texto) {
-  const numero = (texto || "").replace(/\D/g, "");
-  return numero.length === 10 ? "57" + numero : numero;
-}
-
 // Código que identifica cada mensaje del formulario de contacto: LT-AAMMDD-XXXX.
 export function nuevoTicket(fecha = new Date(), azar = Math.random) {
   const dia = fechaLocalISO(fecha).slice(2).replaceAll("-", "");
@@ -213,11 +206,6 @@ export function validarPedido({ tipo, nombre, para, mensaje }) {
     errores.push("Los nombres admiten máximo 80 caracteres.");
   }
   return { ok: errores.length === 0, errores };
-}
-
-export function textoWhatsapp({ tipo, nombre, para, mensaje }) {
-  const lineas = [`*${tipo}*`, largo(nombre) && `De: ${nombre.trim()}`, largo(para) && `Para: ${para.trim()}`, mensaje];
-  return lineas.filter(Boolean).join(String.fromCharCode(10));
 }
 
 // Basta con que el ticket quede guardado o que el correo haya salido.

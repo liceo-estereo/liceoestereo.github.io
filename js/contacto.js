@@ -1,13 +1,11 @@
-// Contacto: pedidos de canciones y dedicatorias (se guardan y, si hay número, abren WhatsApp) y
-// PQRSD con número de ticket (se guardan y además se envían al correo).
+// Contacto: pedidos de canciones y dedicatorias (se guardan para el panel; la base de datos avisa
+// al equipo en Discord) y PQRSD con número de ticket (se guardan y además se envían al correo).
 import { enviarCorreoTicket, filaPedido, filaTicket, guardarPedido, guardarTicket } from "./datos.js";
 import {
   MOTIVOS,
   TIPOS_PEDIDO,
   nuevoTicket,
-  numeroWhatsapp,
   resultadoEnvio,
-  textoWhatsapp,
   validarPedido,
   validarTicket,
 } from "./logica.js";
@@ -23,11 +21,10 @@ function avisar(parrafo, texto, esError) {
   parrafo.classList.toggle("error", Boolean(esError));
 }
 
-function pintarDatos(emisora, whatsapp) {
+function pintarDatos(emisora) {
   const datos = document.querySelector("#datos-contacto");
   const filas = [];
   if (emisora.contacto) filas.push(["Correo", enlace(emisora.contacto, "mailto:" + emisora.contacto)]);
-  if (whatsapp) filas.push(["WhatsApp", enlace(emisora.whatsapp, "https://wa.me/" + whatsapp)]);
   if (emisora.telefono) filas.push(["Teléfono", emisora.telefono]);
   if (emisora.direccion) filas.push(["Dirección", emisora.direccion]);
   for (const [nombre, valor] of filas) {
@@ -37,7 +34,7 @@ function pintarDatos(emisora, whatsapp) {
   }
 }
 
-function prepararPedidos(whatsapp) {
+function prepararPedidos() {
   const form = document.querySelector("#form-pedido");
   const aviso = document.querySelector("#aviso-pedido");
   const boton = form.querySelector("button");
@@ -47,12 +44,8 @@ function prepararPedidos(whatsapp) {
     const { ok, errores } = validarPedido(datos);
     if (!ok) return avisar(aviso, errores.join(" "), true);
     boton.disabled = true;
-    const guardado = await guardarPedido(filaPedido(datos));
-    if (whatsapp) {
-      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(textoWhatsapp(datos))}`, "_blank", "noopener");
-    }
-    // Sin guardado y sin WhatsApp el pedido no llegó a ninguna parte: no se puede decir que sí.
-    if (resultadoEnvio(guardado, Boolean(whatsapp)) === "ok") {
+    // El pedido queda en la tabla pedidos; de ahí lo lee el panel y sale el aviso a Discord.
+    if (await guardarPedido(filaPedido(datos))) {
       avisar(aviso, "Recibimos tu mensaje.");
       form.reset();
     } else {
@@ -93,7 +86,6 @@ llenarOpciones(document.querySelector("#pedido-tipo"), TIPOS_PEDIDO);
 llenarOpciones(document.querySelector("#ticket-motivo"), MOTIVOS);
 
 const emisora = await montarMarco({ actual: "contacto.html" });
-const whatsapp = numeroWhatsapp(emisora?.whatsapp);
-if (emisora) pintarDatos(emisora, whatsapp);
-prepararPedidos(whatsapp);
+if (emisora) pintarDatos(emisora);
+prepararPedidos();
 prepararTickets(emisora?.contacto || "");

@@ -10,7 +10,6 @@ import {
   jornada,
   nombreEspecial,
   nuevoTicket,
-  numeroWhatsapp,
   parrafos,
   proximoHoy,
 } from "../js/logica.js";
@@ -38,13 +37,6 @@ test("proximoHoy cuenta los especiales de la fecha", () => {
 test("proximoHoy devuelve null cuando ya no queda nada hoy", () => {
   assert.equal(proximoHoy(PARRILLA, ESPECIALES, "lunes", "2026-10-12", "18:00"), null);
   assert.equal(proximoHoy([], [], "lunes", "2026-10-12", "06:00"), null);
-});
-
-test("numeroWhatsapp deja solo dígitos y antepone 57 a los celulares", () => {
-  assert.equal(numeroWhatsapp("322 000 0000"), "573220000000");
-  assert.equal(numeroWhatsapp("+57 322 000 0000"), "573220000000");
-  assert.equal(numeroWhatsapp(""), "");
-  assert.equal(numeroWhatsapp(undefined), "");
 });
 
 test("especialAhora solo devuelve el especial de esa fecha y hora", () => {

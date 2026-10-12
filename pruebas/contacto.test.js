@@ -7,7 +7,6 @@ import {
   TIPOS_PEDIDO,
   nuevoTicket,
   resultadoEnvio,
-  textoWhatsapp,
   validarPedido,
   validarTicket,
 } from "../js/logica.js";
@@ -47,7 +46,6 @@ test("resultadoEnvio: basta con que una de las dos vías funcione", () => {
   assert.equal(resultadoEnvio(false, false), "error");
   assert.equal(resultadoEnvio(true, false), "ok");
   assert.equal(resultadoEnvio(false, true), "ok");
-  assert.equal(textoWhatsapp({ tipo: "Dedicatoria", nombre: "Ana", para: "", mensaje: "Hola" }), "*Dedicatoria*\nDe: Ana\nHola");
 });
 
 test("las inserciones no piden leer y contacto.html ya no carga el código viejo", () => {

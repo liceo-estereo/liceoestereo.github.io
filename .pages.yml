@@ -21,10 +21,6 @@ content:
       - name: contacto
         label: Correo de contacto
         type: string
-      - name: whatsapp
-        label: WhatsApp de la emisora
-        description: Número que recibe canciones, mensajes y dedicatorias. Usa un número de la emisora, no uno personal. Si se deja vacío, ese formulario no aparece.
-        type: string
       - name: telefono
         label: Teléfono
         description: Opcional. Aparece en la página de contacto.
