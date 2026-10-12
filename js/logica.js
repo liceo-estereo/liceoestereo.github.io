@@ -84,3 +84,28 @@ export const fechaLarga = (fechaISO) =>
   new Date(fechaISO.slice(0, 10) + "T12:00").toLocaleDateString("es-CO", { dateStyle: "long" });
 
 export const inicial = (nombre) => ((nombre || "").trim()[0] || "?").toUpperCase();
+
+// Minutos de lectura a 200 palabras por minuto, nunca menos de uno.
+export function tiempoLectura(texto) {
+  const palabras = (texto || "").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(palabras / 200));
+}
+
+export function enlacesCompartir(url, titulo) {
+  const u = encodeURIComponent(url);
+  return {
+    whatsapp: "https://wa.me/?text=" + encodeURIComponent(titulo + " " + url),
+    facebook: "https://www.facebook.com/sharer/sharer.php?u=" + u,
+    x: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(titulo) + "&url=" + u,
+  };
+}
+
+// Otras noticias de la misma sección, de la más reciente a la más antigua.
+export function relacionadas(noticia, todas, maximo = 3) {
+  return todas
+    .filter((n) => n.seccion === noticia.seccion && n.id !== noticia.id)
+    .sort((a, b) => b.fecha.localeCompare(a.fecha))
+    .slice(0, maximo);
+}
+
+export const nombreSeccion = (id, secciones) => secciones.find((s) => s.id === id)?.nombre || "";

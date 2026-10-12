@@ -319,3 +319,31 @@ main > p, main > .bajada { max-width: 65ch; }
   border-top: 1px solid color-mix(in srgb, var(--superficie) 30%, transparent);
   font-size: 0.8125rem;
 }
+
+/* Página de una noticia */
+.articulo { max-width: 46rem; }
+.articulo h1 { margin-bottom: 0.75rem; }
+.migas { margin-bottom: 1rem; font-size: 0.8125rem; font-weight: 600; }
+.migas a { text-decoration: none; }
+.migas a:hover { text-decoration: underline; }
+.articulo .subtitulo { font-size: 1.25rem; line-height: 1.4; color: var(--tinta-suave); }
+.articulo .meta { margin-bottom: 1.25rem; }
+.articulo figure { margin: 0 0 1.5rem; }
+.articulo figure img { width: 100%; border-radius: var(--radio); background: var(--borde); }
+.articulo figcaption { margin-top: 0.4rem; }
+.articulo audio { width: 100%; margin-bottom: 1.5rem; }
+.articulo .entradilla { font-weight: 700; }
+.articulo .firma { font-style: italic; color: var(--tinta-suave); }
+.compartir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--borde);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.compartir .meta { margin: 0; overflow-wrap: anywhere; }
+.relacionadas { margin-top: 3.5rem; }
