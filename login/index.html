@@ -126,15 +126,22 @@
 
       <section id="pestana-tickets" role="tabpanel" hidden>
         <h2>Tickets</h2>
+        <p>PQRSD y solicitudes recibidas. Cambia el estado de cada una a medida que se atiende.</p>
+        <div id="muro-tickets" class="muro"></div>
       </section>
 
       <section id="pestana-mensajes" role="tabpanel" hidden>
         <h2>Mensajes</h2>
+        <p>Canciones, mensajes y dedicatorias recibidos hoy. Los de más de 30 días se borran solos.</p>
+        <button id="actualizar-mensajes" class="boton" type="button">Actualizar</button>
+        <ul id="lista-mensajes" class="lista-mensajes"></ul>
       </section>
     </section>
   </main>
 
   <script type="module" src="../js/panel-noticias.js"></script>
   <script type="module" src="../js/panel-vivo.js"></script>
+  <script type="module" src="../js/panel-tickets.js"></script>
+  <script type="module" src="../js/panel-mensajes.js"></script>
 </body>
 </html>

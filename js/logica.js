@@ -277,6 +277,30 @@ export function filaTransmision({ activa, red, enlace, titulo }, ahoraISO) {
   return { activa: activa === true, red: texto(red), enlace: texto(enlace), titulo: texto(titulo), actualizada: ahoraISO };
 }
 
+// La misma lista, en el mismo orden, que el check de tickets.estado en supabase/002-rediseno.sql.
+export const ESTADOS_TICKET = ["abierto", "en_tramite", "cerrado"];
+
+export const nombreEstado = (estado) =>
+  ({ abierto: "Abierto", en_tramite: "En trámite", cerrado: "Cerrado" })[estado] || "";
+
+// Un arreglo por estado, del ticket más reciente al más antiguo. Un estado desconocido se omite.
+export function agruparTickets(tickets) {
+  const grupos = Object.fromEntries(ESTADOS_TICKET.map((estado) => [estado, []]));
+  for (const ticket of [...tickets].sort((a, b) => String(b.creado).localeCompare(String(a.creado)))) {
+    grupos[ticket.estado]?.push(ticket);
+  }
+  return grupos;
+}
+
+const recientesPrimero = (a, b) => new Date(b.creado) - new Date(a.creado);
+
+export const pedidosDeHoy = (pedidos, hoy) =>
+  pedidos.filter((p) => fechaLocalISO(new Date(p.creado)) === hoy).sort(recientesPrimero);
+
+// Ids de los pedidos que ya pasaron el plazo de conservación.
+export const caducados = (pedidos, hoy, dias = 30) =>
+  pedidos.filter((p) => diasEntre(fechaLocalISO(new Date(p.creado)), hoy) > dias).map((p) => p.id);
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];
