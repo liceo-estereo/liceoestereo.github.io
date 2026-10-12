@@ -347,3 +347,12 @@ main > p, main > .bajada { max-width: 65ch; }
 }
 .compartir .meta { margin: 0; overflow-wrap: anywhere; }
 .relacionadas { margin-top: 3.5rem; }
+
+/* Listado de noticias */
+.filtros { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.filtros .etiqueta { padding: 0.3rem 0.85rem; font-size: 0.9375rem; }
+.filtros .etiqueta:hover { text-decoration: underline; }
+.filtros .etiqueta[aria-current] { background: var(--verde); color: var(--superficie); }
+.grupo-mes + .grupo-mes { margin-top: 3rem; }
+.grupo-mes .rotulo { text-transform: uppercase; }
+main > .boton { display: block; margin-top: 2.5rem; }

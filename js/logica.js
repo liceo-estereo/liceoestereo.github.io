@@ -109,3 +109,27 @@ export function relacionadas(noticia, todas, maximo = 3) {
 }
 
 export const nombreSeccion = (id, secciones) => secciones.find((s) => s.id === id)?.nombre || "";
+
+// Una sección desconocida (o vacía) se trata como "todas".
+export function filtrarPorSeccion(noticias, seccion, secciones) {
+  if (!secciones.some((s) => s.id === seccion)) return noticias;
+  return noticias.filter((n) => n.seccion === seccion);
+}
+
+export const tanda = (noticias, pagina, porPagina = 10) => noticias.slice(0, pagina * porPagina);
+
+export const hayMas = (noticias, pagina, porPagina = 10) => noticias.length > pagina * porPagina;
+
+// Grupos consecutivos por mes, en el orden recibido.
+export function agruparPorMes(noticias) {
+  const grupos = [];
+  for (const noticia of noticias) {
+    const mes = new Date(noticia.fecha.slice(0, 10) + "T12:00").toLocaleDateString("es-CO", {
+      month: "long",
+      year: "numeric",
+    });
+    if (grupos.at(-1)?.mes !== mes) grupos.push({ mes, noticias: [] });
+    grupos.at(-1).noticias.push(noticia);
+  }
+  return grupos;
+}
