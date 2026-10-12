@@ -1,4 +1,5 @@
 // Funciones puras del sitio: sin DOM, sin red y sin estado. Todo lo de aquí lleva prueba en pruebas/.
+import { SECCIONES } from "./ajustes.js";
 
 export const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
@@ -225,6 +226,39 @@ export const resultadoEnvio = (guardado, correoEnviado) => (guardado || correoEn
 // Pestañas del panel según el rol. La base de datos es la que de verdad impide leer los tickets.
 export const pestanasPara = (esAdmin) =>
   esAdmin === true ? ["noticias", "vivo", "tickets", "mensajes"] : ["noticias", "vivo", "mensajes"];
+
+// Depósito, tope y tipos del audio: los mismos del depósito "audios" en supabase/002-rediseno.sql
+// y del atributo accept de #audio. DEPOSITO_FOTOS es el depósito de supabase/esquema.sql.
+export const AUDIO = { deposito: "audios", maxBytes: 10485760, tipos: ["audio/mpeg", "audio/mp3"] };
+export const DEPOSITO_FOTOS = "fotos";
+
+// La noticia de la semana que sigue vigente y no es la que se está editando, o null.
+export function conflictoSemana(noticias, idEditando, hoy) {
+  const vigente = noticiaDeLaSemana(noticias, hoy);
+  return vigente && vigente.id !== idEditando ? vigente : null;
+}
+
+export function validarAudio({ type, size }) {
+  if (!AUDIO.tipos.includes(type)) return "El audio debe ser un archivo MP3.";
+  if (!(size > 0 && size <= AUDIO.maxBytes)) return "El audio no puede pesar más de 10 MB.";
+  return "";
+}
+
+export function errorDeFoto({ name, type }) {
+  if (/\.hei[cf]$/i.test(name || "")) return "Esta foto está en formato HEIC. Conviértela a JPG o toma una captura y vuelve a subirla.";
+  if (type && !type.startsWith("image/")) return "El archivo de la fotografía no es una imagen.";
+  return "";
+}
+
+export function filaNoticia(campos, hoy) {
+  const fila = {};
+  for (const clave of ["titulo", "subtitulo", "entradilla", "pie_foto", "cuerpo", "emisor", "origen", "fecha"]) {
+    fila[clave] = (campos[clave] || "").trim();
+  }
+  fila.seccion = SECCIONES.some((s) => s.id === campos.seccion) ? campos.seccion : "institucional";
+  fila.semana_desde = campos.semana === true ? hoy : null;
+  return fila;
+}
 
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {

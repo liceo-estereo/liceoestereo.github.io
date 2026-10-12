@@ -47,6 +47,57 @@
 
       <section id="pestana-noticias" role="tabpanel" hidden>
         <h2>Noticias</h2>
+        <h3 id="titulo-form">Nueva noticia</h3>
+        <form id="form-noticia" class="formulario">
+          <label for="titulo">Título *</label>
+          <input id="titulo" name="titulo" required>
+          <label for="subtitulo">Subtítulo</label>
+          <input id="subtitulo" name="subtitulo">
+          <label for="entradilla">Entradilla</label>
+          <textarea id="entradilla" name="entradilla" rows="2" aria-describedby="ayuda-entradilla"></textarea>
+          <small id="ayuda-entradilla">Uno o dos renglones que resumen la noticia.</small>
+          <label for="seccion">Sección *</label>
+          <select id="seccion" name="seccion" required></select>
+          <label for="foto">Fotografía</label>
+          <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
+          <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la actual.</small>
+          <label for="pie_foto">Pie de foto</label>
+          <input id="pie_foto" name="pie_foto">
+          <label for="cuerpo">Cuerpo de la noticia</label>
+          <textarea id="cuerpo" name="cuerpo" rows="10" aria-describedby="ayuda-cuerpo"></textarea>
+          <small id="ayuda-cuerpo">Cada párrafo en una línea aparte.</small>
+          <label for="emisor">Emisor</label>
+          <input id="emisor" name="emisor" aria-describedby="ayuda-emisor">
+          <small id="ayuda-emisor">Quién escribe o reporta la noticia.</small>
+          <label for="origen">Origen</label>
+          <input id="origen" name="origen" aria-describedby="ayuda-origen">
+          <small id="ayuda-origen">Lugar o fuente de la noticia.</small>
+          <label for="fecha">Fecha *</label>
+          <input id="fecha" name="fecha" type="date" required>
+          <p class="casilla">
+            <input id="semana" name="semana" type="checkbox">
+            <label for="semana">Noticia de la semana (dura 7 días)</label>
+          </p>
+          <p class="casilla">
+            <input id="con-audio" name="con-audio" type="checkbox">
+            <label for="con-audio">Incluir audio</label>
+          </p>
+          <label for="audio" id="etiqueta-audio" hidden>Audio de la noticia (MP3, máximo 10 MB)</label>
+          <input id="audio" name="audio" type="file" accept="audio/mpeg,audio/mp3" hidden>
+          <div class="acciones">
+            <button id="guardar" class="boton lleno" type="submit">Publicar</button>
+            <button id="cancelar" class="boton" type="button" hidden>Cancelar edición</button>
+          </div>
+        </form>
+
+        <h3>Noticias publicadas</h3>
+        <ul id="publicadas" class="lista-publicadas"></ul>
+
+        <dialog id="aviso-semana">
+          <h2>Revisar noticia de la semana</h2>
+          <p id="aviso-semana-texto"></p>
+          <button id="cerrar-aviso-semana" class="boton lleno" type="button">Cerrar</button>
+        </dialog>
       </section>
 
       <section id="pestana-vivo" role="tabpanel" hidden>
@@ -62,5 +113,7 @@
       </section>
     </section>
   </main>
+
+  <script type="module" src="../js/panel-noticias.js"></script>
 </body>
 </html>
