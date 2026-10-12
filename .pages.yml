@@ -147,3 +147,69 @@ content:
             type: select
             options:
               values: [En Vivo, Descanso, Automatizado, Podcast]
+      - name: resena
+        label: Reseña de la emisora
+        description: Aparece en la página Nosotros. Un párrafo por línea.
+        type: text
+      - name: redes
+        label: Redes sociales
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nombre}"
+        fields:
+          - name: nombre
+            label: Red
+            type: select
+            required: true
+            options:
+              values: [Instagram, TikTok, Facebook, YouTube, Spotify, WhatsApp, Otro]
+          - name: enlace
+            label: Enlace
+            description: Dirección completa, empezando por https://
+            type: string
+            required: true
+          - name: transmite
+            label: Transmitimos en vivo por esta red
+            type: boolean
+      - name: videos
+        label: Videos
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{titulo}"
+        fields:
+          - name: titulo
+            label: Título
+            type: string
+            required: true
+          - name: portada
+            label: Portada
+            type: image
+          - name: enlace
+            label: Enlace
+            description: Dirección completa, empezando por https://
+            type: string
+            required: true
+      - name: podcasts
+        label: Pódcast
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{titulo}"
+        fields:
+          - name: titulo
+            label: Título
+            type: string
+            required: true
+          - name: portada
+            label: Portada
+            type: image
+          - name: enlace
+            label: Enlace
+            description: Dirección completa, empezando por https://
+            type: string
+            required: true
