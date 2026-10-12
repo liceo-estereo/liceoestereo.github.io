@@ -320,6 +320,14 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
 }
 #datos-contacto dd { margin: 0 0 .6rem; font-size: 1.15rem; overflow-wrap: anywhere; }
 
+/* Contacto: WhatsApp y correo lado a lado en pantallas anchas, apilados en celular */
+.dos-columnas { display: grid; gap: 3rem; max-width: none; margin-top: 3rem; }
+.dos-columnas > section { min-width: 0; }
+.dos-columnas > section > .rotulo { margin-top: 0; }
+@media (min-width: 40rem) {
+  .dos-columnas { grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+}
+
 /* Administración (login/) */
 .admin > section { max-width: 40rem; }
 #aviso:empty { display: none; }
