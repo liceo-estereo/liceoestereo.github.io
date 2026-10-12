@@ -120,6 +120,34 @@ export const tanda = (noticias, pagina, porPagina = 10) => noticias.slice(0, pag
 
 export const hayMas = (noticias, pagina, porPagina = 10) => noticias.length > pagina * porPagina;
 
+// Días enteros entre dos fechas AAAA-MM-DD; negativo si `desdeISO` es posterior.
+export function diasEntre(desdeISO, hastaISO) {
+  const mediodia = (iso) => new Date(iso.slice(0, 10) + "T12:00").getTime();
+  return Math.round((mediodia(hastaISO) - mediodia(desdeISO)) / 86400000);
+}
+
+// La noticia marcada en los últimos siete días (0 a 6 días antes de hoy); si hay varias, la más reciente.
+export function noticiaDeLaSemana(noticias, hoy) {
+  const vigentes = noticias.filter((n) => {
+    if (!n.semana_desde) return false;
+    const dias = diasEntre(n.semana_desde, hoy);
+    return dias >= 0 && dias < 7;
+  });
+  return vigentes.sort((a, b) => b.semana_desde.localeCompare(a.semana_desde))[0] || null;
+}
+
+export const ultimas = (noticias, cuantas, excluirId) => noticias.filter((n) => n.id !== excluirId).slice(0, cuantas);
+
+// Un bloque por cada sección con noticias, en el orden de `secciones`.
+export function bloquesPorSeccion(noticias, secciones, porBloque = 3, excluirId) {
+  return secciones
+    .map((seccion) => ({
+      seccion,
+      noticias: noticias.filter((n) => n.seccion === seccion.id && n.id !== excluirId).slice(0, porBloque),
+    }))
+    .filter((bloque) => bloque.noticias.length);
+}
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];

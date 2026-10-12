@@ -4,83 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Liceo Tame Stereo</title>
-  <meta name="description" content="Emisora institucional del Liceo Tame: noticias, programación, equipo y contacto.">
-  <link rel="icon" href="img/logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Jost:wght@500;700&display=swap">
-  <link rel="stylesheet" href="css/estilo.css">
+  <meta name="description" content="Emisora estudiantil del Liceo Tame: noticias, programación y canales para escucharnos.">
+  <link rel="stylesheet" href="css/sitio.css">
+  <script type="module" src="js/portada.js"></script>
 </head>
 <body>
-  <!-- La cabecera y el pie se repiten en las cuatro páginas: un cambio en el menú hay que hacerlo en todas. -->
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
-
-  <header class="cabecera">
-    <div class="envoltura">
-      <a class="marca" href="index.html" aria-label="Liceo Tame Stereo, inicio">
-        <img src="img/logo.svg" alt="" width="52" height="52">
-        <p class="nombre">Liceo Tame <span>stereo</span></p>
-      </a>
-      <nav aria-label="Principal">
-        <ul>
-          <li><a href="index.html" aria-current="page">Noticias</a></li>
-          <li><a href="programacion.html">Programación</a></li>
-          <li><a href="equipo.html">Equipo</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <div class="franja">
-    <p id="estado" class="envoltura" role="status"><i aria-hidden="true"></i><span></span></p>
-  </div>
-
   <main id="contenido" class="envoltura portada">
-    <section aria-labelledby="titulo-noticias">
-      <h1 id="titulo-noticias">Noticias</h1>
-      <div id="noticias"></div>
-    </section>
-
-    <aside aria-labelledby="titulo-hoy">
-      <h2 id="titulo-hoy" class="rotulo">Hoy en la emisora</h2>
-      <div id="hoy"></div>
-      <a href="programacion.html">Ver la programación completa</a>
+    <h1 class="solo-lectores">Liceo Tame Stereo</h1>
+    <div class="principal">
+      <section id="semana" class="semana" hidden></section>
+      <div id="bloques"></div>
+    </div>
+    <aside class="lateral">
+      <section id="ultimas"></section>
+      <section id="hoy"></section>
     </aside>
   </main>
-
-  <footer class="pie">
-    <div class="envoltura">
-      <section aria-label="La emisora">
-        <div class="insignias">
-          <img src="img/escudo.png" alt="Escudo del Liceo Tame" width="71" height="88">
-          <img class="logo" src="img/logo.svg" alt="" width="64" height="64">
-          <p class="nombre">Liceo Tame <span>stereo</span></p>
-        </div>
-        <p id="lema"></p>
-      </section>
-
-      <nav aria-labelledby="titulo-pie-secciones">
-        <h2 id="titulo-pie-secciones">Secciones</h2>
-        <ul>
-          <li><a href="index.html" aria-current="page">Noticias</a></li>
-          <li><a href="programacion.html">Programación</a></li>
-          <li><a href="equipo.html">Equipo</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-
-      <section aria-labelledby="titulo-pie-contacto">
-        <h2 id="titulo-pie-contacto">Contacto</h2>
-        <p>PQRSD y solicitudes para unirte al equipo. Para canciones y saludos, ve a <a href="contacto.html">Contacto</a>.</p>
-        <address><a id="correo"></a></address>
-      </section>
-
-      <p class="creditos">Emisora institucional del Liceo Tame.</p>
-    </div>
-  </footer>
-
-  <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
 </body>
 </html>
