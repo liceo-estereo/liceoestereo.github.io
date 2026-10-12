@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { limpiarEmisora, urlNoticia, urlNoticias, urlTransmision } from "../js/datos.js";
+import { limpiarEmisora, normalizarNoticia, urlNoticia, urlNoticias, urlTransmision } from "../js/datos.js";
 import { leer } from "./ayudas.js";
 
 const CLAVES_NUEVAS = ["resena", "redes", "videos", "podcasts"];
@@ -41,6 +41,11 @@ test("urlNoticia rechaza ids que no son enteros positivos", () => {
   assert.throws(() => urlNoticia(0), RangeError);
   assert.ok(urlNoticia("7").endsWith("id=eq.7"));
   assert.ok(urlTransmision().endsWith("transmision?select=*&id=eq.true"));
+});
+
+test("una noticia sin sección cuenta como institucional", () => {
+  assert.equal(normalizarNoticia({ id: 1 }).seccion, "institucional");
+  assert.equal(normalizarNoticia({ id: 1, seccion: "deportes" }).seccion, "deportes");
 });
 
 test("las claves nuevas existen en los datos y en el formulario del CMS", () => {

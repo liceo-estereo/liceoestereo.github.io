@@ -28,6 +28,9 @@ export function limpiarEmisora(crudo) {
   return limpia;
 }
 
+// Mientras la migración 002 no esté aplicada las noticias llegan sin sección: cuentan como institucionales.
+export const normalizarNoticia = (noticia) => ({ ...noticia, seccion: noticia.seccion || "institucional" });
+
 export function urlNoticias({ seccion, limite } = {}) {
   let url = SUPABASE_URL + "/rest/v1/noticias?select=*&order=fecha.desc,id.desc";
   if (SECCIONES.some((s) => s.id === seccion)) url += "&seccion=eq." + seccion;
@@ -50,13 +53,14 @@ export async function leerEmisora() {
 export async function leerNoticias(opciones) {
   const respuesta = await fetch(urlNoticias(opciones), { headers: CABECERAS });
   if (!respuesta.ok) throw new Error("No se pudieron leer las noticias: " + respuesta.status);
-  return respuesta.json();
+  return (await respuesta.json()).map(normalizarNoticia);
 }
 
 export async function leerNoticia(id) {
   const respuesta = await fetch(urlNoticia(id), { headers: CABECERAS });
   if (!respuesta.ok) throw new Error("No se pudo leer la noticia: " + respuesta.status);
-  return (await respuesta.json())[0] || null;
+  const [noticia] = await respuesta.json();
+  return noticia ? normalizarNoticia(noticia) : null;
 }
 
 // Sin transmisión no hay aviso de "en vivo": cualquier fallo se trata como "no estamos en vivo".
