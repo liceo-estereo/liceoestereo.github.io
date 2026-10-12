@@ -1,19 +1,15 @@
 // Marco compartido de las páginas públicas: cabecera, franja de «al aire» y pie.
 // Nada aquí toca el documento al importarse: todo ocurre dentro de montarMarco().
 import { SECCIONES } from "./ajustes.js";
-import { leerEmisora } from "./datos.js";
+import { leerEmisora, leerTransmision } from "./datos.js";
 import {
-  DIAS,
-  alAire,
+  audioDeFranja,
   enlacesLegales,
   esEnlaceSeguro,
-  especialAhora,
+  estadoFranja,
   fechaLarga,
   fechaLocalISO,
-  hhmm,
   menuPrincipal,
-  nombreEspecial,
-  proximoHoy,
 } from "./logica.js";
 import { el, enlace } from "./vista.js";
 
@@ -84,9 +80,10 @@ function franja() {
   const punto = el("span", "", "punto");
   punto.setAttribute("aria-hidden", "true");
   const texto = el("span");
-  estado.append(punto, texto);
+  const controles = el("span", "", "controles-vivo");
+  estado.append(punto, texto, controles);
   div.append(estado);
-  return { div, estado, texto };
+  return { div, estado, texto, controles };
 }
 
 function bloqueDelPie(titulo, contenido) {
@@ -138,22 +135,6 @@ function pie(actual) {
   return { footer, lema, correo, redes };
 }
 
-// Texto de la franja según la hora: un especial de hoy reemplaza al programa habitual.
-function estadoAlAire(emisora, ahora = new Date()) {
-  const dia = DIAS[ahora.getDay()];
-  const fecha = fechaLocalISO(ahora);
-  const hora = ahora.toTimeString().slice(0, 5);
-  const especial = especialAhora(emisora.especiales, fecha, hora);
-  if (especial) return { encendido: true, texto: `Al aire: ${nombreEspecial(especial)}, hasta las ${hhmm(especial.fin)}` };
-  const bloque = emisora.parrilla.find((b) => alAire(b, dia, hora));
-  if (bloque) return { encendido: true, texto: `Al aire: ${bloque.programa}, hasta las ${hhmm(bloque.fin)}` };
-  const proximo = proximoHoy(emisora.parrilla, emisora.especiales, dia, fecha, hora);
-  return {
-    encendido: false,
-    texto: proximo ? `Fuera del aire. Sigue ${proximo.programa} a las ${proximo.inicio}` : "Fuera del aire por hoy",
-  };
-}
-
 export async function montarMarco({ actual = "" } = {}) {
   enlaceDeHoja("stylesheet", FUENTES_URL);
   enlaceDeHoja("icon", "img/logo.svg");
@@ -186,10 +167,32 @@ export async function montarMarco({ actual = "" } = {}) {
     abajo.redes.append(li);
   }
 
-  const pintar = () => {
-    const { encendido, texto } = estadoAlAire(emisora);
-    tira.estado.classList.toggle("encendido", encendido);
+  // Los controles (reproductor y enlace) solo se rehacen cuando cambia la transmisión: si se
+  // recrearan cada minuto, se cortaría el audio que alguien esté escuchando.
+  let ultima = null;
+  const pintar = async () => {
+    const { alAire, texto, vivo } = estadoFranja(emisora, await leerTransmision());
+    tira.estado.classList.toggle("encendido", alAire);
     tira.texto.textContent = texto;
+    const audio = audioDeFranja(vivo, emisora.stream);
+    const huella = JSON.stringify([vivo, audio]);
+    if (huella === ultima) return;
+    ultima = huella;
+    tira.controles.replaceChildren();
+    if (audio) {
+      const reproductor = el("audio");
+      reproductor.controls = true;
+      reproductor.preload = "none"; // no descarga nada hasta que el visitante pulse reproducir
+      reproductor.src = audio;
+      reproductor.setAttribute("aria-label", "Escuchar la emisora");
+      tira.controles.append(reproductor);
+    }
+    if (vivo && !vivo.esAudio) {
+      const ver = enlace("Ver en vivo", vivo.enlace, "boton");
+      ver.target = "_blank";
+      ver.rel = "noopener";
+      tira.controles.append(ver);
+    }
   };
   pintar();
   setInterval(pintar, 60000);

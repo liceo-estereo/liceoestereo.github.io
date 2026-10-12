@@ -300,6 +300,34 @@ export const esNuevo = (pedido, vistoHasta) => Boolean(vistoHasta) && new Date(p
 export const caducados = (pedidos, hoy, dias = 30) =>
   pedidos.filter((p) => diasEntre(fechaLocalISO(new Date(p.creado)), hoy) > dias).map((p) => p.id);
 
+// Lo que dice la franja verde. «Al aire» solo aparece cuando el equipo lo activa en el panel
+// (pestaña En vivo). El resto del tiempo informa qué hay en la programación, sin afirmar que suena.
+export function estadoFranja(emisora, transmision, ahora = new Date()) {
+  const vivo = estadoEnVivo(transmision);
+  if (vivo) return { alAire: true, texto: vivo.titulo === "En vivo" ? "Al aire" : `Al aire: ${vivo.titulo}`, vivo };
+  if (!emisora) return { alAire: false, texto: "", vivo: null };
+  const dia = DIAS[ahora.getDay()];
+  const fecha = fechaLocalISO(ahora);
+  const hora = ahora.toTimeString().slice(0, 5);
+  const especial = especialAhora(emisora.especiales, fecha, hora);
+  const bloque = emisora.parrilla.find((b) => alAire(b, dia, hora));
+  const actual = especial ? { programa: nombreEspecial(especial), fin: especial.fin } : bloque;
+  if (actual) {
+    return { alAire: false, texto: `En la programación: ${actual.programa}, hasta las ${hhmm(actual.fin)}`, vivo: null };
+  }
+  const proximo = proximoHoy(emisora.parrilla, emisora.especiales, dia, fecha, hora);
+  const texto = proximo ? `Sigue en la programación: ${proximo.programa} a las ${proximo.inicio}` : "Sin más programas por hoy";
+  return { alAire: false, texto, vivo: null };
+}
+
+// Dirección del audio que acompaña el aviso de «al aire»: el enlace de la transmisión si es de
+// audio, o la transmisión fija de la emisora (campo `stream` del CMS). Vacío si no hay ninguna.
+export function audioDeFranja(vivo, stream) {
+  if (!vivo) return "";
+  if (vivo.esAudio) return vivo.enlace;
+  return esEnlaceSeguro(stream) ? stream : "";
+}
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];

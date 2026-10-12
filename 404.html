@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página no encontrada · Liceo Tame Stereo</title>
+  <meta name="robots" content="noindex">
+  <script>
+    // GitHub Pages muestra esta página para cualquier dirección que no exista, también dentro de
+    // carpetas. Se fija la base en la raíz del sitio para que las rutas relativas de abajo
+    // funcionen desde cualquier profundidad. Es el único script en línea del sitio.
+    // ponytail: supone que en github.io el sitio vive en /<repositorio>/; si el repositorio pasa a
+    // ser el sitio raíz de la organización, quitar esa rama.
+    var enGithub = location.hostname.endsWith(".github.io");
+    var raiz = enGithub ? "/" + location.pathname.split("/")[1] + "/" : "/";
+    document.head.appendChild(Object.assign(document.createElement("base"), { href: raiz }));
+  </script>
+  <link rel="stylesheet" href="css/sitio.css">
+  <script type="module" src="js/legal.js"></script>
+</head>
+<body>
+  <main id="contenido" class="envoltura">
+    <p class="rotulo">Error 404</p>
+    <h1>Esta página se salió del aire</h1>
+    <p class="bajada">La dirección que abriste no existe o cambió de lugar.</p>
+    <p class="acciones-404">
+      <a class="boton lleno" href="index.html">Ir al inicio</a>
+      <a class="boton" href="noticias.html">Ver las noticias</a>
+      <a class="boton" href="mapa.html">Mapa del sitio</a>
+    </p>
+  </main>
+</body>
+</html>

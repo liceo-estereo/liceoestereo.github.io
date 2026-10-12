@@ -32,8 +32,10 @@ export function crearServidor(raiz) {
       });
       respuesta.end(cuerpo);
     } catch {
-      respuesta.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      respuesta.end("No encontrado");
+      // Igual que GitHub Pages: lo que no existe responde 404 con la página 404.html, si la hay.
+      const pagina = await readFile(join(base, "404.html")).catch(() => "No encontrado");
+      respuesta.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
+      respuesta.end(pagina);
     }
   });
 }
