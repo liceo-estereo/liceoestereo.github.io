@@ -148,6 +148,25 @@ export function bloquesPorSeccion(noticias, secciones, porBloque = 3, excluirId)
     .filter((bloque) => bloque.noticias.length);
 }
 
+// La misma lista, en el mismo orden, que el check de transmision.red en supabase/002-rediseno.sql.
+export const REDES_VIVO = ["instagram", "tiktok", "facebook", "audio"];
+
+// Lo que la portada necesita para avisar que hay transmisión, o null si no la hay o no es fiable.
+export function estadoEnVivo(transmision) {
+  if (!transmision || transmision.activa !== true) return null;
+  if (!REDES_VIVO.includes(transmision.red) || !esEnlaceSeguro(transmision.enlace)) return null;
+  return {
+    red: transmision.red,
+    enlace: transmision.enlace,
+    titulo: transmision.titulo || "En vivo",
+    esAudio: transmision.red === "audio",
+  };
+}
+
+export const redesDeTransmision = (redes) => redes.filter((r) => r.transmite === true && esEnlaceSeguro(r.enlace));
+
+export const mediosVisibles = (lista) => lista.filter((m) => m.titulo && esEnlaceSeguro(m.enlace));
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];

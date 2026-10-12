@@ -379,3 +379,23 @@ main > .boton { display: block; margin-top: 2.5rem; }
 }
 .lista-ultimas a:hover { text-decoration: underline; }
 .especial { display: grid; gap: 0.15rem; }
+
+/* Portada: en vivo, redes, videos y pódcast */
+.en-vivo {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--verde-claro);
+  border-radius: var(--radio);
+}
+.en-vivo p { margin: 0; }
+.aviso-vivo { display: flex; align-items: center; gap: 0.5rem; color: var(--verde); letter-spacing: 0.08em; }
+.punto-vivo { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--senal); }
+.en-vivo audio { width: 100%; }
+.lista-redes { list-style: none; margin: 0; padding: 0; }
+.lista-redes li { padding: 0.5rem 0; border-bottom: 1px solid var(--borde); font-weight: 600; }
+.fila-medios { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); }
+@media (prefers-reduced-motion: no-preference) {
+  .punto-vivo { animation: pulso 1.6s ease-in-out infinite; }
+}

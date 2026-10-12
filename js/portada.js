@@ -1,20 +1,23 @@
 // Portada. El marco se monta primero: si Supabase falla, la cabecera, la franja de «al aire» y el
 // recuadro de hoy se ven igual.
 import { SECCIONES } from "./ajustes.js";
-import { leerNoticias } from "./datos.js";
+import { leerNoticias, leerTransmision } from "./datos.js";
 import {
   bloquesPorSeccion,
   enlaceNoticia,
+  estadoEnVivo,
   fechaLarga,
   fechaLocalISO,
   hhmm,
   jornada,
+  mediosVisibles,
   nombreEspecial,
   noticiaDeLaSemana,
+  redesDeTransmision,
   ultimas,
 } from "./logica.js";
 import { montarMarco } from "./marco.js";
-import { el, enlace, tarjetaNoticia } from "./vista.js";
+import { el, enlace, rutaImagen, tarjetaNoticia } from "./vista.js";
 
 function pintarHoy(emisora) {
   const caja = document.querySelector("#hoy");
@@ -70,8 +73,73 @@ function pintarBloques(bloques) {
   }
 }
 
+function enlaceExterno(texto, href, clase) {
+  const a = enlace(texto, href, clase);
+  a.target = "_blank";
+  a.rel = "noopener";
+  return a;
+}
+
+function pintarEnVivo(vivo, redes) {
+  const caja = document.querySelector("#en-vivo");
+  caja.append(el("h2", "Dónde escucharnos", "rotulo"));
+  if (vivo) {
+    const bloque = el("div", "", "en-vivo");
+    const aviso = el("p", "", "aviso-vivo");
+    const punto = el("span", "", "punto-vivo");
+    punto.setAttribute("aria-hidden", "true");
+    aviso.append(punto, el("strong", "EN VIVO"));
+    bloque.append(aviso, el("p", vivo.titulo));
+    if (vivo.esAudio) {
+      const audio = el("audio");
+      audio.controls = true;
+      audio.src = vivo.enlace;
+      bloque.append(audio);
+    } else {
+      bloque.append(enlaceExterno("Ver en vivo", vivo.enlace, "boton lleno"));
+    }
+    caja.append(bloque);
+  }
+  if (redes.length) {
+    const lista = el("ul", "", "lista-redes");
+    for (const red of redes) {
+      const li = el("li");
+      li.append(enlaceExterno(red.nombre, red.enlace));
+      lista.append(li);
+    }
+    caja.append(lista);
+  }
+  if (!vivo && !redes.length) caja.append(el("p", "Pronto publicaremos nuestros canales."));
+}
+
+function pintarMedios(selector, titulo, medios) {
+  if (!medios.length) return;
+  const seccion = document.querySelector(selector);
+  const fila = el("div", "", "fila-medios");
+  for (const medio of medios) {
+    const tarjeta = el("article", "", "tarjeta");
+    const portada = rutaImagen(medio.portada);
+    if (portada) {
+      const img = el("img");
+      img.src = portada;
+      img.alt = "";
+      img.loading = "lazy";
+      tarjeta.append(img);
+    }
+    const nombre = el("h3");
+    nombre.append(enlaceExterno(medio.titulo, medio.enlace));
+    tarjeta.append(nombre);
+    fila.append(tarjeta);
+  }
+  seccion.append(el("h2", titulo, "rotulo"), fila);
+  seccion.hidden = false;
+}
+
 const emisora = await montarMarco({ actual: "index.html" });
 pintarHoy(emisora);
+pintarEnVivo(estadoEnVivo(await leerTransmision()), redesDeTransmision(emisora?.redes || []));
+pintarMedios("#videos", "En video", mediosVisibles(emisora?.videos || []));
+pintarMedios("#podcasts", "Pódcast", mediosVisibles(emisora?.podcasts || []));
 
 try {
   const noticias = await leerNoticias();
