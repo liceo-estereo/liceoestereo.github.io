@@ -474,3 +474,13 @@ main > .boton { display: block; margin-top: 2.5rem; }
   color: var(--tinta-suave);
 }
 .datos-contacto dd { margin: 0 0 0.6rem; overflow-wrap: anywhere; }
+
+/* Información legal y mapa del sitio */
+.texto-legal { max-width: 46rem; scroll-margin-top: 1rem; }
+.texto-legal + .texto-legal { margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid var(--borde); }
+.texto-legal h2 { margin-bottom: 1.25rem; }
+.tabla { overflow-x: auto; margin-bottom: 1rem; }
+.tabla table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.tabla th, .tabla td { text-align: left; vertical-align: top; padding: 0.5rem 0.75rem; border: 1px solid var(--borde); }
+.tabla th { background: var(--verde-claro); }
+.mapa { max-width: 46rem; font-size: 1.125rem; line-height: 2; }
