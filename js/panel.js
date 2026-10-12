@@ -41,7 +41,12 @@ async function mostrar() {
   document.querySelector("#salir").hidden = !sesion;
   if (!sesion) return;
   document.querySelector("#quien").textContent = sesion.user.email;
-  const permitidas = pestanasPara(await esAdministrador());
+  const admin = await esAdministrador();
+  // Se dice el rol para que no extrañe la falta de la pestaña Tickets.
+  document.querySelector("#rol").textContent = admin
+    ? "administrador"
+    : "editor (la pestaña Tickets es solo para administradores)";
+  const permitidas = pestanasPara(admin);
   for (const boton of botones) boton.hidden = !permitidas.includes(boton.dataset.pestana);
   mostrarPestana("noticias");
 }

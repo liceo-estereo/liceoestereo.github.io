@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { filaPedido, filaTicket } from "../js/datos.js";
+import { estadoDeInsercion, filaPedido, filaTicket } from "../js/datos.js";
 import {
   LIMITES,
   MOTIVOS,
@@ -77,4 +77,22 @@ test("listas, topes y formato del ticket coinciden con la base de datos y el for
 
   const [, formato] = sql.match(/codigo ~ '([^']+)'/);
   assert.match(nuevoTicket(), new RegExp(formato));
+});
+
+test("estadoDeInsercion distingue el límite de envíos de un fallo cualquiera", () => {
+  assert.equal(estadoDeInsercion(true, null), "ok");
+  assert.equal(estadoDeInsercion(false, { code: "P0001", message: "limite_mensajes" }), "limite");
+  assert.equal(estadoDeInsercion(false, { message: "new row violates row-level security policy" }), "error");
+  assert.equal(estadoDeInsercion(false, null), "error");
+});
+
+test("el límite de envíos cubre pedidos y tickets y no guarda la dirección IP", () => {
+  const limite = leer("supabase/004-limite-envios.sql");
+  assert.ok(limite.includes("before insert on pedidos for each row execute function limitar_envios();"));
+  assert.ok(limite.includes("before insert on tickets for each row execute function limitar_envios();"));
+  assert.ok(limite.includes("raise exception 'limite_mensajes'"));
+  assert.ok(limite.includes("md5("));
+  assert.ok(limite.includes("alter table envios enable row level security;"));
+  assert.ok(!/create policy [^;]* on envios/.test(limite));
+  assert.ok(leer("js/contacto.js").includes('estado === "limite"'));
 });

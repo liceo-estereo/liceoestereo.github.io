@@ -59,6 +59,13 @@ Discord. Los tickets de PQRSD no se envían a Discord.
 - La dirección del webhook es secreta: nunca se escribe en un archivo de este repositorio.
 - Si el canal deja de recibir avisos, los pedidos siguen llegando al panel.
 
+## Límite de mensajes seguidos
+
+Desde una misma conexión a internet se aceptan como máximo 10 mensajes (pedidos y PQRSD sumados)
+cada 10 minutos; al pasarse, el formulario pide esperar. Todo el wifi del colegio cuenta como una
+sola conexión. Para cambiar el número o los minutos, edita `supabase/004-limite-envios.sql` y
+vuelve a ejecutarlo en Supabase → SQL Editor.
+
 ## Cómo dar o quitar acceso a un editor
 
 Esto se hace en el panel de Supabase, no en el sitio.

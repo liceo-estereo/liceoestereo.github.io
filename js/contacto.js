@@ -16,6 +16,8 @@ function llenarOpciones(select, opciones) {
   for (const opcion of opciones) select.append(el("option", opcion));
 }
 
+const AVISO_LIMITE = "Se han enviado muchos mensajes seguidos desde esta conexión. Espera unos minutos e inténtalo de nuevo.";
+
 function avisar(parrafo, texto, esError) {
   parrafo.textContent = texto;
   parrafo.classList.toggle("error", Boolean(esError));
@@ -45,9 +47,12 @@ function prepararPedidos() {
     if (!ok) return avisar(aviso, errores.join(" "), true);
     boton.disabled = true;
     // El pedido queda en la tabla pedidos; de ahí lo lee el panel y sale el aviso a Discord.
-    if (await guardarPedido(filaPedido(datos))) {
+    const estado = await guardarPedido(filaPedido(datos));
+    if (estado === "ok") {
       avisar(aviso, "Recibimos tu mensaje.");
       form.reset();
+    } else if (estado === "limite") {
+      avisar(aviso, AVISO_LIMITE, true);
     } else {
       avisar(aviso, "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.", true);
     }
@@ -71,8 +76,11 @@ function prepararTickets(correoEmisora) {
     boton.disabled = true;
     avisar(aviso, "Enviando…");
     const fila = filaTicket(datos, codigo);
-    const [guardado, enviado] = await Promise.all([guardarTicket(fila), enviarCorreoTicket(correoEmisora, fila)]);
-    if (resultadoEnvio(guardado, enviado) === "ok") {
+    // Primero la base de datos: si rechaza por el límite de envíos, tampoco sale el correo.
+    const estado = await guardarTicket(fila);
+    if (estado === "limite") {
+      avisar(aviso, AVISO_LIMITE, true);
+    } else if (resultadoEnvio(estado === "ok", await enviarCorreoTicket(correoEmisora, fila)) === "ok") {
       avisar(aviso, exito);
       form.reset();
     } else {

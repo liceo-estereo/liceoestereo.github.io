@@ -122,7 +122,11 @@ function pie(actual) {
   const contacto = el("div");
   contacto.append(correo, redes);
 
-  const creditos = el("p", `© ${new Date().getFullYear()} sovietic_tech · Emisora institucional del Liceo Tame`, "creditos");
+  const creditos = el(
+    "p",
+    `Emisora institucional de la Institución Educativa Liceo Tame · Sitio desarrollado por sovietic_tech. Contenidos © ${new Date().getFullYear()} Liceo Tame Stereo`,
+    "creditos",
+  );
   dentro.append(
     emisora,
     bloqueDelPie("Secciones", listaDeEnlaces(menuPrincipal(actual))),

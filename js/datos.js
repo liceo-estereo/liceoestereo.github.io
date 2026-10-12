@@ -95,6 +95,13 @@ export function filaPedido(datos) {
   };
 }
 
+// Resultado de una inserción: "ok", "limite" (la base de datos rechazó por demasiados envíos
+// seguidos desde la misma conexión, ver supabase/004-limite-envios.sql) o "error".
+export function estadoDeInsercion(aceptada, cuerpo) {
+  if (aceptada) return "ok";
+  return String(cuerpo?.message || "").includes("limite_mensajes") ? "limite" : "error";
+}
+
 // El visitante puede insertar pero no leer lo que inserta: por eso return=minimal.
 async function insertar(tabla, fila) {
   try {
@@ -103,9 +110,9 @@ async function insertar(tabla, fila) {
       headers: { ...CABECERAS, "Content-Type": "application/json", Prefer: "return=minimal" },
       body: JSON.stringify(fila),
     });
-    return respuesta.ok;
+    return estadoDeInsercion(respuesta.ok, respuesta.ok ? null : await respuesta.json().catch(() => null));
   } catch {
-    return false;
+    return "error";
   }
 }
 
