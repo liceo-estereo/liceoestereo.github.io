@@ -1,0 +1,14 @@
+# Corre las pruebas del sitio en cada subida. No instala nada: el proyecto no tiene dependencias.
+name: Pruebas
+on:
+  push:
+  pull_request:
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+      - run: npm test

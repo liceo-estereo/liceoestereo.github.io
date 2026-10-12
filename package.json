@@ -1,0 +1,12 @@
+{
+  "name": "liceo-tame-stereo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"pruebas/*.test.js\"",
+    "servir": "node herramientas/servidor.js"
+  }
+}
