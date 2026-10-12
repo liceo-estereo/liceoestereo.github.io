@@ -444,3 +444,8 @@ main > .boton { display: block; margin-top: 2.5rem; }
 .parrilla li.al-aire { background: var(--verde); color: var(--superficie); }
 .parrilla li.al-aire :is(.hora, .meta) { color: inherit; }
 .parrilla li.al-aire .etiqueta { background: var(--senal); color: var(--tinta); }
+
+/* Nosotros */
+.resena { max-width: 65ch; margin-bottom: 3rem; font-size: 1.125rem; }
+.bloque-nosotros + .bloque-nosotros { margin-top: 3rem; }
+.personas strong { font: 700 1.125rem/1.25 var(--f-titulares); }
