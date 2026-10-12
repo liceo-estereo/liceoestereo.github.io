@@ -5,6 +5,7 @@ import {
   DEPOSITO_FOTOS,
   conflictoSemana,
   errorDeFoto,
+  esEnlaceSeguro,
   fechaLarga,
   fechaLocalISO,
   filaNoticia,
@@ -21,6 +22,25 @@ const dialogo = document.querySelector("#aviso-semana");
 
 let noticias = [];
 let editando = null; // la noticia que se está editando, o null si es nueva
+let sinFoto = false; // al editar: se pidió quitar la foto que la noticia ya tenía
+let temporal = ""; // dirección de la vista previa del archivo elegido
+
+// Muestra la foto elegida o, al editar, la que la noticia ya tiene, con el botón para quitarla.
+function pintarFoto() {
+  URL.revokeObjectURL(temporal);
+  const archivo = campo("foto").files[0];
+  temporal = archivo ? URL.createObjectURL(archivo) : "";
+  const actual = !sinFoto && esEnlaceSeguro(editando?.foto) ? editando.foto : "";
+  document.querySelector("#vista-foto").hidden = !(temporal || actual);
+  document.querySelector("#imagen-foto").src = temporal || actual;
+}
+
+// Primero descarta el archivo recién elegido; si no había, quita la foto guardada de la noticia.
+function quitarFoto() {
+  if (campo("foto").files[0]) campo("foto").value = "";
+  else sinFoto = true;
+  pintarFoto();
+}
 
 function mostrarAudio() {
   const visible = document.querySelector("#con-audio").checked;
@@ -30,7 +50,9 @@ function mostrarAudio() {
 
 function limpiar() {
   editando = null;
+  sinFoto = false;
   form.reset();
+  pintarFoto();
   campo("fecha").value = fechaLocalISO();
   document.querySelector("#titulo-form").textContent = "Nueva noticia";
   document.querySelector("#guardar").textContent = "Publicar";
@@ -41,6 +63,7 @@ function limpiar() {
 function cargar(noticia) {
   limpiar();
   editando = noticia;
+  pintarFoto();
   for (const id of CAMPOS) campo(id).value = noticia[id] || "";
   document.querySelector("#semana").checked = Boolean(noticiaDeLaSemana([noticia], fechaLocalISO()));
   document.querySelector("#con-audio").checked = Boolean(noticia.audio);
@@ -148,6 +171,7 @@ async function guardar() {
     // Editar la noticia de la semana no reinicia sus siete días.
     if (campos.semana && editando && noticiaDeLaSemana([editando], hoy)) fila.semana_desde = editando.semana_desde;
     if (foto) fila.foto = await subir(DEPOSITO_FOTOS, await reducir(foto), "jpg", "image/jpeg", subidos);
+    else if (editando && sinFoto) fila.foto = null;
     if (audio) fila.audio = await subir(AUDIO.deposito, audio, "mp3", AUDIO.tipos[0], subidos);
     else if (editando && !conAudio) fila.audio = null;
 
@@ -159,7 +183,7 @@ async function guardar() {
     if (error || !data.length) throw error || new Error("sin permiso");
 
     // Guardado: ya se pueden borrar los archivos que la noticia dejó de usar.
-    if (editando && foto) await borrarArchivo(DEPOSITO_FOTOS, editando.foto);
+    if (editando && (foto || sinFoto)) await borrarArchivo(DEPOSITO_FOTOS, editando.foto);
     if (editando && (audio || !conAudio)) await borrarArchivo(AUDIO.deposito, editando.audio);
     aviso(editando ? "Cambios guardados." : "Noticia publicada.");
     limpiar();
@@ -184,6 +208,11 @@ form.onsubmit = (evento) => {
   guardar();
 };
 document.querySelector("#cancelar").onclick = limpiar;
+campo("foto").onchange = () => {
+  sinFoto = false;
+  pintarFoto();
+};
+document.querySelector("#quitar-foto").onclick = quitarFoto;
 document.querySelector("#con-audio").onchange = mostrarAudio;
 document.querySelector("#cerrar-aviso-semana").onclick = () => dialogo.close();
 

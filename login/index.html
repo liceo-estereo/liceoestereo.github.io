@@ -78,6 +78,10 @@
               <label for="foto">Fotografía</label>
               <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
               <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la actual.</small>
+              <figure id="vista-foto" class="vista-foto" hidden>
+                <img id="imagen-foto" alt="Vista previa de la fotografía">
+                <button id="quitar-foto" class="boton peligro" type="button">Quitar foto</button>
+              </figure>
               <label for="pie_foto">Pie de foto</label>
               <input id="pie_foto" name="pie_foto">
               <div class="opciones">
