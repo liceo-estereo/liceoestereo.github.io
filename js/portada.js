@@ -90,7 +90,9 @@ function pintarEnVivo(vivo, redes) {
     punto.setAttribute("aria-hidden", "true");
     aviso.append(punto, el("strong", "EN VIVO"));
     bloque.append(aviso, el("p", vivo.titulo));
-    if (vivo.esAudio) {
+    if (vivo.esAudio && !vivo.enlace) {
+      bloque.append(el("p", "Estamos sonando en el colegio.", "meta"));
+    } else if (vivo.esAudio) {
       const audio = el("audio");
       audio.controls = true;
       audio.src = vivo.enlace;

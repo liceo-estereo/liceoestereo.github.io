@@ -45,6 +45,9 @@ test("audioDeFranja: solo hay reproductor mientras se está al aire", () => {
   assert.equal(audioDeFranja(social, "https://radio.ejemplo.co/fijo"), "https://radio.ejemplo.co/fijo");
   assert.equal(audioDeFranja(social, "javascript:alert(1)"), "");
   assert.equal(audioDeFranja(social, ""), "");
+  const sinDireccion = estadoEnVivo({ activa: true, red: "audio", enlace: "" });
+  assert.equal(audioDeFranja(sinDireccion, ""), "");
+  assert.equal(audioDeFranja(sinDireccion, "https://radio.ejemplo.co/fijo"), "https://radio.ejemplo.co/fijo");
 });
 
 test("el marco consulta la transmisión y no precarga el audio", () => {

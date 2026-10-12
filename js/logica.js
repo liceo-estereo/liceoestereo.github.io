@@ -148,10 +148,13 @@ export const REDES_VIVO = ["instagram", "tiktok", "facebook", "audio"];
 // Lo que la portada necesita para avisar que hay transmisión, o null si no la hay o no es fiable.
 export function estadoEnVivo(transmision) {
   if (!transmision || transmision.activa !== true) return null;
-  if (!REDES_VIVO.includes(transmision.red) || !esEnlaceSeguro(transmision.enlace)) return null;
+  // El audio puede estar «al aire» sin dirección (suena en los altavoces del colegio); una red
+  // social sin enlace fiable no se anuncia.
+  const seguro = esEnlaceSeguro(transmision.enlace);
+  if (!REDES_VIVO.includes(transmision.red) || (!seguro && transmision.red !== "audio")) return null;
   return {
     red: transmision.red,
-    enlace: transmision.enlace,
+    enlace: seguro ? transmision.enlace : "",
     titulo: transmision.titulo || "En vivo",
     esAudio: transmision.red === "audio",
   };
@@ -253,7 +256,9 @@ export function validarTransmision({ activa, red, enlace }) {
   const errores = [];
   if (activa === true) {
     if (!REDES_VIVO.includes(red)) errores.push("Elige por dónde están transmitiendo.");
-    if (typeof enlace !== "string" || !enlace.startsWith("https://")) {
+    // El audio puede salir al aire sin dirección; si se escribe una, debe ser https.
+    const sinEnlace = red === "audio" && !enlace;
+    if (!sinEnlace && (typeof enlace !== "string" || !enlace.startsWith("https://"))) {
       errores.push("Pega el enlace de la transmisión, empezando por https://");
     }
   }
@@ -324,7 +329,7 @@ export function estadoFranja(emisora, transmision, ahora = new Date()) {
 // audio, o la transmisión fija de la emisora (campo `stream` del CMS). Vacío si no hay ninguna.
 export function audioDeFranja(vivo, stream) {
   if (!vivo) return "";
-  if (vivo.esAudio) return vivo.enlace;
+  if (vivo.esAudio && vivo.enlace) return vivo.enlace;
   return esEnlaceSeguro(stream) ? stream : "";
 }
 

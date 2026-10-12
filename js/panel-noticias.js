@@ -5,12 +5,14 @@ import {
   DEPOSITO_FOTOS,
   conflictoSemana,
   errorDeFoto,
+  fechaLarga,
   fechaLocalISO,
   filaNoticia,
   noticiaDeLaSemana,
   validarAudio,
 } from "./logica.js";
 import { aviso, sb } from "./panel.js";
+import { el } from "./vista.js";
 
 const CAMPOS = ["titulo", "subtitulo", "entradilla", "seccion", "pie_foto", "cuerpo", "emisor", "origen", "fecha"];
 const campo = (id) => document.querySelector("#" + id);
@@ -83,19 +85,25 @@ async function listar() {
   noticias = data;
   const vigente = noticiaDeLaSemana(noticias, fechaLocalISO());
   for (const noticia of noticias) {
-    const li = document.createElement("li");
-    const texto = document.createElement("span");
-    texto.textContent = `${noticia.fecha} · ${noticia.titulo}${noticia === vigente ? " · noticia de la semana" : ""}`;
-    const editar = document.createElement("button");
-    editar.textContent = "Editar";
+    const fila = el("tr");
+    const titulo = el("td", noticia.titulo);
+    if (noticia === vigente) titulo.append(" ", el("span", "★ De la semana", "insignia"));
+    const editar = el("button", "Editar", "boton");
     editar.onclick = () => cargar(noticia);
-    const borrar = document.createElement("button");
-    borrar.textContent = "Eliminar";
+    const borrar = el("button", "Eliminar", "boton peligro");
     borrar.onclick = () => eliminar(noticia);
     editar.type = borrar.type = "button";
-    editar.className = borrar.className = "boton";
-    li.append(texto, editar, borrar);
-    lista.append(li);
+    const acciones = el("td", "", "acciones-fila");
+    acciones.append(editar, borrar);
+    fila.append(titulo, el("td", fechaLarga(noticia.fecha)), el("td", noticia.emisor || "—"), acciones);
+    lista.append(fila);
+  }
+  if (!noticias.length) {
+    const vacia = el("td", "Todavía no hay noticias publicadas.");
+    vacia.colSpan = 4;
+    const fila = el("tr");
+    fila.append(vacia);
+    lista.append(fila);
   }
 }
 

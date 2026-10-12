@@ -17,6 +17,14 @@ test("estadoEnVivo devuelve null si no hay transmisión fiable", () => {
   assert.equal(estadoEnVivo({ ...base, activa: false }), null);
   assert.equal(estadoEnVivo({ ...base, enlace: "javascript:alert(1)" }), null);
   assert.equal(estadoEnVivo({ ...base, red: "youtube" }), null);
+  assert.equal(estadoEnVivo({ ...base, enlace: "" }), null);
+});
+
+test("el audio puede estar al aire sin dirección", () => {
+  const vivo = estadoEnVivo({ activa: true, red: "audio", enlace: null });
+  assert.equal(vivo.esAudio, true);
+  assert.equal(vivo.enlace, "");
+  assert.equal(estadoEnVivo({ activa: true, red: "audio", enlace: "javascript:alert(1)" }).enlace, "");
 });
 
 test("redesDeTransmision solo deja las que transmiten y tienen enlace seguro", () => {

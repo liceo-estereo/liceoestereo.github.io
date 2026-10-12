@@ -32,9 +32,11 @@ además **Cerrar sesión**.
 ## Cómo marcar que estamos en vivo
 
 1. En el panel, abre la pestaña **En vivo**.
-2. Marca **Estamos en vivo**, elige la red y pega el enlace de la transmisión (debe empezar por `https://`).
-3. Pulsa **Guardar**. El aviso aparece en la portada.
-4. Al terminar, desmarca la casilla y guarda otra vez. Nada se apaga solo.
+2. Enciende el interruptor **Al aire**. Se guarda solo y todas las páginas del sitio lo muestran.
+3. Si transmiten por una red social, elige cuál y pega el enlace (debe empezar por `https://`) antes
+   de encender. Con «Audio en línea» el enlace es opcional: si lo hay, aparece el reproductor junto
+   al aviso.
+4. Al terminar, apaga el interruptor. Nada se apaga solo.
 
 ## Cómo cambiar la programación, el equipo o las redes
 

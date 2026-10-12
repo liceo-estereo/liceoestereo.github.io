@@ -37,61 +37,72 @@
     </section>
 
     <section id="panel" hidden>
-      <p class="meta">Sesión de <span id="quien"></span> · <span id="rol"></span></p>
-      <nav class="pestanas" role="tablist" aria-label="Secciones del panel">
-        <button type="button" role="tab" data-pestana="noticias">Noticias</button>
-        <button type="button" role="tab" data-pestana="vivo">En vivo</button>
-        <button type="button" role="tab" data-pestana="tickets">Tickets</button>
-        <button type="button" role="tab" data-pestana="mensajes">Mensajes</button>
-      </nav>
+      <aside class="lateral">
+        <p class="meta">Sesión de <span id="quien"></span><br><span id="rol"></span></p>
+        <nav class="pestanas" role="tablist" aria-label="Secciones del panel" aria-orientation="vertical">
+          <button type="button" role="tab" data-pestana="noticias">Noticias</button>
+          <button type="button" role="tab" data-pestana="vivo">En vivo</button>
+          <button type="button" role="tab" data-pestana="tickets">Tickets</button>
+          <button type="button" role="tab" data-pestana="mensajes">Mensajes</button>
+        </nav>
+      </aside>
 
+      <div class="area">
       <section id="pestana-noticias" role="tabpanel" hidden>
-        <h2>Noticias</h2>
-        <h3 id="titulo-form">Nueva noticia</h3>
-        <form id="form-noticia" class="formulario">
-          <label for="titulo">Título *</label>
-          <input id="titulo" name="titulo" required>
-          <label for="subtitulo">Subtítulo</label>
-          <input id="subtitulo" name="subtitulo">
-          <label for="entradilla">Entradilla</label>
-          <textarea id="entradilla" name="entradilla" rows="2" aria-describedby="ayuda-entradilla"></textarea>
-          <small id="ayuda-entradilla">Uno o dos renglones que resumen la noticia.</small>
-          <label for="seccion">Sección *</label>
-          <select id="seccion" name="seccion" required></select>
-          <label for="foto">Fotografía</label>
-          <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
-          <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la actual.</small>
-          <label for="pie_foto">Pie de foto</label>
-          <input id="pie_foto" name="pie_foto">
-          <label for="cuerpo">Cuerpo de la noticia</label>
-          <textarea id="cuerpo" name="cuerpo" rows="10" aria-describedby="ayuda-cuerpo"></textarea>
-          <small id="ayuda-cuerpo">Cada párrafo en una línea aparte.</small>
-          <label for="emisor">Emisor</label>
-          <input id="emisor" name="emisor" aria-describedby="ayuda-emisor">
-          <small id="ayuda-emisor">Quién escribe o reporta la noticia.</small>
-          <label for="origen">Origen</label>
-          <input id="origen" name="origen" aria-describedby="ayuda-origen">
-          <small id="ayuda-origen">Lugar o fuente de la noticia.</small>
-          <label for="fecha">Fecha *</label>
-          <input id="fecha" name="fecha" type="date" required>
-          <p class="casilla">
-            <input id="semana" name="semana" type="checkbox">
-            <label for="semana">Noticia de la semana (dura 7 días)</label>
-          </p>
-          <p class="casilla">
-            <input id="con-audio" name="con-audio" type="checkbox">
-            <label for="con-audio">Incluir audio</label>
-          </p>
-          <label for="audio" id="etiqueta-audio" hidden>Audio de la noticia (MP3, máximo 10 MB)</label>
-          <input id="audio" name="audio" type="file" accept="audio/mpeg,audio/mp3" hidden>
+        <h2 id="titulo-form">Nueva noticia</h2>
+        <form id="form-noticia">
+          <div class="caja dos-columnas">
+            <div class="formulario">
+              <label for="titulo">Título *</label>
+              <input id="titulo" name="titulo" required>
+              <label for="subtitulo">Subtítulo</label>
+              <input id="subtitulo" name="subtitulo">
+              <label for="entradilla">Entradilla</label>
+              <textarea id="entradilla" name="entradilla" rows="2" aria-describedby="ayuda-entradilla"></textarea>
+              <small id="ayuda-entradilla">Uno o dos renglones que resumen la noticia.</small>
+              <label for="cuerpo">Cuerpo de la noticia</label>
+              <textarea id="cuerpo" name="cuerpo" rows="14" aria-describedby="ayuda-cuerpo"></textarea>
+              <small id="ayuda-cuerpo">Cada párrafo en una línea aparte.</small>
+            </div>
+            <div class="formulario">
+              <label for="seccion">Sección *</label>
+              <select id="seccion" name="seccion" required></select>
+              <label for="fecha">Fecha *</label>
+              <input id="fecha" name="fecha" type="date" required>
+              <label for="emisor">Emisor</label>
+              <input id="emisor" name="emisor" aria-describedby="ayuda-emisor">
+              <small id="ayuda-emisor">Quién escribe o reporta la noticia.</small>
+              <label for="origen">Origen</label>
+              <input id="origen" name="origen" aria-describedby="ayuda-origen">
+              <small id="ayuda-origen">Lugar o fuente de la noticia.</small>
+              <label for="foto">Fotografía</label>
+              <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
+              <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la actual.</small>
+              <label for="pie_foto">Pie de foto</label>
+              <input id="pie_foto" name="pie_foto">
+              <div class="opciones">
+                <input id="semana" name="semana" type="checkbox">
+                <label class="opcion" for="semana"><strong>★ Noticia de la semana</strong><span>Se destaca 7 días en la portada</span></label>
+                <input id="con-audio" name="con-audio" type="checkbox">
+                <label class="opcion" for="con-audio"><strong>♪ Añadir audio</strong><span>Una voz grabada que acompaña la noticia</span></label>
+              </div>
+              <label for="audio" id="etiqueta-audio" hidden>Audio de la noticia (MP3, máximo 10 MB)</label>
+              <input id="audio" name="audio" type="file" accept="audio/mpeg,audio/mp3" hidden>
+            </div>
+          </div>
           <div class="acciones">
-            <button id="guardar" class="boton lleno" type="submit">Publicar</button>
-            <button id="cancelar" class="boton" type="button" hidden>Cancelar edición</button>
+            <button id="guardar" class="boton lleno grande" type="submit">Publicar</button>
+            <button id="cancelar" class="boton grande" type="button" hidden>Cancelar edición</button>
           </div>
         </form>
 
-        <h3>Noticias publicadas</h3>
-        <ul id="publicadas" class="lista-publicadas"></ul>
+        <h2>Noticias publicadas</h2>
+        <div class="caja tabla tablero">
+          <table>
+            <thead><tr><th scope="col">Título</th><th scope="col">Fecha</th><th scope="col">Emisor</th><th scope="col"><span class="solo-lectores">Acciones</span></th></tr></thead>
+            <tbody id="publicadas"></tbody>
+          </table>
+        </div>
 
         <dialog id="aviso-semana">
           <h2>Revisar noticia de la semana</h2>
@@ -102,25 +113,28 @@
 
       <section id="pestana-vivo" role="tabpanel" hidden>
         <h2>En vivo</h2>
-        <p>Marca la casilla cuando empiecen a transmitir y desmárcala al terminar. El aviso aparece en la portada.</p>
-        <form id="form-vivo" class="formulario">
-          <p class="casilla">
-            <input id="vivo-activa" name="activa" type="checkbox">
-            <label for="vivo-activa">Estamos en vivo</label>
-          </p>
-          <label for="vivo-red">¿Por dónde?</label>
-          <select id="vivo-red" name="red">
-            <option value="instagram">Instagram</option>
-            <option value="tiktok">TikTok</option>
-            <option value="facebook">Facebook</option>
-            <option value="audio">Audio en línea</option>
-          </select>
-          <label for="vivo-enlace">Enlace de la transmisión</label>
-          <input id="vivo-enlace" name="enlace" type="url" placeholder="https://" aria-describedby="ayuda-vivo">
-          <small id="ayuda-vivo">Dirección completa, empezando por https://</small>
-          <label for="vivo-titulo">Título (opcional)</label>
-          <input id="vivo-titulo" name="titulo" maxlength="80">
-          <button class="boton lleno" type="submit">Guardar</button>
+        <form id="form-vivo">
+          <div class="caja aire">
+            <input id="vivo-activa" name="activa" type="checkbox" role="switch" class="palanca" aria-describedby="vivo-estado">
+            <label for="vivo-activa">Al aire</label>
+            <p id="vivo-estado" class="meta"></p>
+          </div>
+          <div class="caja formulario">
+            <h3>Datos de la transmisión</h3>
+            <label for="vivo-red">¿Por dónde?</label>
+            <select id="vivo-red" name="red">
+              <option value="instagram">Instagram</option>
+              <option value="tiktok">TikTok</option>
+              <option value="facebook">Facebook</option>
+              <option value="audio">Audio en línea</option>
+            </select>
+            <label for="vivo-enlace">Dirección de la transmisión</label>
+            <input id="vivo-enlace" name="enlace" type="url" placeholder="https://" aria-describedby="ayuda-vivo">
+            <small id="ayuda-vivo">Con «Audio en línea» puede quedar vacía: el sitio dirá «Al aire» sin reproductor. Si la pegas, el reproductor aparece junto al aviso. Para una red social es obligatoria.</small>
+            <label for="vivo-titulo">Título (opcional)</label>
+            <input id="vivo-titulo" name="titulo" maxlength="80">
+            <button class="boton lleno" type="submit">Guardar datos</button>
+          </div>
         </form>
       </section>
 
@@ -141,6 +155,7 @@
           <ul id="lista-anteriores" class="lista-mensajes"></ul>
         </details>
       </section>
+      </div>
     </section>
   </main>
 

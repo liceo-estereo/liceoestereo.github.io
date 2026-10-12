@@ -1,47 +1,141 @@
 /* Panel de administración. Usa solo las variables de css/sitio.css: aquí no va ningún color literal. */
-.admin > section { max-width: 60rem; }
-.admin .formulario { max-width: 40rem; }
+.admin { max-width: 88rem; }
 .admin h2 { margin-bottom: 1.25rem; }
-.admin h3 { margin: 2.5rem 0 1rem; }
-
-.pestanas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  margin: 1rem 0 2rem;
-  border-bottom: 2px solid var(--borde);
+.admin h3 { margin: 0 0 0.5rem; }
+#entrada { max-width: 26rem; }
+.caja {
+  padding: clamp(1rem, 3vw, 2rem);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
 }
+
+/* Barra lateral con las funciones del panel: arriba en celular, a la izquierda desde 56rem */
+#panel:not([hidden]) { display: grid; gap: 1.5rem; margin-top: 1rem; }
+.area { min-width: 0; }
+.lateral .meta { overflow-wrap: anywhere; margin-bottom: 0.75rem; }
+.pestanas { display: flex; flex-wrap: wrap; gap: 0.25rem; }
 .pestanas [role="tab"] {
-  margin-bottom: -2px;
-  padding: 0.6rem 1rem;
+  padding: 0.65rem 1rem;
   cursor: pointer;
+  text-align: left;
   background: none;
   border: 0;
-  border-bottom: 3px solid transparent;
+  border-left: 4px solid transparent;
+  border-radius: var(--radio);
   color: var(--tinta-suave);
   font: 600 1rem var(--f-texto);
 }
-.pestanas [role="tab"]:hover { color: var(--verde); }
+.pestanas [role="tab"]:hover { color: var(--verde); background: var(--verde-claro); }
 .pestanas [role="tab"][aria-selected="true"] {
   color: var(--verde);
-  border-bottom-color: var(--verde);
+  border-left-color: var(--verde);
   background: var(--verde-claro);
 }
-
-.casilla { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; }
-.casilla label { margin: 0; }
-.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-
-.lista-publicadas { list-style: none; margin: 0; padding: 0; }
-.lista-publicadas li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--borde);
+@media (min-width: 56rem) {
+  #panel:not([hidden]) { grid-template-columns: 13rem minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+  .lateral {
+    position: sticky;
+    top: 1rem;
+    padding: 1rem;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+  }
+  .pestanas { flex-direction: column; }
 }
-.lista-publicadas span { flex: 1 1 14rem; min-width: 0; }
+
+/* Noticias: formulario en dos columnas dentro de una caja, con el botón de guardar aparte */
+.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 3rem; }
+.boton.grande { padding: 0.8rem 2rem; font-size: 1.0625rem; }
+.boton.peligro { border-color: var(--error); color: var(--error); }
+.boton.peligro:hover { background: var(--error); color: var(--superficie); }
+.admin input[type="file"]::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  border: 1.5px solid var(--verde);
+  border-radius: var(--radio);
+  background: var(--verde-claro);
+  color: var(--verde);
+  font: 600 0.875rem var(--f-texto);
+}
+
+/* «Noticia de la semana» y «Añadir audio»: casillas con forma de botón */
+.opciones { display: grid; gap: 0.75rem; margin-top: 1.25rem; }
+.opciones input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.formulario .opcion {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border: 1.5px dashed var(--verde);
+  border-radius: var(--radio);
+  color: var(--verde);
+  background: var(--superficie);
+}
+.opcion span { font-weight: 400; font-size: 0.8125rem; color: var(--tinta-suave); }
+.opcion:hover { background: var(--verde-claro); }
+input:checked + .opcion { border-style: solid; background: var(--verde); color: var(--superficie); }
+input:checked + .opcion span { color: inherit; }
+input:checked + .opcion strong::after { content: " · activado"; font-weight: 400; }
+input:focus-visible + .opcion { outline: 3px solid var(--senal); outline-offset: 2px; }
+
+/* Tablero de noticias publicadas */
+.tablero { padding: 0; margin-bottom: 0; }
+.tablero :is(th, td) { border-width: 0 0 1px; padding: 0.75rem 1rem; vertical-align: middle; }
+.tablero tbody tr:last-child td { border-bottom: 0; }
+.tablero tbody tr:hover { background: var(--fondo); }
+.tablero td:first-child { font-weight: 600; min-width: 14rem; }
+.tablero td:nth-child(2) { white-space: nowrap; }
+.acciones-fila { white-space: nowrap; text-align: right; }
+.acciones-fila .boton { padding: 0.3rem 0.7rem; font-size: 0.8125rem; margin-left: 0.4rem; }
+.insignia {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radio);
+  background: var(--senal);
+  color: var(--tinta);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* En vivo: el interruptor «Al aire» */
+#form-vivo { display: grid; gap: 1.5rem; max-width: 40rem; }
+.aire { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.5rem 1.25rem; }
+.aire label { font: 700 1.75rem var(--f-titulares); cursor: pointer; }
+.aire .meta { grid-column: 1 / -1; font-size: 0.9375rem; }
+.aire:has(:checked) { border-color: var(--verde); background: var(--verde-claro); }
+.palanca {
+  appearance: none;
+  position: relative;
+  width: 4.5rem;
+  height: 2.5rem;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 2.5rem;
+  background: var(--borde);
+  border: 2px solid var(--tinta-suave);
+}
+.palanca::before {
+  content: "";
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  background: var(--superficie);
+  border: 2px solid var(--tinta-suave);
+}
+.palanca:checked { background: var(--verde); border-color: var(--verde); }
+.palanca:checked::before { left: 2.2rem; background: var(--senal); border-color: var(--senal); }
+.palanca:focus-visible { outline: 3px solid var(--senal); outline-offset: 3px; }
+.palanca:disabled { opacity: 0.6; cursor: wait; }
+@media (prefers-reduced-motion: no-preference) {
+  .palanca, .palanca::before { transition: left 0.15s, background-color 0.15s; }
+}
 
 dialog {
   max-width: min(32rem, calc(100% - 2rem));

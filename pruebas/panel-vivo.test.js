@@ -20,6 +20,12 @@ test("activar exige https y una red de la lista", () => {
   assert.equal(validarTransmision({ ...base, enlace: "http://x.co" }).ok, false);
   assert.equal(validarTransmision({ ...base, enlace: "javascript:alert(1)" }).ok, false);
   assert.equal(validarTransmision({ ...base, red: "youtube" }).ok, false);
+  assert.equal(validarTransmision({ ...base, enlace: "" }).ok, false);
+});
+
+test("el audio puede salir al aire sin dirección, pero no con una insegura", () => {
+  assert.equal(validarTransmision({ activa: true, red: "audio", enlace: "" }).ok, true);
+  assert.equal(validarTransmision({ activa: true, red: "audio", enlace: "http://radio.co" }).ok, false);
 });
 
 test("filaTransmision anula los textos vacíos y fecha el cambio", () => {
