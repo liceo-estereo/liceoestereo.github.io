@@ -55,3 +55,32 @@ export const parrafos = (texto) =>
     .filter(Boolean);
 
 export const enlaceNoticia = (noticia) => "noticia.html?id=" + noticia.id;
+
+// Solo http y https: un enlace que viene de datos nunca puede ser javascript: ni data:.
+export const esEnlaceSeguro = (url) => typeof url === "string" && /^https?:\/\//.test(url);
+
+export function menuPrincipal(actual) {
+  return [
+    { href: "index.html", texto: "Inicio" },
+    { href: "noticias.html", texto: "Noticias" },
+    { href: "programacion.html", texto: "Programación" },
+    { href: "nosotros.html", texto: "Nosotros" },
+    { href: "contacto.html", texto: "Contacto" },
+  ].map((entrada) => ({ ...entrada, actual: entrada.href === actual }));
+}
+
+export function enlacesLegales() {
+  return [
+    { href: "legal.html#terminos", texto: "Términos y condiciones" },
+    { href: "legal.html#datos", texto: "Tratamiento de datos" },
+    { href: "legal.html#responsabilidad", texto: "Responsabilidad institucional" },
+    { href: "legal.html#aclaraciones", texto: "Aclaraciones y rectificaciones" },
+    { href: "mapa.html", texto: "Mapa del sitio" },
+  ];
+}
+
+// T12:00 evita que la zona horaria corra la fecha un día atrás.
+export const fechaLarga = (fechaISO) =>
+  new Date(fechaISO.slice(0, 10) + "T12:00").toLocaleDateString("es-CO", { dateStyle: "long" });
+
+export const inicial = (nombre) => ((nombre || "").trim()[0] || "?").toUpperCase();
