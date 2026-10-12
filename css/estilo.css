@@ -15,6 +15,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* para que valga también en elementos con display propio */
 html { scroll-padding-top: 1rem; }
 body {
   margin: 0;
@@ -332,7 +333,8 @@ summary:hover, details[open] summary, .boton:hover, .boton.lleno { background: v
   border-radius: 5px;
 }
 #aviso.error { border-left-color: #a12a1b; }
-.formulario { display: grid; gap: .35rem; margin-bottom: 3rem; }
+.formulario { display: grid; gap: .35rem; }
+.admin .formulario { margin-bottom: 3rem; }
 .formulario label { margin-top: .9rem; font: 500 1rem var(--f-titulos); color: var(--verde); }
 .formulario input, .formulario textarea, .formulario select {
   width: 100%;

@@ -16,6 +16,13 @@ function especialAhora(especiales, fecha, hora) {
   return especiales.find((e) => e.fecha.slice(0, 10) === fecha && hhmm(e.inicio) <= hora && hora < hhmm(e.fin));
 }
 
+// "322 000 0000" o "+57 322 000 0000" -> "573220000000", como lo pide wa.me.
+// Con 10 dígitos se asume que es un celular de Colombia.
+function numeroWhatsapp(texto) {
+  const n = (texto || "").replace(/\D/g, "");
+  return n.length === 10 ? "57" + n : n;
+}
+
 // Código que identifica cada mensaje del formulario de contacto: LT-AAMMDD-XXXX.
 function nuevoTicket() {
   const fecha = new Date().toISOString().slice(2, 10).replaceAll("-", "");
@@ -39,6 +46,9 @@ console.assert(especialAhora([invitado], "2026-10-12", "14:30") === invitado);
 console.assert(!especialAhora([invitado], "2026-10-13", "14:30"));
 console.assert(jornada("9:30") === "Mañana" && jornada("12:00") === "Tarde");
 console.assert(/^LT-\d{6}-[A-Z0-9]{4}$/.test(nuevoTicket()));
+console.assert(numeroWhatsapp("+57 322 000 0000") === "573220000000");
+console.assert(numeroWhatsapp("322 000 0000") === "573220000000");
+console.assert(numeroWhatsapp("") === "");
 
 function el(tag, texto, clase) {
   const e = document.createElement(tag);
@@ -236,13 +246,36 @@ function pintarContacto(emisora) {
   const datos = document.querySelector("#datos-contacto");
   const correo = el("a", emisora.contacto);
   correo.href = "mailto:" + emisora.contacto;
-  const filas = [["Correo", correo], ["Teléfono", emisora.telefono], ["Dirección", emisora.direccion]];
+  const numero = numeroWhatsapp(emisora.whatsapp);
+  const whatsapp = numero && el("a", emisora.whatsapp);
+  if (whatsapp) whatsapp.href = "https://wa.me/" + numero;
+  const filas = [["Correo", correo], ["WhatsApp", whatsapp], ["Teléfono", emisora.telefono], ["Dirección", emisora.direccion]];
   for (const [nombre, valor] of filas) {
     if (!valor) continue;
     const dd = el("dd");
     dd.append(valor);
     datos.append(el("dt", nombre), dd);
   }
+}
+
+// Canciones, mensajes y dedicatorias: arma el texto y abre el chat de WhatsApp de la
+// emisora con el mensaje ya escrito. Sin número configurado, el formulario no se muestra.
+function prepararWhatsapp(numero) {
+  if (!numero) return;
+  const form = document.querySelector("#form-whatsapp");
+  form.hidden = false;
+  document.querySelector("#sin-whatsapp").hidden = true;
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const lineas = [
+      `*${d.get("tipo")}*`,
+      d.get("nombre") && `De: ${d.get("nombre")}`,
+      d.get("para") && `Para: ${d.get("para")}`,
+      d.get("mensaje"),
+    ].filter(Boolean);
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(lineas.join("\n"))}`, "_blank", "noopener");
+  };
 }
 
 // El formulario envía el mensaje al correo de la emisora a través de FormSubmit
@@ -319,6 +352,7 @@ Promise.all([pide("datos/emisora.json"), hay("#noticias") ? pideNoticias() : []]
     if (hay("#datos-contacto")) {
       pintarContacto(emisora);
       prepararFormulario(emisora.contacto);
+      prepararWhatsapp(numeroWhatsapp(emisora.whatsapp));
     }
     if (hay("#noticias")) {
       pintarNoticias(noticias);

@@ -38,11 +38,34 @@
 
   <main id="contenido" class="envoltura">
     <h1>Contacto</h1>
-    <p class="bajada">Escríbenos para pedir una canción, enviar un saludo o unirte al equipo.</p>
+    <p class="bajada">Canciones, saludos y dedicatorias van por WhatsApp. Las PQRSD y las solicitudes para unirte al equipo llegan al correo de la emisora.</p>
     <dl id="datos-contacto"></dl>
 
-    <section aria-labelledby="titulo-mensaje">
-      <h2 id="titulo-mensaje" class="rotulo">Envíanos un mensaje</h2>
+    <section aria-labelledby="titulo-al-aire">
+      <h2 id="titulo-al-aire" class="rotulo">Canciones, mensajes y dedicatorias</h2>
+      <p id="sin-whatsapp">Este canal estará disponible pronto.</p>
+      <form id="form-whatsapp" class="formulario" hidden>
+        <label for="wa-tipo">¿Qué quieres enviar? *</label>
+        <select id="wa-tipo" name="tipo" required>
+          <option>Pedir una canción</option>
+          <option>Mensaje al aire</option>
+          <option>Dedicatoria</option>
+        </select>
+        <label for="wa-nombre">Tu nombre</label>
+        <input id="wa-nombre" name="nombre" autocomplete="name" maxlength="80">
+        <label for="wa-para">¿Para quién?</label>
+        <input id="wa-para" name="para" maxlength="80" aria-describedby="ayuda-para">
+        <small id="ayuda-para">Opcional. Para saludos y dedicatorias.</small>
+        <label for="wa-mensaje">Canción o mensaje *</label>
+        <textarea id="wa-mensaje" name="mensaje" rows="4" required maxlength="600"></textarea>
+        <button class="boton lleno" type="submit">Continuar en WhatsApp</button>
+        <small>Se abre WhatsApp con el mensaje listo; solo falta que pulses enviar. La emisora verá tu número.</small>
+      </form>
+    </section>
+
+    <section aria-labelledby="titulo-pqrsd">
+      <h2 id="titulo-pqrsd" class="rotulo">PQRSD y solicitudes para unirte al equipo</h2>
+      <p>Peticiones, quejas, reclamos, sugerencias y denuncias. Cada mensaje recibe un número de ticket.</p>
       <form id="form-contacto" class="formulario">
         <label for="nombre">Nombre *</label>
         <input id="nombre" name="nombre" autocomplete="name" required maxlength="80">
@@ -51,16 +74,17 @@
         <small id="ayuda-correo">Opcional. Déjalo si quieres que te respondamos.</small>
         <label for="tipo">Motivo *</label>
         <select id="tipo" name="tipo" required>
-          <option>Pedir una canción</option>
-          <option>Saludo o dedicatoria</option>
+          <option>Petición</option>
+          <option>Queja</option>
+          <option>Reclamo</option>
           <option>Sugerencia</option>
-          <option>Quiero unirme al equipo</option>
-          <option>Otro</option>
+          <option>Denuncia</option>
+          <option>Solicitud para unirme al equipo</option>
         </select>
         <label for="mensaje">Mensaje *</label>
         <textarea id="mensaje" name="mensaje" rows="6" required maxlength="2000"></textarea>
         <input class="trampa" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="boton lleno" type="submit">Enviar mensaje</button>
+        <button class="boton lleno" type="submit">Enviar al correo</button>
         <p id="aviso" role="status"></p>
         <small>El mensaje llega al correo de la emisora por medio del servicio FormSubmit.</small>
       </form>
@@ -90,7 +114,7 @@
 
       <section aria-labelledby="titulo-pie-contacto">
         <h2 id="titulo-pie-contacto">Contacto</h2>
-        <p>Para pedir una canción, enviar un saludo o unirte al equipo:</p>
+        <p>PQRSD y solicitudes para unirte al equipo. Para canciones y saludos, ve a <a href="contacto.html">Contacto</a>.</p>
         <address><a id="correo"></a></address>
       </section>
 
