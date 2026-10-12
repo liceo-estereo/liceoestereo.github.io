@@ -1,0 +1,75 @@
+/* Panel de administración. Usa solo las variables de css/sitio.css: aquí no va ningún color literal. */
+.admin > section { max-width: 60rem; }
+.admin .formulario { max-width: 40rem; }
+.admin h2 { margin-bottom: 1.25rem; }
+.admin h3 { margin: 2.5rem 0 1rem; }
+
+.pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 1rem 0 2rem;
+  border-bottom: 2px solid var(--borde);
+}
+.pestanas [role="tab"] {
+  margin-bottom: -2px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  color: var(--tinta-suave);
+  font: 600 1rem var(--f-texto);
+}
+.pestanas [role="tab"]:hover { color: var(--verde); }
+.pestanas [role="tab"][aria-selected="true"] {
+  color: var(--verde);
+  border-bottom-color: var(--verde);
+  background: var(--verde-claro);
+}
+
+.casilla { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; }
+.casilla label { margin: 0; }
+.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.lista-publicadas { list-style: none; margin: 0; padding: 0; }
+.lista-publicadas li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--borde);
+}
+.lista-publicadas span { flex: 1 1 14rem; min-width: 0; }
+
+dialog {
+  max-width: min(32rem, calc(100% - 2rem));
+  padding: 1.5rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: var(--tinta);
+  background: var(--superficie);
+}
+dialog::backdrop { background: color-mix(in srgb, var(--tinta) 55%, transparent); }
+dialog h2 { margin-bottom: 0.75rem; }
+
+/* Muro de tickets: una columna por estado */
+.muro { display: grid; gap: 1.5rem; }
+@media (min-width: 52rem) {
+  .muro { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+.muro > section { display: grid; gap: 0.75rem; align-content: start; min-width: 0; }
+.ficha {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  overflow-wrap: anywhere;
+}
+.ficha p { margin: 0; }
+.ficha select { width: 100%; padding: 0.4rem; font: inherit; border: 1.5px solid var(--borde); border-radius: var(--radio); }
+
+.lista-mensajes { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.75rem; max-width: 46rem; }

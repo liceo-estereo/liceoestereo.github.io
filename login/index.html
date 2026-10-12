@@ -6,14 +6,14 @@
   <meta name="robots" content="noindex">
   <title>Administración · Liceo Tame Stereo</title>
   <link rel="icon" href="../img/logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Jost:wght@500;700&display=swap">
-  <link rel="stylesheet" href="../css/estilo.css">
+  <link rel="stylesheet" href="../css/sitio.css">
+  <link rel="stylesheet" href="../css/panel.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" integrity="sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R" crossorigin="anonymous"></script>
+  <script type="module" src="../js/panel.js"></script>
 </head>
 <body>
   <header class="cabecera">
-    <div class="envoltura">
+    <div class="envoltura cabecera-principal">
       <a class="marca" href="../index.html" aria-label="Liceo Tame Stereo, volver al sitio">
         <img src="../img/logo.svg" alt="" width="52" height="52">
         <p class="nombre">Liceo Tame <span>stereo</span></p>
@@ -22,8 +22,8 @@
     </div>
   </header>
 
-  <main class="envoltura admin">
-    <p id="aviso" role="status"></p>
+  <main id="contenido" class="envoltura admin">
+    <p id="aviso" class="aviso" role="status"></p>
 
     <section id="entrada" hidden>
       <h1>Administración</h1>
@@ -37,46 +37,30 @@
     </section>
 
     <section id="panel" hidden>
-      <h1 id="titulo-form">Nueva noticia</h1>
-      <p class="bajada">Sesión de <span id="quien"></span>. Los campos con * son obligatorios.</p>
+      <p class="meta">Sesión de <span id="quien"></span></p>
+      <nav class="pestanas" role="tablist" aria-label="Secciones del panel">
+        <button type="button" role="tab" data-pestana="noticias">Noticias</button>
+        <button type="button" role="tab" data-pestana="vivo">En vivo</button>
+        <button type="button" role="tab" data-pestana="tickets">Tickets</button>
+        <button type="button" role="tab" data-pestana="mensajes">Mensajes</button>
+      </nav>
 
-      <form id="form-noticia" class="formulario">
-        <label for="titulo">Título *</label>
-        <input id="titulo" name="titulo" required>
-        <label for="subtitulo">Subtítulo</label>
-        <input id="subtitulo" name="subtitulo">
-        <label for="entradilla">Entradilla</label>
-        <textarea id="entradilla" name="entradilla" rows="2" aria-describedby="ayuda-entradilla"></textarea>
-        <small id="ayuda-entradilla">Uno o dos renglones que resumen la noticia.</small>
-        <label for="foto">Fotografía</label>
-        <input id="foto" name="foto" type="file" accept="image/*" aria-describedby="ayuda-foto">
-        <small id="ayuda-foto">Se reduce sola antes de subirse. Al editar, déjala vacía para conservar la foto actual.</small>
-        <label for="pie_foto">Pie de foto</label>
-        <input id="pie_foto" name="pie_foto">
-        <label for="cuerpo">Cuerpo de la noticia</label>
-        <textarea id="cuerpo" name="cuerpo" rows="10" aria-describedby="ayuda-cuerpo"></textarea>
-        <small id="ayuda-cuerpo">Cada párrafo en una línea aparte.</small>
-        <label for="emisor">Emisor</label>
-        <input id="emisor" name="emisor" aria-describedby="ayuda-emisor">
-        <small id="ayuda-emisor">Quién escribe o reporta la noticia.</small>
-        <label for="origen">Origen</label>
-        <input id="origen" name="origen" aria-describedby="ayuda-origen">
-        <small id="ayuda-origen">Lugar o fuente de la noticia.</small>
-        <label for="fecha">Fecha *</label>
-        <input id="fecha" name="fecha" type="date" required>
-        <div class="acciones">
-          <button id="guardar" class="boton lleno" type="submit">Publicar</button>
-          <button id="cancelar" class="boton" type="button" hidden>Cancelar edición</button>
-        </div>
-      </form>
+      <section id="pestana-noticias" role="tabpanel" hidden>
+        <h2>Noticias</h2>
+      </section>
 
-      <h2 class="rotulo">Noticias publicadas</h2>
-      <ul id="publicadas"></ul>
+      <section id="pestana-vivo" role="tabpanel" hidden>
+        <h2>En vivo</h2>
+      </section>
+
+      <section id="pestana-tickets" role="tabpanel" hidden>
+        <h2>Tickets</h2>
+      </section>
+
+      <section id="pestana-mensajes" role="tabpanel" hidden>
+        <h2>Mensajes</h2>
+      </section>
     </section>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/config.js"></script>
-  <script src="../js/admin.js"></script>
 </body>
 </html>

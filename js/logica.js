@@ -222,6 +222,10 @@ export function textoWhatsapp({ tipo, nombre, para, mensaje }) {
 // Basta con que el ticket quede guardado o que el correo haya salido.
 export const resultadoEnvio = (guardado, correoEnviado) => (guardado || correoEnviado ? "ok" : "error");
 
+// Pestañas del panel según el rol. La base de datos es la que de verdad impide leer los tickets.
+export const pestanasPara = (esAdmin) =>
+  esAdmin === true ? ["noticias", "vivo", "tickets", "mensajes"] : ["noticias", "vivo", "mensajes"];
+
 // Grupos consecutivos por mes, en el orden recibido.
 export function agruparPorMes(noticias) {
   const grupos = [];
