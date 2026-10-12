@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          URL=$(sed -n 's/^const SUPABASE_URL = "\(.*\)";/\1/p' js/config.js)
-          KEY=$(sed -n 's/^const SUPABASE_KEY = "\(.*\)";/\1/p' js/config.js)
+          URL=$(sed -n 's/^export const SUPABASE_URL = "\(.*\)";/\1/p' js/ajustes.js)
+          KEY=$(sed -n 's/^export const SUPABASE_KEY = "\(.*\)";/\1/p' js/ajustes.js)
           curl -fsS "$URL/rest/v1/noticias?select=id&limit=1" -H "apikey: $KEY"
