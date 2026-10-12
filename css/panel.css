@@ -73,3 +73,8 @@ dialog h2 { margin-bottom: 0.75rem; }
 .ficha select { width: 100%; padding: 0.4rem; font: inherit; border: 1.5px solid var(--borde); border-radius: var(--radio); }
 
 .lista-mensajes { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.75rem; max-width: 46rem; }
+
+/* Mensajes: lo que llegó desde la última vez que se miró */
+.ficha.nuevo { border-color: var(--verde); border-left: 5px solid var(--senal); background: var(--verde-claro); }
+.anteriores { margin-top: 2.5rem; max-width: 46rem; }
+.anteriores summary { cursor: pointer; font-weight: 700; color: var(--tinta-suave); }

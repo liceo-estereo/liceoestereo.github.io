@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { ESTADOS_TICKET, agruparTickets, caducados, nombreEstado, pedidosDeHoy } from "../js/logica.js";
+import {
+  ESTADOS_TICKET,
+  agruparTickets,
+  caducados,
+  esNuevo,
+  masReciente,
+  nombreEstado,
+  pedidosAnteriores,
+  pedidosDeHoy,
+} from "../js/logica.js";
 import { leer } from "./ayudas.js";
 
 test("agruparTickets devuelve una lista por estado y omite los desconocidos", () => {
@@ -47,4 +56,21 @@ test("los contenedores y los módulos de tickets y mensajes", () => {
 test("ESTADOS_TICKET coincide con el check de la base de datos", () => {
   const [, dentro] = leer("supabase/002-rediseno.sql").match(/check \(estado in \(([^)]*)\)\)/);
   assert.deepEqual([...dentro.matchAll(/'([^']*)'/g)].map((m) => m[1]), ESTADOS_TICKET);
+});
+
+test("pedidosAnteriores deja fuera los de hoy y ordena del más reciente al más antiguo", () => {
+  const hoy = { id: 1, creado: new Date(2026, 9, 12, 10).toISOString() };
+  const ayer = { id: 2, creado: new Date(2026, 9, 11, 10).toISOString() };
+  const antier = { id: 3, creado: new Date(2026, 9, 10, 10).toISOString() };
+  assert.deepEqual(pedidosAnteriores([antier, hoy, ayer], "2026-10-12"), [ayer, antier]);
+});
+
+test("esNuevo y masReciente: solo es nuevo lo que llegó después de lo ya visto", () => {
+  const a = { id: 1, creado: "2026-10-12T15:00:00.000Z" };
+  const b = { id: 2, creado: "2026-10-12T16:00:00.000Z" };
+  assert.equal(masReciente([a, b]), b.creado);
+  assert.equal(masReciente([]), null);
+  assert.equal(esNuevo(b, a.creado), true);
+  assert.equal(esNuevo(a, a.creado), false);
+  assert.equal(esNuevo(b, null), false);
 });

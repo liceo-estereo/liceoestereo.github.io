@@ -132,9 +132,14 @@
 
       <section id="pestana-mensajes" role="tabpanel" hidden>
         <h2>Mensajes</h2>
-        <p>Canciones, mensajes y dedicatorias recibidos hoy. Los de más de 30 días se borran solos.</p>
-        <button id="actualizar-mensajes" class="boton" type="button">Actualizar</button>
+        <p>Canciones, mensajes y dedicatorias. Los de hoy van arriba y los que lleguen mientras tienes esta pestaña abierta se marcan como nuevos. Los de más de 30 días se borran solos.</p>
+        <button id="actualizar-mensajes" class="boton" type="button">Marcar como vistos</button>
+        <h3 id="titulo-mensajes-hoy">Hoy</h3>
         <ul id="lista-mensajes" class="lista-mensajes"></ul>
+        <details id="mensajes-anteriores" class="anteriores">
+          <summary id="resumen-anteriores">Días anteriores</summary>
+          <ul id="lista-anteriores" class="lista-mensajes"></ul>
+        </details>
       </section>
     </section>
   </main>

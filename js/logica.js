@@ -297,6 +297,17 @@ const recientesPrimero = (a, b) => new Date(b.creado) - new Date(a.creado);
 export const pedidosDeHoy = (pedidos, hoy) =>
   pedidos.filter((p) => fechaLocalISO(new Date(p.creado)) === hoy).sort(recientesPrimero);
 
+// Los que no son de hoy: quedan "en el montón" hasta que caducan.
+export const pedidosAnteriores = (pedidos, hoy) =>
+  pedidos.filter((p) => fechaLocalISO(new Date(p.creado)) !== hoy).sort(recientesPrimero);
+
+// Momento del pedido más reciente, o null si no hay ninguno.
+export const masReciente = (pedidos) =>
+  pedidos.reduce((mayor, p) => (!mayor || new Date(p.creado) > new Date(mayor) ? p.creado : mayor), null);
+
+// Un pedido es nuevo si llegó después de lo último que el encargado ya vio.
+export const esNuevo = (pedido, vistoHasta) => Boolean(vistoHasta) && new Date(pedido.creado) > new Date(vistoHasta);
+
 // Ids de los pedidos que ya pasaron el plazo de conservación.
 export const caducados = (pedidos, hoy, dias = 30) =>
   pedidos.filter((p) => diasEntre(fechaLocalISO(new Date(p.creado)), hoy) > dias).map((p) => p.id);
