@@ -47,12 +47,17 @@ function prepararPedidos(whatsapp) {
     const { ok, errores } = validarPedido(datos);
     if (!ok) return avisar(aviso, errores.join(" "), true);
     boton.disabled = true;
-    await guardarPedido(filaPedido(datos)); // si falla, el pedido igual puede salir por WhatsApp
+    const guardado = await guardarPedido(filaPedido(datos));
     if (whatsapp) {
       window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(textoWhatsapp(datos))}`, "_blank", "noopener");
     }
-    avisar(aviso, "Recibimos tu mensaje.");
-    form.reset();
+    // Sin guardado y sin WhatsApp el pedido no llegó a ninguna parte: no se puede decir que sí.
+    if (resultadoEnvio(guardado, Boolean(whatsapp)) === "ok") {
+      avisar(aviso, "Recibimos tu mensaje.");
+      form.reset();
+    } else {
+      avisar(aviso, "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.", true);
+    }
     boton.disabled = false;
   };
 }
