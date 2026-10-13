@@ -251,6 +251,59 @@ export function filaNoticia(campos, hoy) {
   return fila;
 }
 
+// El mismo tope que el check de noticias.anexos en supabase/005-anexos.sql.
+export const MAX_ANEXOS = 6;
+
+// Cómo se muestra un enlace anexo a una noticia. Los sitios conocidos traen la dirección de su
+// marco (iframe) oficial; cualquier otro enlace seguro se muestra como enlace. null si no es seguro.
+export function anexoDeEnlace(enlace) {
+  if (!esEnlaceSeguro(enlace)) return null;
+  let url;
+  try {
+    url = new URL(enlace);
+  } catch {
+    return null;
+  }
+  const sitio = url.hostname.replace(/^(www|m|mobile)\./, "");
+  if (sitio === "x.com" || sitio === "twitter.com") {
+    const id = url.pathname.match(/\/status(?:es)?\/(\d+)/)?.[1];
+    if (id) {
+      return { tipo: "x", nombre: "Publicación de X", marco: `https://platform.twitter.com/embed/Tweet.html?id=${id}&lang=es&dnt=true` };
+    }
+  }
+  if (sitio === "youtube.com" || sitio === "youtu.be") {
+    const id =
+      sitio === "youtu.be"
+        ? url.pathname.split("/")[1]
+        : url.searchParams.get("v") || url.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]+)/)?.[1];
+    if (/^[\w-]{6,}$/.test(id || "")) {
+      return { tipo: "youtube", nombre: "Video de YouTube", marco: "https://www.youtube-nocookie.com/embed/" + id };
+    }
+  }
+  if (sitio === "facebook.com" || sitio === "fb.watch") {
+    const video = sitio === "fb.watch" || /\/(videos|watch|reel)(\/|$)/.test(url.pathname);
+    return {
+      tipo: video ? "facebook-video" : "facebook",
+      nombre: video ? "Video de Facebook" : "Publicación de Facebook",
+      marco: `https://www.facebook.com/plugins/${video ? "video" : "post"}.php?href=${encodeURIComponent(enlace)}&show_text=true&width=500`,
+    };
+  }
+  return { tipo: "enlace", nombre: "Enlace", marco: "" };
+}
+
+// Los anexos tal como se guardan y se pintan: solo enlaces seguros, con tope y pie recortado.
+export function limpiarAnexos(valor) {
+  if (!Array.isArray(valor)) return [];
+  return valor
+    .filter((anexo) => anexo && esEnlaceSeguro(anexo.enlace))
+    .slice(0, MAX_ANEXOS)
+    .map((anexo) => ({
+      tipo: anexo.tipo === "foto" ? "foto" : "enlace",
+      enlace: anexo.enlace,
+      pie: String(anexo.pie || "").trim().slice(0, 200),
+    }));
+}
+
 // Desactivar siempre se permite; para activar hace falta una red conocida y un enlace https.
 export function validarTransmision({ activa, red, enlace }) {
   const errores = [];

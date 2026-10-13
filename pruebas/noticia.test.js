@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { SECCIONES } from "../js/ajustes.js";
-import { enlacesCompartir, nombreSeccion, relacionadas, tiempoLectura } from "../js/logica.js";
+import { MAX_ANEXOS, anexoDeEnlace, enlacesCompartir, limpiarAnexos, nombreSeccion, relacionadas, tiempoLectura } from "../js/logica.js";
 import { leer } from "./ayudas.js";
 
 test("tiempoLectura redondea hacia arriba y nunca baja de uno", () => {
@@ -48,4 +48,31 @@ test("js/noticia.js monta el marco, lee la noticia y no usa innerHTML", () => {
   assert.ok(fuente.includes("montarMarco("));
   assert.ok(fuente.includes("leerNoticia("));
   assert.ok(!fuente.includes("innerHTML"));
+});
+
+test("anexoDeEnlace reconoce X, YouTube y Facebook, y deja lo demás como enlace", () => {
+  assert.equal(anexoDeEnlace("https://x.com/liceo/status/1234567890?s=20").marco, "https://platform.twitter.com/embed/Tweet.html?id=1234567890&lang=es&dnt=true");
+  assert.equal(anexoDeEnlace("https://twitter.com/liceo/status/42").tipo, "x");
+  assert.equal(anexoDeEnlace("https://x.com/liceo").tipo, "enlace");
+  for (const enlace of ["https://www.youtube.com/watch?v=abc_DEF-123", "https://youtu.be/abc_DEF-123?t=5", "https://youtube.com/shorts/abc_DEF-123"]) {
+    assert.equal(anexoDeEnlace(enlace).marco, "https://www.youtube-nocookie.com/embed/abc_DEF-123", enlace);
+  }
+  const publicacion = anexoDeEnlace("https://www.facebook.com/liceo/posts/123");
+  assert.equal(publicacion.tipo, "facebook");
+  assert.ok(publicacion.marco.includes("plugins/post.php?href=" + encodeURIComponent("https://www.facebook.com/liceo/posts/123")));
+  assert.equal(anexoDeEnlace("https://www.facebook.com/liceo/videos/123").tipo, "facebook-video");
+  assert.deepEqual(anexoDeEnlace("https://www.eltiempo.com/nota"), { tipo: "enlace", nombre: "Enlace", marco: "" });
+  assert.equal(anexoDeEnlace("javascript:alert(1)"), null);
+  assert.equal(anexoDeEnlace("https://"), null);
+});
+
+test("limpiarAnexos descarta lo inseguro, recorta y respeta el tope de la base de datos", () => {
+  assert.deepEqual(limpiarAnexos(null), []);
+  assert.deepEqual(
+    limpiarAnexos([{ tipo: "foto", enlace: "https://a.co/f.jpg", pie: "  Pie " }, { enlace: "javascript:alert(1)" }, null, { tipo: "raro", enlace: "https://x.com/a/status/1" }]),
+    [{ tipo: "foto", enlace: "https://a.co/f.jpg", pie: "Pie" }, { tipo: "enlace", enlace: "https://x.com/a/status/1", pie: "" }],
+  );
+  assert.equal(limpiarAnexos(Array(9).fill({ enlace: "https://a.co" })).length, MAX_ANEXOS);
+  assert.ok(leer("supabase/005-anexos.sql").includes(`jsonb_array_length(anexos) <= ${MAX_ANEXOS}`));
+  assert.ok(leer("supabase/005-anexos.sql").includes("add column if not exists anexos"));
 });

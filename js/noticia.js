@@ -2,6 +2,7 @@
 import { SECCIONES } from "./ajustes.js";
 import { leerNoticia, leerNoticias } from "./datos.js";
 import {
+  anexoDeEnlace,
   enlacesCompartir,
   esEnlaceSeguro,
   fechaLarga,
@@ -49,6 +50,47 @@ function bloqueCompartir(noticia) {
   return bloque;
 }
 
+// Un anexo de la noticia: otra foto, o un enlace que se incrusta si es de un sitio conocido.
+function bloqueAnexo(anexo) {
+  const figura = el("figure", "", "anexo");
+  const pie = el("figcaption", anexo.pie ? anexo.pie + " " : "", "meta");
+  if (anexo.tipo === "foto") {
+    const img = el("img");
+    img.src = anexo.enlace;
+    img.alt = anexo.pie;
+    img.loading = "lazy";
+    figura.append(img);
+  } else {
+    const info = anexoDeEnlace(anexo.enlace);
+    if (info.marco) {
+      const marco = el("iframe", "", "marco-" + info.tipo);
+      marco.src = info.marco;
+      marco.title = info.nombre;
+      marco.loading = "lazy";
+      marco.allowFullscreen = true;
+      figura.append(marco);
+    }
+    // El enlace a la fuente va siempre: si el marco no carga, la publicación sigue al alcance.
+    const fuente = enlace(info.marco ? "Abrir la " + info.nombre.toLowerCase() : anexo.enlace, anexo.enlace);
+    fuente.target = "_blank";
+    fuente.rel = "noopener";
+    pie.append(fuente);
+  }
+  if (pie.textContent) figura.append(pie);
+  return figura;
+}
+
+// Las publicaciones de X avisan su alto real con un mensaje; sin esto quedarían cortadas.
+window.addEventListener("message", (evento) => {
+  if (evento.origin !== "https://platform.twitter.com") return;
+  const aviso = evento.data?.["twttr.embed"];
+  const alto = aviso?.method === "twttr.private.resize" ? Number(aviso.params?.[0]?.height) : 0;
+  if (!alto) return;
+  for (const marco of cuerpo.querySelectorAll("iframe.marco-x")) {
+    if (marco.contentWindow === evento.source) marco.style.height = alto + "px";
+  }
+});
+
 function pintarNoticia(noticia) {
   titulo.textContent = noticia.titulo;
   document.title = `${noticia.titulo} · Liceo Tame Stereo`;
@@ -81,6 +123,7 @@ function pintarNoticia(noticia) {
   }
   if (noticia.entradilla) cuerpo.append(el("p", noticia.entradilla, "entradilla"));
   for (const parrafo of parrafos(noticia.cuerpo)) cuerpo.append(el("p", parrafo));
+  for (const anexo of noticia.anexos) cuerpo.append(bloqueAnexo(anexo));
   if (noticia.emisor) cuerpo.append(el("p", "Por " + noticia.emisor, "firma"));
   cuerpo.append(bloqueCompartir(noticia));
 }

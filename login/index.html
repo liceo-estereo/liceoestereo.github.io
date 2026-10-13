@@ -94,6 +94,20 @@
               <input id="audio" name="audio" type="file" accept="audio/mpeg,audio/mp3" hidden>
             </div>
           </div>
+          <fieldset class="caja anexos">
+            <legend>Anexos (opcional)</legend>
+            <p class="meta">Publicaciones de X o Facebook, videos de YouTube, otros enlaces o más fotos. Se muestran al final de la noticia, en este orden. Máximo 6.</p>
+            <div class="formulario">
+              <label for="anexo-enlace">Enlace de la publicación o del video</label>
+              <div class="junto">
+                <input id="anexo-enlace" type="url" placeholder="https://x.com/usuario/status/…">
+                <button id="agregar-anexo" class="boton" type="button">Añadir enlace</button>
+              </div>
+              <label for="anexo-foto">Otra foto</label>
+              <input id="anexo-foto" type="file" accept="image/*">
+            </div>
+            <ul id="lista-anexos" class="lista-anexos"></ul>
+          </fieldset>
           <div class="acciones">
             <button id="guardar" class="boton lleno grande" type="submit">Publicar</button>
             <button id="cancelar" class="boton grande" type="button" hidden>Cancelar edición</button>

@@ -3,12 +3,15 @@ import { SECCIONES } from "./ajustes.js";
 import {
   AUDIO,
   DEPOSITO_FOTOS,
+  MAX_ANEXOS,
+  anexoDeEnlace,
   conflictoSemana,
   errorDeFoto,
   esEnlaceSeguro,
   fechaLarga,
   fechaLocalISO,
   filaNoticia,
+  limpiarAnexos,
   noticiaDeLaSemana,
   validarAudio,
 } from "./logica.js";
@@ -42,6 +45,60 @@ function quitarFoto() {
   pintarFoto();
 }
 
+// Anexos del formulario: { tipo, enlace, pie } y, en las fotos aún sin subir, también `archivo`
+// (ahí `enlace` es la dirección temporal de la vista previa).
+let anexos = [];
+
+function pintarAnexos() {
+  const lista = document.querySelector("#lista-anexos");
+  lista.replaceChildren();
+  for (const anexo of anexos) {
+    const li = el("li");
+    if (anexo.tipo === "foto") {
+      const img = el("img");
+      img.src = anexo.enlace;
+      img.alt = "Foto anexa";
+      li.append(img);
+    } else {
+      li.append(el("strong", anexoDeEnlace(anexo.enlace).nombre), el("span", anexo.enlace, "meta"));
+    }
+    const pie = el("input");
+    pie.value = anexo.pie;
+    pie.maxLength = 200;
+    pie.placeholder = "Pie o descripción (opcional)";
+    pie.setAttribute("aria-label", "Pie o descripción del anexo");
+    pie.oninput = () => (anexo.pie = pie.value);
+    const quitar = el("button", "Quitar", "boton peligro");
+    quitar.type = "button";
+    quitar.onclick = () => {
+      if (anexo.archivo) URL.revokeObjectURL(anexo.enlace);
+      anexos = anexos.filter((otro) => otro !== anexo);
+      pintarAnexos();
+    };
+    li.append(pie, quitar);
+    lista.append(li);
+  }
+}
+
+// Devuelve false si no se pudo agregar (y lo avisa).
+function agregarAnexo(anexo) {
+  if (anexos.length >= MAX_ANEXOS) return aviso(`Una noticia admite máximo ${MAX_ANEXOS} anexos.`, true), false;
+  anexos.push({ pie: "", ...anexo });
+  pintarAnexos();
+  aviso("");
+  return true;
+}
+
+function agregarEnlace() {
+  const entrada = document.querySelector("#anexo-enlace");
+  const enlace = entrada.value.trim();
+  if (!enlace) return true;
+  if (!anexoDeEnlace(enlace)) return aviso("El enlace del anexo debe empezar por https://", true), false;
+  if (!agregarAnexo({ tipo: "enlace", enlace })) return false;
+  entrada.value = "";
+  return true;
+}
+
 function mostrarAudio() {
   const visible = document.querySelector("#con-audio").checked;
   document.querySelector("#audio").hidden = !visible;
@@ -51,6 +108,9 @@ function mostrarAudio() {
 function limpiar() {
   editando = null;
   sinFoto = false;
+  for (const anexo of anexos) if (anexo.archivo) URL.revokeObjectURL(anexo.enlace);
+  anexos = [];
+  pintarAnexos();
   form.reset();
   pintarFoto();
   campo("fecha").value = fechaLocalISO();
@@ -63,6 +123,8 @@ function limpiar() {
 function cargar(noticia) {
   limpiar();
   editando = noticia;
+  anexos = limpiarAnexos(noticia.anexos);
+  pintarAnexos();
   pintarFoto();
   for (const id of CAMPOS) campo(id).value = noticia[id] || "";
   document.querySelector("#semana").checked = Boolean(noticiaDeLaSemana([noticia], fechaLocalISO()));
@@ -88,7 +150,7 @@ async function reducir(archivo, max = 1600) {
 
 // Sube un archivo y anota dónde quedó, para poder borrarlo si después falla el guardado.
 async function subir(deposito, archivo, extension, tipo, subidos) {
-  const ruta = `${Date.now()}.${extension}`;
+  const ruta = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
   const { error } = await sb.storage.from(deposito).upload(ruta, archivo, { contentType: tipo });
   if (error) throw error;
   subidos.push({ deposito, ruta });
@@ -138,12 +200,14 @@ async function eliminar(noticia) {
   }
   await borrarArchivo(DEPOSITO_FOTOS, noticia.foto);
   await borrarArchivo(AUDIO.deposito, noticia.audio);
+  for (const anexo of limpiarAnexos(noticia.anexos)) if (anexo.tipo === "foto") await borrarArchivo(DEPOSITO_FOTOS, anexo.enlace);
   aviso("Noticia eliminada.");
   if (editando?.id === noticia.id) limpiar();
   listar();
 }
 
 async function guardar() {
+  if (!agregarEnlace()) return; // un enlace escrito pero sin añadir también cuenta
   const hoy = fechaLocalISO();
   const campos = Object.fromEntries(CAMPOS.map((id) => [id, campo(id).value]));
   campos.semana = document.querySelector("#semana").checked;
@@ -175,6 +239,18 @@ async function guardar() {
     if (audio) fila.audio = await subir(AUDIO.deposito, audio, "mp3", AUDIO.tipos[0], subidos);
     else if (editando && !conAudio) fila.audio = null;
 
+    const lista = [];
+    for (const anexo of anexos) {
+      const enlace = anexo.archivo
+        ? await subir(DEPOSITO_FOTOS, await reducir(anexo.archivo), "jpg", "image/jpeg", subidos)
+        : anexo.enlace;
+      lista.push({ ...anexo, enlace });
+    }
+    const guardados = limpiarAnexos(lista);
+    const viejos = limpiarAnexos(editando?.anexos);
+    // Sin anexos no se envía el campo: así el panel sigue sirviendo aunque falte aplicar 005-anexos.sql.
+    if (guardados.length || viejos.length) fila.anexos = guardados;
+
     const consulta = editando
       ? sb.from("noticias").update(fila).eq("id", editando.id)
       : sb.from("noticias").insert(fila);
@@ -185,6 +261,9 @@ async function guardar() {
     // Guardado: ya se pueden borrar los archivos que la noticia dejó de usar.
     if (editando && (foto || sinFoto)) await borrarArchivo(DEPOSITO_FOTOS, editando.foto);
     if (editando && (audio || !conAudio)) await borrarArchivo(AUDIO.deposito, editando.audio);
+    for (const viejo of viejos) {
+      if (viejo.tipo === "foto" && !guardados.some((a) => a.enlace === viejo.enlace)) await borrarArchivo(DEPOSITO_FOTOS, viejo.enlace);
+    }
     aviso(editando ? "Cambios guardados." : "Noticia publicada.");
     limpiar();
     listar();
@@ -213,6 +292,20 @@ campo("foto").onchange = () => {
   pintarFoto();
 };
 document.querySelector("#quitar-foto").onclick = quitarFoto;
+document.querySelector("#agregar-anexo").onclick = agregarEnlace;
+document.querySelector("#anexo-enlace").onkeydown = (evento) => {
+  if (evento.key !== "Enter") return;
+  evento.preventDefault(); // Enter añade el enlace; no debe publicar la noticia
+  agregarEnlace();
+};
+document.querySelector("#anexo-foto").onchange = (evento) => {
+  const archivo = evento.target.files[0];
+  evento.target.value = "";
+  if (!archivo) return;
+  const problema = errorDeFoto(archivo);
+  if (problema) return aviso(problema, true);
+  agregarAnexo({ tipo: "foto", enlace: URL.createObjectURL(archivo), archivo });
+};
 document.querySelector("#con-audio").onchange = mostrarAudio;
 document.querySelector("#cerrar-aviso-semana").onclick = () => dialogo.close();
 

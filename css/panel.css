@@ -65,6 +65,26 @@
 .vista-foto img { max-width: 100%; max-height: 14rem; border: 1px solid var(--borde); border-radius: var(--radio); }
 .formulario .vista-foto .boton { margin-top: 0; }
 
+/* Anexos de la noticia */
+.anexos { margin-top: 1.5rem; min-width: 0; }
+.anexos legend { padding: 0 0.5rem; font: 700 1.125rem var(--f-titulares); }
+.junto { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.junto input { flex: 1 1 14rem; width: auto; }
+.formulario .junto .boton { margin-top: 0; }
+.lista-anexos { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.lista-anexos li {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--fondo);
+}
+.lista-anexos img { max-height: 6rem; border-radius: var(--radio); }
+.lista-anexos .meta { overflow-wrap: anywhere; }
+.lista-anexos input { width: 100%; padding: 0.45rem 0.6rem; font: inherit; border: 1.5px solid var(--borde); border-radius: var(--radio); }
+.lista-anexos .boton { padding: 0.3rem 0.7rem; font-size: 0.8125rem; }
+
 /* «Noticia de la semana» y «Añadir audio»: casillas con forma de botón */
 .opciones { display: grid; gap: 0.75rem; margin-top: 1.25rem; }
 .opciones input { position: absolute; opacity: 0; width: 1px; height: 1px; }

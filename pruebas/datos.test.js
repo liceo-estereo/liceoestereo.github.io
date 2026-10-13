@@ -46,6 +46,7 @@ test("urlNoticia rechaza ids que no son enteros positivos", () => {
 test("una noticia sin sección cuenta como institucional", () => {
   assert.equal(normalizarNoticia({ id: 1 }).seccion, "institucional");
   assert.equal(normalizarNoticia({ id: 1, seccion: "deportes" }).seccion, "deportes");
+  assert.deepEqual(normalizarNoticia({ id: 1 }).anexos, []);
 });
 
 test("las claves nuevas existen en los datos y en el formulario del CMS", () => {

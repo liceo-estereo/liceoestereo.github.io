@@ -337,6 +337,9 @@ main > p, main > .bajada { max-width: 65ch; }
 .articulo figure img { width: 100%; border-radius: var(--radio); background: var(--borde); }
 .articulo figcaption { margin-top: 0.4rem; }
 .articulo audio { width: 100%; margin-bottom: 1.5rem; }
+.articulo .anexo { margin-top: 1.5rem; }
+.anexo iframe { display: block; width: 100%; max-width: 34rem; height: 34rem; border: 0; }
+.anexo :is(.marco-youtube, .marco-facebook-video) { max-width: none; height: auto; aspect-ratio: 16 / 9; }
 .articulo .entradilla { font-weight: 700; }
 .articulo .firma { font-style: italic; color: var(--tinta-suave); }
 .compartir {

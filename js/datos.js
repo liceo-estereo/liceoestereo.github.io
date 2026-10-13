@@ -1,5 +1,6 @@
 // Único módulo del sitio público que hace fetch. Nada se ejecuta al importarlo.
 import { FORMSUBMIT_URL, SECCIONES, SUPABASE_KEY, SUPABASE_URL } from "./ajustes.js";
+import { limpiarAnexos } from "./logica.js";
 
 export const CABECERAS = { apikey: SUPABASE_KEY };
 
@@ -29,7 +30,11 @@ export function limpiarEmisora(crudo) {
 }
 
 // Mientras la migración 002 no esté aplicada las noticias llegan sin sección: cuentan como institucionales.
-export const normalizarNoticia = (noticia) => ({ ...noticia, seccion: noticia.seccion || "institucional" });
+export const normalizarNoticia = (noticia) => ({
+  ...noticia,
+  seccion: noticia.seccion || "institucional",
+  anexos: limpiarAnexos(noticia.anexos),
+});
 
 export function urlNoticias({ seccion, limite } = {}) {
   let url = SUPABASE_URL + "/rest/v1/noticias?select=*&order=fecha.desc,id.desc";

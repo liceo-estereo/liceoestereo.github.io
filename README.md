@@ -29,6 +29,10 @@ guardan en el archivo `datos/emisora.json` de este repositorio.
 La sesión se cierra sola al cerrar la pestaña del navegador. En un computador compartido, pulsa
 además **Cerrar sesión**.
 
+**Anexos (opcional).** Debajo del formulario puedes pegar el enlace de una publicación de X o de
+Facebook, de un video de YouTube o de cualquier otra página, y añadir más fotos. Se muestran al
+final de la noticia. Máximo 6. Requiere haber ejecutado `supabase/005-anexos.sql`.
+
 ## Cómo marcar que estamos en vivo
 
 1. En el panel, abre la pestaña **En vivo**.
